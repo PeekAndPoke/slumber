@@ -8,10 +8,7 @@ php:
 
 before_script:
   # install ext-mongodb:^1.2
-  - wget http://pecl.php.net/get/mongo-1.2.10.tgz
-  - tar -xzf mongo-1.2.10.tgz
-  - sh -c "cd mongo-1.2.10 && phpize && ./configure && sudo make install"
-  - echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  - pecl install -f mongo-1.2.12
 
   # composer deps
   - composer self-update
