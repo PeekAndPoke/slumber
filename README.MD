@@ -1,11 +1,5 @@
 # Slumber
 
-# depends on
- 
-"doctrine/common": "~2.5"  
-"symfony/finder": "~2.5"  
-"gossi/php-code-generator":"dev-master"  
-
 # TICKETS:
 
 next ticket number: 14
