@@ -1,0 +1,78 @@
+<?php
+/**
+ * File was created 07.10.2015 06:35
+ */
+
+namespace PeekAndPoke\Component\Slumber\Data\MongoDb;
+
+use PeekAndPoke\Component\Slumber\Data\EntityPool;
+use PeekAndPoke\Component\Slumber\Data\Storage;
+
+/**
+ * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
+ */
+class MongoDbPoolingAwaker implements MongoDbAwaker
+{
+    /** @var MongoDbAwaker */
+    private $delegate;
+    /** @var EntityPool */
+    private $pool;
+    /** @var MongoDbEntityConfigReader */
+    private $lookUp;
+
+    /**
+     * @param MongoDbAwaker             $delegate
+     * @param EntityPool                $pool
+     * @param MongoDbEntityConfigReader $lookUp
+     */
+    public function __construct(MongoDbAwaker $delegate, EntityPool $pool, MongoDbEntityConfigReader $lookUp)
+    {
+        $this->delegate = $delegate;
+        $this->pool     = $pool;
+        $this->lookUp   = $lookUp;
+    }
+
+    /**
+     * @return Storage
+     */
+    public function getStorage()
+    {
+        return $this->delegate->getStorage();
+    }
+
+    /**
+     * @param mixed            $data
+     * @param \ReflectionClass $cls
+     *
+     * @return mixed|null
+     */
+    public function awake($data, \ReflectionClass $cls)
+    {
+        $awoken = $this->delegate->awake($data, $cls);
+
+        if ($awoken === null) {
+            return null;
+        }
+
+        $awokenClass = new \ReflectionClass($awoken);
+
+        // We need to get the idMarker from the awoken class
+        $marker = $this->lookUp->getEntityConfig($awokenClass)->getIdMarker();
+
+        // TODO: We need PropertyAccess implementation and do $access = $entityConfig->getIdAccess(); $access->get()
+        $primaryIdProperty = $awokenClass->getProperty($marker->name);
+        $primaryIdProperty->setAccessible(true);
+        $primaryId = $primaryIdProperty->getValue($awoken);
+
+        // Can we find this entity in the pool ?
+        if ($primaryId !== null && $this->pool->has($cls, 'id', $primaryId)) {
+
+            return $this->pool->get($cls, 'id', $primaryId);
+        }
+
+        // otherwise we set it on the pool
+        $this->pool->set($cls, 'id', $primaryId, $awoken);
+
+        return $awoken;
+    }
+}

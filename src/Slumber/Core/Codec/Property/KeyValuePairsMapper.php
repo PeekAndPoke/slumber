@@ -1,0 +1,89 @@
+<?php
+/**
+ * File was created 30.09.2015 07:46
+ */
+
+namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
+
+use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsKeyValuePairs;
+use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
+use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
+
+/**
+ * @method AsKeyValuePairs getOptions()
+ *
+ * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
+ */
+class KeyValuePairsMapper extends AbstractCollectionMapper
+{
+    /**
+     * @param Slumberer          $slumberer
+     * @param array|\Traversable $value
+     *
+     * @return array
+     */
+    public function slumber(Slumberer $slumberer, $value)
+    {
+        if (! is_array($value) && ! $value instanceof \Traversable) {
+            return null;
+        }
+
+        $result    = [];
+        $nested    = $this->nested;
+        $keepNulls = $nested->getOptions()->keepNullValuesInCollections();
+
+        foreach ($value as $k => $v) {
+
+            $slumbering = $nested->slumber($slumberer, $v);
+
+            // check if we should keep nulls
+            if ($slumbering !== null || $keepNulls) {
+                $result[] = [
+                    'k' => (string) $k,
+                    'v' => $slumbering,
+                ];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Awaker             $awaker
+     * @param array|\Traversable $value
+     *
+     * @return array
+     */
+    public function awake(Awaker $awaker, $value)
+    {
+        if (! is_array($value) && ! $value instanceof \Traversable) {
+            return [];
+        }
+
+        $result    = [];
+        $nested    = $this->nested;
+        $keepNulls = $nested->getOptions()->keepNullValuesInCollections();
+
+        foreach ($value as $k => $v) {
+
+            if (is_array($v) && isset($v['k'], $v['v'])) {
+                $keyToUse = (string) $v['k'];
+                $valToUse = $v['v'];
+            } // bit of compatibility
+            else {
+                $keyToUse = $k;
+                $valToUse = $v;
+            }
+
+            $awoken = $nested->awake($awaker, $valToUse);
+
+            // check if we should keep nulls
+            if ($awoken !== null || $keepNulls) {
+                $result[$keyToUse] = $awoken;
+            }
+        }
+
+        // do we need to instantiate a collection class ?
+        return $this->createAwakeResult($result);
+    }
+}
