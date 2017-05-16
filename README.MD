@@ -6,10 +6,10 @@ next ticket number: 14
 
 ## PRIO I
 
-SLUMBER-13 - 0%
-    ( ) unit test for polymorphics that fall back to the default
-       ( ) a) discriminator no set
-       ( ) b) unknown discriminator set
+SLUMBER-13 - 0%  
+    ( ) unit test for polymorphics that fall back to the default  
+       ( ) a) discriminator no set  
+       ( ) b) unknown discriminator set  
 
 SLUMBER-12 - 50% - Implement aliases class for repositories
     -> in order to store multiple type in one collection we must be able to specify alias classes for repositories
