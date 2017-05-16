@@ -85,7 +85,14 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        $this->data[$offset] = $value;
+        if ($offset !== null) {
+            // insert with key: $collection['key'] = $value
+            // insert key 0:    $collection[0]     = $value;
+            $this->data[$offset] = $value;
+        } else {
+            // append to end: $collection[] = $value
+            $this->data[] = $value;
+        }
     }
 
     /**
