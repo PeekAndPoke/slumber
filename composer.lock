@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "068f4543c4b651b8d67775bbce58f3aa",
+    "content-hash": "59985a40e8aa330d13d5bcfa193797d1",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -465,16 +465,16 @@
         },
         {
             "name": "peekandpoke/php-types",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PeekAndPoke/php-types.git",
-                "reference": "68e022ffa3231a03e2e2087104dff0cd090b5d84"
+                "reference": "b747614ab9f507aa9f1111d0b435f707798ade50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PeekAndPoke/php-types/zipball/68e022ffa3231a03e2e2087104dff0cd090b5d84",
-                "reference": "68e022ffa3231a03e2e2087104dff0cd090b5d84",
+                "url": "https://api.github.com/repos/PeekAndPoke/php-types/zipball/b747614ab9f507aa9f1111d0b435f707798ade50",
+                "reference": "b747614ab9f507aa9f1111d0b435f707798ade50",
                 "shasum": ""
             },
             "require-dev": {
@@ -497,24 +497,24 @@
                 }
             ],
             "description": "Basic types for PHP like Enums, LocalDate etc...",
-            "time": "2017-05-17T20:03:55+00:00"
+            "time": "2017-05-18T20:47:51+00:00"
         },
         {
             "name": "peekandpoke/psi",
-            "version": "v0.4.0",
+            "version": "v0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PeekAndPoke/psi.git",
-                "reference": "930a12b6b0a5860dd51e37af72beb981367f653b"
+                "reference": "06e39cfc59a4a653ae7aca2f326abf55901e2191"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PeekAndPoke/psi/zipball/930a12b6b0a5860dd51e37af72beb981367f653b",
-                "reference": "930a12b6b0a5860dd51e37af72beb981367f653b",
+                "url": "https://api.github.com/repos/PeekAndPoke/psi/zipball/06e39cfc59a4a653ae7aca2f326abf55901e2191",
+                "reference": "06e39cfc59a4a653ae7aca2f326abf55901e2191",
                 "shasum": ""
             },
             "require": {
-                "peekandpoke/php-types": "^1.1",
+                "peekandpoke/php-types": "^1.1.1",
                 "php": ">=5.5.10"
             },
             "require-dev": {
@@ -537,7 +537,7 @@
                 }
             ],
             "description": "Java Streams Api inspired implementation for PHP. Php Streams Impl: PSI",
-            "time": "2017-05-18T06:10:48+00:00"
+            "time": "2017-05-18T20:50:05+00:00"
         },
         {
             "name": "psr/container",
