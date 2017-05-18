@@ -74,32 +74,32 @@ class UnitTestMainClass
     /**
      * @var string[]
      *
-     * @Slumber\AsCollection(@Slumber\AsString())
+     * @Slumber\AsMap(@Slumber\AsString())
      */
-    private $aCollectionOfStrings = [];
+    private $aMapOfStrings = [];
 
     /**
      * @var int[]
      *
-     * @Slumber\AsCollection(@Slumber\AsInteger())
+     * @Slumber\AsMap(@Slumber\AsInteger())
      */
-    private $aCollectionOfIntegers = [];
+    private $aMapOfIntegers = [];
 
     /**
      * @var mixed[]
      *
-     * @Slumber\AsCollection(@Slumber\AsIs())
+     * @Slumber\AsMap(@Slumber\AsIs())
      */
-    private $aCollectionOfMixed = [];
+    private $aMapOfMixed = [];
 
     /**
      * @var UnitTestAggregatedClass[]
      *
-     * @Slumber\AsCollection(
+     * @Slumber\AsMap(
      *     @Slumber\AsObject(UnitTestAggregatedClass::class)
      * )
      */
-    private $aCollectionOfObjects = [];
+    private $aMapOfObjects = [];
 
     /**
      * @var UnitTestCollection
@@ -374,19 +374,19 @@ class UnitTestMainClass
     /**
      * @return string[]
      */
-    public function getACollectionOfStrings()
+    public function getAMapOfStrings()
     {
-        return $this->aCollectionOfStrings;
+        return $this->aMapOfStrings;
     }
 
     /**
-     * @param mixed $aCollectionOfStrings
+     * @param string[] $aMapOfStrings
      *
      * @return $this
      */
-    public function setACollectionOfStrings($aCollectionOfStrings)
+    public function setAMapOfStrings($aMapOfStrings)
     {
-        $this->aCollectionOfStrings = $aCollectionOfStrings;
+        $this->aMapOfStrings = $aMapOfStrings;
 
         return $this;
     }
@@ -394,19 +394,19 @@ class UnitTestMainClass
     /**
      * @return int[]
      */
-    public function getACollectionOfIntegers()
+    public function getAMapOfIntegers()
     {
-        return $this->aCollectionOfIntegers;
+        return $this->aMapOfIntegers;
     }
 
     /**
-     * @param mixed $aCollectionOfIntegers
+     * @param int[] $aMapOfIntegers
      *
      * @return $this
      */
-    public function setACollectionOfIntegers($aCollectionOfIntegers)
+    public function setAMapOfIntegers($aMapOfIntegers)
     {
-        $this->aCollectionOfIntegers = $aCollectionOfIntegers;
+        $this->aMapOfIntegers = $aMapOfIntegers;
 
         return $this;
     }
@@ -414,19 +414,19 @@ class UnitTestMainClass
     /**
      * @return mixed[]
      */
-    public function getACollectionOfMixed()
+    public function getAMapOfMixed()
     {
-        return $this->aCollectionOfMixed;
+        return $this->aMapOfMixed;
     }
 
     /**
-     * @param mixed $aCollectionOfMixed
+     * @param mixed[] $aMapOfMixed
      *
      * @return $this
      */
-    public function setACollectionOfMixed($aCollectionOfMixed)
+    public function setAMapOfMixed($aMapOfMixed)
     {
-        $this->aCollectionOfMixed = $aCollectionOfMixed;
+        $this->aMapOfMixed = $aMapOfMixed;
 
         return $this;
     }
@@ -434,9 +434,21 @@ class UnitTestMainClass
     /**
      * @return UnitTestAggregatedClass[]
      */
-    public function getACollectionOfObjects()
+    public function getAMapOfObjects()
     {
-        return $this->aCollectionOfObjects;
+        return $this->aMapOfObjects;
+    }
+
+    /**
+     * @param mixed $aMapOfObjects
+     *
+     * @return $this
+     */
+    public function setAMapOfObjects($aMapOfObjects)
+    {
+        $this->aMapOfObjects = $aMapOfObjects;
+
+        return $this;
     }
 
     /**
@@ -455,18 +467,6 @@ class UnitTestMainClass
     public function setAListOfStringWrappedInACollClass(UnitTestCollection $aListOfStringWrappedInACollClass)
     {
         $this->aListOfStringWrappedInACollClass = $aListOfStringWrappedInACollClass;
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $aCollectionOfObjects
-     *
-     * @return $this
-     */
-    public function setACollectionOfObjects($aCollectionOfObjects)
-    {
-        $this->aCollectionOfObjects = $aCollectionOfObjects;
 
         return $this;
     }

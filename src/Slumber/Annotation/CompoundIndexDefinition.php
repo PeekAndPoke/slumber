@@ -11,12 +11,7 @@ namespace PeekAndPoke\Component\Slumber\Annotation;
 interface CompoundIndexDefinition extends ClassMarker, IndexDefinition
 {
     /**
-     * @return string a json string defining the index settings
-     */
-    public function def();
-
-    /**
-     * @return array json decoded "def"
+     * @return array the index definition
      */
     public function getDefinition();
 }

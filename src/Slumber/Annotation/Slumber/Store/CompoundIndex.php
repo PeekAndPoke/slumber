@@ -20,11 +20,11 @@ use PeekAndPoke\Component\Slumber\Core\Validation\ClassAnnotationValidationConte
 class CompoundIndex extends AbstractIndexDefinition implements ClassMarker, CompoundIndexDefinition
 {
     /**
-     * @var array|string
+     * @var array
      *
      * @Annotation\Required()
      */
-    public $def;
+    public $def = [];
 
     /**
      * @param ClassAnnotationValidationContext $context
@@ -42,21 +42,12 @@ class CompoundIndex extends AbstractIndexDefinition implements ClassMarker, Comp
             );
         }
 
-        if ($this->getDefinition() === null) {
+        if (! is_array($this->def)) {
             throw $this->createValidationException(
                 $context,
-                'The compound index definition could not be json decoded. Maybe it is malformed or missing the \'single quotes\' for the keys. ' .
-                'Valid example: "{ \'one\': 1, \'two\': -1 }"'
+                'The compound index definition must be defined as a key value pair. Example: { \'one\': 1, \'two\': -1 }'
             );
         }
-    }
-
-    /**
-     * @return string a json string defining the index settings
-     */
-    public function def()
-    {
-        return $this->def;
     }
 
     /**
@@ -64,15 +55,6 @@ class CompoundIndex extends AbstractIndexDefinition implements ClassMarker, Comp
      */
     public function getDefinition()
     {
-        // in case the definition was given as a json within a string
-        if (is_string($this->def)) {
-            return json_decode(
-                str_replace("'", '"', $this->def),
-                true
-            );
-        }
-
-        // otherwise we use what we got
         return $this->def;
     }
 }

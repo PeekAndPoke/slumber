@@ -5,19 +5,15 @@
 
 namespace PeekAndPoke\Component\Slumber\Annotation\Slumber;
 
-use Doctrine\Common\Annotations\Annotation;
 use PeekAndPoke\Component\Collections\Collection;
 use PeekAndPoke\Component\Slumber\Annotation\PropertyMappingMarker;
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
 use PeekAndPoke\Component\Slumber\Core\Validation\PropertyAnnotationValidationContext;
 
 /**
- * @Annotation
- * @Annotation\Target("PROPERTY")
- *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class AsCollection extends PropertyMappingMarkerBase
+abstract class AsCollection extends PropertyMappingMarkerBase
 {
     /**
      * @var string The class of the collection to use
@@ -59,8 +55,8 @@ class AsCollection extends PropertyMappingMarkerBase
             throw $this->createValidationException(
                 $context,
                 'you must provide an ISlumberPropertyMarker as value. ' .
-                'Example: @Slumber\AsCollection( @Slumber\AsObject( SomeClass::class ) ) or ' .
-                '@Slumber\AsCollection( @Slumber\AsString() )'
+                'Example: @Slumber\AsList( @Slumber\AsObject( SomeClass::class ) ) or ' .
+                '@Slumber\AsList( @Slumber\AsString() )'
             );
         }
 

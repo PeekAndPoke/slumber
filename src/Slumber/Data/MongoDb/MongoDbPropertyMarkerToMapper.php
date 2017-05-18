@@ -26,7 +26,6 @@ class MongoDbPropertyMarkerToMapper extends PropertyMarker2Mapper
             [
                 // nested objects and collections of nested objects
                 Slumber\AsObject::class             => Core\Codec\Property\ObjectMapper::class,
-                Slumber\AsCollection::class         => Core\Codec\Property\CollectionMapper::class,
                 Slumber\AsList::class               => Core\Codec\Property\ListMapper::class,
                 Slumber\AsMap::class                => Core\Codec\Property\MapMapper::class,
                 Slumber\AsKeyValuePairs::class      => Core\Codec\Property\KeyValuePairsMapper::class,

@@ -1,77 +1,80 @@
 <?php
 /**
- * File was created 30.09.2015 07:46
+ * File was created 11.05.2016 10:13
  */
 
 namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
 
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsCollection;
-use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
-use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
+use PeekAndPoke\Component\Slumber\Core\Codec\Mapper;
 
 /**
- * @method AsCollection getOptions()
- *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class CollectionMapper extends AbstractCollectionMapper
+interface CollectionMapper extends Mapper
 {
     /**
-     * @param Slumberer          $slumberer
-     * @param array|\Traversable $value
-     *
-     * @return array
+     * @return AsCollection
      */
-    public function slumber(Slumberer $slumberer, $value)
-    {
-        if (! is_array($value) && ! $value instanceof \Traversable) {
-            return null;
-        }
-
-        $result    = [];
-        $nested    = $this->nested;
-        $keepNulls = $nested->getOptions()->keepNullValuesInCollections();
-
-        foreach ($value as $k => $v) {
-
-            $slumbering = $nested->slumber($slumberer, $v);
-
-            // check if we should keep nulls
-            if ($slumbering !== null || $keepNulls) {
-                $result[$k] = $slumbering;
-            }
-        }
-
-        return $result;
-    }
+    public function getOptions();
 
     /**
-     * @param Awaker             $awaker
-     * @param array|\Traversable $value
-     *
-     * @return array
+     * @return Mapper
      */
-    public function awake(Awaker $awaker, $value)
-    {
-        if (! is_array($value) && ! $value instanceof \Traversable) {
-            return [];
-        }
+    public function getNested();
 
-        $result    = [];
-        $nested    = $this->nested;
-        $keepNulls = $nested->getOptions()->keepNullValuesInCollections();
+    /**
+     * @param Mapper $nested
+     *
+     * @return $this
+     */
+    public function setNested(Mapper $nested);
 
-        foreach ($value as $k => $v) {
+    /**
+     * Traverse multiple nested Collection mappers, find the leave and check its type.
+     *
+     * @param string $class
+     *
+     * @return bool
+     */
+    public function isLeaveOfType($class);
 
-            $awoken = $nested->awake($awaker, $v);
+    /**
+     * Traverse multiple nested Collection mappers, and find the leave.
+     *
+     * @return Mapper
+     */
+    public function getLeaf();
 
-            // check if we should keep nulls
-            if ($awoken !== null || $keepNulls) {
-                $result[$k] = $awoken;
-            }
-        }
+    /**
+     * Traverse multiple nested Collection mappers, and replace the leave.
+     *
+     * @param Mapper $leave
+     */
+    public function setLeaf(Mapper $leave);
 
-        // do we need to instantiate a collection class ?
-        return $this->createAwakeResult($result);
-    }
+    /**
+     * @return null|CollectionMapper
+     */
+    public function getLeafParent();
+
+    /**
+     * @param string $collectionClass
+     *
+     * @return $this
+     */
+    public function setLeafParentsCollectionType($collectionClass);
+
+    /**
+     * Get the nesting level.
+     *
+     * If there is no nested element the level is 0.
+     * If there is a nested element the level is 1.
+     * If there is a nested element with a nested element as well the level 2.
+     *
+     * ... and so forth
+     *
+     * @return int
+     */
+    public function getNestingLevel();
 }

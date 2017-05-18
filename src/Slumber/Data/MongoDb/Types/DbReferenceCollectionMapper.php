@@ -8,8 +8,8 @@ namespace PeekAndPoke\Component\Slumber\Data\MongoDb\Types;
 
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsCollection;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
-use PeekAndPoke\Component\Slumber\Core\Codec\CollectionMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\AbstractPropertyMapper;
+use PeekAndPoke\Component\Slumber\Core\Codec\Property\CollectionMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
 use PeekAndPoke\Component\Slumber\Data\LazyDbReferenceCollection;
 

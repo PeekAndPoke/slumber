@@ -16,7 +16,7 @@ use PeekAndPoke\Component\Slumber\Annotation\PropertyStorageIndexMarker;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsObject;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\Store\AsDbReference;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\Store\AsId;
-use PeekAndPoke\Component\Slumber\Core\Codec\CollectionMapper;
+use PeekAndPoke\Component\Slumber\Core\Codec\Property\CollectionMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\ObjectMapper;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfig;
 use PeekAndPoke\Component\Slumber\Core\LookUp\PropertyMarkedForIndexing;
