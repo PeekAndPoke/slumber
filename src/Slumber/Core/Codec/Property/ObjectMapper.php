@@ -5,10 +5,10 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
 
-use PeekAndPoke\Component\Psi\Interfaces\Functions\ValueHolderInterface;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsObject;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
+use PeekAndPoke\Types\ValueHolder;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -48,7 +48,7 @@ class ObjectMapper extends AbstractPropertyMapper
          * unwrap any wrappers like LazyDbReference
          * @see LazyDbReference
          */
-        if ($value instanceof ValueHolderInterface) {
+        if ($value instanceof ValueHolder) {
             $value = $value->getValue();
         }
 

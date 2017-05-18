@@ -5,12 +5,12 @@
 
 namespace PeekAndPoke\Component\Slumber\Data;
 
-use PeekAndPoke\Component\Psi\Interfaces\Functions\ValueHolderInterface;
+use PeekAndPoke\Types\ValueHolder;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class LazyDbReference implements ValueHolderInterface
+class LazyDbReference implements ValueHolder
 {
     /** @var Repository */
     private $repository;

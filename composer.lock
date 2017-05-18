@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "39e27d71010e375dfc0b21bf3be77b5b",
+    "content-hash": "d48a2f1ab90f3c1910cbb483b1aab4da",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -465,20 +465,20 @@
         },
         {
             "name": "peekandpoke/php-types",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PeekAndPoke/php-types.git",
-                "reference": "98755ecb0ae6742fbefddaac722bb457b055a1ab"
+                "reference": "68e022ffa3231a03e2e2087104dff0cd090b5d84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PeekAndPoke/php-types/zipball/98755ecb0ae6742fbefddaac722bb457b055a1ab",
-                "reference": "98755ecb0ae6742fbefddaac722bb457b055a1ab",
+                "url": "https://api.github.com/repos/PeekAndPoke/php-types/zipball/68e022ffa3231a03e2e2087104dff0cd090b5d84",
+                "reference": "68e022ffa3231a03e2e2087104dff0cd090b5d84",
                 "shasum": ""
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.1"
+                "phpunit/phpunit": "^4.8"
             },
             "type": "library",
             "autoload": {
@@ -497,37 +497,47 @@
                 }
             ],
             "description": "Basic types for PHP like Enums, LocalDate etc...",
-            "time": "2017-05-16T04:31:05+00:00"
+            "time": "2017-05-17T20:03:55+00:00"
         },
         {
             "name": "peekandpoke/psi",
-            "version": "v0.2.13",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PeekAndPoke/psi.git",
-                "reference": "3a40a11dd9ce1b78d5edb122fdd17af57f5a5e7f"
+                "reference": "930a12b6b0a5860dd51e37af72beb981367f653b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PeekAndPoke/psi/zipball/3a40a11dd9ce1b78d5edb122fdd17af57f5a5e7f",
-                "reference": "3a40a11dd9ce1b78d5edb122fdd17af57f5a5e7f",
+                "url": "https://api.github.com/repos/PeekAndPoke/psi/zipball/930a12b6b0a5860dd51e37af72beb981367f653b",
+                "reference": "930a12b6b0a5860dd51e37af72beb981367f653b",
                 "shasum": ""
             },
             "require": {
+                "peekandpoke/php-types": "^1.1",
                 "php": ">=5.5.10"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.6"
+                "phpunit/phpunit": "^4.8"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "": "src/"
+                "psr-4": {
+                    "PeekAndPoke\\Component\\Psi\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "description": "Java Streams Api inspired implementation for PHP. Php Streams (Api) Impl: PSI. PHP >= 5.5.10 required because of this: https://bugs.php.net/bug.php?id=45543",
-            "time": "2017-04-07T08:12:33+00:00"
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "PeekAndPoke",
+                    "email": "karsten.john.gerber@googlemail.com"
+                }
+            ],
+            "description": "Java Streams Api inspired implementation for PHP. Php Streams Impl: PSI",
+            "time": "2017-05-18T06:10:48+00:00"
         },
         {
             "name": "psr/container",
@@ -2447,6 +2457,8 @@
     },
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "^7.1"
+    },
     "platform-dev": []
 }
