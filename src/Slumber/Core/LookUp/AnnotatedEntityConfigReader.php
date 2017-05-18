@@ -57,7 +57,7 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
     public function getEntityConfig(\ReflectionClass $subject)
     {
         return new EntityConfig(
-            $subject->getName(),
+            $subject->name,
             $this->getCreator($subject),
             $this->getClassMarkers($subject),
             $this->getPropertyMarkersRecursive($subject)
@@ -161,21 +161,20 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
             ->each($context)
             ->getFirst();
 
-        if ($marker) {
-
-            $newEntry = new PropertyMarkedForSlumber();
-
-            $newEntry->name       = $context->property->getName();
-            $newEntry->alias      = $marker->hasAlias() ? $marker->getAlias() : $context->property->getName();
-            $newEntry->marker     = $marker;
-            $newEntry->allMarkers = Psi::it($annotations)
-                ->filter(new IsInstanceOf(PropertyMarker::class))
-                ->each($context)
-                ->toArray();
-
-            return $newEntry;
+        if ($marker === null) {
+            return null;
         }
 
-        return null;
+        $newEntry = new PropertyMarkedForSlumber();
+
+        $newEntry->name       = $context->property->getName();
+        $newEntry->alias      = $marker->hasAlias() ? $marker->getAlias() : $context->property->getName();
+        $newEntry->marker     = $marker;
+        $newEntry->allMarkers = Psi::it($annotations)
+            ->filter(new IsInstanceOf(PropertyMarker::class))
+            ->each($context)
+            ->toArray();
+
+        return $newEntry;
     }
 }

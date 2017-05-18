@@ -21,7 +21,7 @@ class CreatorFactoryImpl implements CreatorFactory
      */
     public function create(\ReflectionClass $class) : Creator
     {
-        $clsName = $class->getName();
+        $clsName = $class->name;
 
         return self::$cache[$clsName] ?? self::$cache[$clsName] = $this->createInternal($class);
     }

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Slumber\Data\Addon\PublicReference;
 
-use PeekAndPoke\Component\Slumber\Data\EntityRepository;
 use PeekAndPoke\Component\Slumber\Data\Repository;
 
 /**
@@ -19,7 +18,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
 {
     public static $REDUCED_UPPER_CHARS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
 
-    /** @var EntityRepository */
+    /** @var Repository */
     private $repository;
     /** @var string */
     private $pattern;
@@ -52,7 +51,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
         }
 
         $reflect = new \ReflectionClass($subject);
-        $pattern = $this->cls2pattern[$reflect->getName()] ?? $this->pattern;
+        $pattern = $this->cls2pattern[$reflect->name] ?? $this->pattern;
         $tries   = 1000;
 
         while (--$tries >= 0) {

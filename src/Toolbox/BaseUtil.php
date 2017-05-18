@@ -30,9 +30,8 @@ abstract class BaseUtil
      */
     public static function ensureDirectory(string $dir, int $mode = 0777)
     {
-        if (!is_dir($dir)) {
-            /** @noinspection MkdirRaceConditionInspection */
-            @mkdir($dir, $mode, true);
+        if (!@mkdir($dir, $mode, true) && !@is_dir($dir)) {
+            throw new \RuntimeException('Could not create directory');
         }
     }
 }

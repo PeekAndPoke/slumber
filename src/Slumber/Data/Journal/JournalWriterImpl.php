@@ -153,7 +153,7 @@ class JournalWriterImpl implements JournalWriter
     public function buildExternalReference($subject)
     {
         if (is_scalar($subject)) {
-            return $subject;
+            return (string) $subject;
         }
 
         $repo = $this->storage->getRepositoryByEntity($subject);
@@ -165,24 +165,22 @@ class JournalWriterImpl implements JournalWriter
         $repoName = $repo->getName();
         $reflect  = new \ReflectionClass($subject);
 
-        // TODO: fix me somehow
+        // TODO: fix me somehow: We need to pass in an ID-reader into the constructor (but that thing would have the same problem ...)
 
         if ($reflect->hasProperty('reference')) {
-            $prop = $reflect->getProperty('reference');
-            $prop->setAccessible(true);
 
-            $id = (string) $prop->getValue($subject);
+            $prop = $reflect->getProperty('reference');
 
         } else if ($reflect->hasProperty('id')) {
-            $prop = $reflect->getProperty('id');
-            $prop->setAccessible(true);
 
-            $id = (string) $prop->getValue($subject);
+            $prop = $reflect->getProperty('id');
 
         } else {
-            throw new JournalRuntimeException('Cannot calculate external reference for ' . get_class($subject));
+            throw new JournalRuntimeException('Cannot calculate external reference for ' . $reflect->name);
         }
 
-        return $repoName . '-' . $id;
+        $prop->setAccessible(true);
+
+        return $repoName . '-' . (string) $prop->getValue($subject);
     }
 }

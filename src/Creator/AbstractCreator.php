@@ -23,7 +23,7 @@ abstract class AbstractCreator implements Creator
     public function __construct(\ReflectionClass $class)
     {
         // ReflectionClass cannot be serialized (so we only store the FQCN)
-        $this->fqcn = $class->getName();
+        $this->fqcn = $class->name;
     }
 
     /**

@@ -24,7 +24,7 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * @return \ArrayIterator
+     * @return \Iterator
      */
     public function getIterator()
     {

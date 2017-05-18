@@ -49,7 +49,7 @@ class EntityPoolImpl implements EntityPool
      */
     public function has(\ReflectionClass $cls, $idKey, $idValue)
     {
-        $isset = isset($this->pool[$cls->getName() . '@' . $idKey . '@' . $idValue]);
+        $isset = isset($this->pool[$cls->name . '@' . $idKey . '@' . $idValue]);
 
         if ($isset) {
             ++$this->numHits;
@@ -69,7 +69,7 @@ class EntityPoolImpl implements EntityPool
      */
     public function get(\ReflectionClass $cls, $idKey, $idValue)
     {
-        return $this->pool[$cls->getName() . '@' . $idKey . '@' . $idValue];
+        return $this->pool[$cls->name . '@' . $idKey . '@' . $idValue];
     }
 
     /**
@@ -80,7 +80,7 @@ class EntityPoolImpl implements EntityPool
      */
     public function set(\ReflectionClass $cls, $idKey, $idValue, $value)
     {
-        $this->pool[$cls->getName() . '@' . $idKey . '@' . $idValue] = $value;
+        $this->pool[$cls->name . '@' . $idKey . '@' . $idValue] = $value;
     }
 
     ////  REMOVING ITEMS  //////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ class EntityPoolImpl implements EntityPool
      */
     public function remove(\ReflectionClass $cls, $idKey, $idValue)
     {
-        unset ($this->pool[$cls->getName() . '@' . $idKey . '@' . $idValue]);
+        unset ($this->pool[$cls->name . '@' . $idKey . '@' . $idValue]);
     }
 
     /**
@@ -108,7 +108,7 @@ class EntityPoolImpl implements EntityPool
      */
     public function removeAllOfType(\ReflectionClass $cls)
     {
-        $search = $cls->getName() . '@';
+        $search = $cls->name . '@';
 
         $this->pool = Psi::it($this->pool)
             ->filterKey(function ($k) use ($search) {

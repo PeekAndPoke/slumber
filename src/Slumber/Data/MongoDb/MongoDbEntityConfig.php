@@ -35,17 +35,17 @@ class MongoDbEntityConfig extends EntityConfig
     /** @var PropertyMarkedForSlumber */
     protected $idMarker;
 
-    /** @var PropertyMarkedForPreSaveVisit[] */
+    /** @var array|PropertyMarkedForPreSaveVisit[] */
     protected $preSaveVisits = [];
 
-    /** @var ClassPostSaveListenerMarker[] */
+    /** @var array|ClassPostSaveListenerMarker[] */
     protected $postSaveClassListeners = [];
-    /** @var ClassPostDeleteListenerMarker[] */
+    /** @var array|ClassPostDeleteListenerMarker[] */
     protected $postDeleteClassListeners = [];
 
-    /** @var PropertyMarkedForIndexing[] */
+    /** @var array|PropertyMarkedForIndexing[] */
     protected $indexedProperties = [];
-    /** @var CompoundIndexDefinition[] */
+    /** @var array|CompoundIndexDefinition[] */
     protected $compoundIndexes = [];
 
     /**

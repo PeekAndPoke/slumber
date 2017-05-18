@@ -169,13 +169,13 @@ class EntityRepository implements Repository
      */
     private function checkObjectCompatibility($subject)
     {
-        $entityClassName = $this->driver->getEntityBaseClass()->getName();
+        $entityClassName = $this->driver->getEntityBaseClass()->name;
 
         $isOk = is_object($subject) && $subject instanceof $entityClassName;
 
         if (! $isOk) {
             throw new SlumberRuntimeException(
-                'Repository ' . get_class($this) . ' can only store objects of type ' . $this->driver->getEntityBaseClass()->getName() .
+                'Repository ' . get_class($this) . ' can only store objects of type ' . $entityClassName .
                 ' but a ' . get_class($subject) . ' was given!'
             );
         }

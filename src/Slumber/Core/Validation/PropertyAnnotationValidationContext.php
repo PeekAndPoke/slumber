@@ -46,7 +46,7 @@ class PropertyAnnotationValidationContext implements ValidationContext, BinaryFu
      */
     public function getAnnotationLocation()
     {
-        return $this->cls->getName() . '::$' . $this->property->getName();
+        return $this->cls->name . '::$' . $this->property->getName();
     }
 
     /**

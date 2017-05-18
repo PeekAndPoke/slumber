@@ -42,7 +42,7 @@ class ClassAnnotationValidationContext implements ValidationContext, BinaryFunct
      */
     public function getAnnotationLocation()
     {
-        return $this->cls->getName();
+        return $this->cls->name;
     }
 
     /**

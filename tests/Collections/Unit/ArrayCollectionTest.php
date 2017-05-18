@@ -143,6 +143,7 @@ class ArrayCollectionTest extends TestCase
         $data    = [1, 'a'];
         $subject = new ArrayCollection($data);
 
+        /** @var \ArrayIterator $iterator */
         $iterator = $subject->getIterator();
 
         self::assertInstanceOf(\ArrayIterator::class, $iterator, 'getIterator() must work');

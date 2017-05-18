@@ -33,7 +33,7 @@ class EntityConfig
         $this->className        = $className;
         $this->creator          = $creator;
         $this->markersOnClass   = $markersOnClass;
-        $this->markedProperties = new \ArrayObject($markedProperties);
+        $this->markedProperties = $markedProperties;
     }
 
     /**

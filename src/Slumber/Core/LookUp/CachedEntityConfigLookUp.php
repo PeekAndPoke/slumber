@@ -48,7 +48,7 @@ class CachedEntityConfigLookUp extends DelegatingEntityConfigReader
      */
     public function getEntityConfig(\ReflectionClass $cls)
     {
-        $cacheKey = $this->prefix . $cls->getName();
+        $cacheKey = $this->prefix . $cls->name;
 
         return $this->loadOrCreate(
             $cacheKey,
