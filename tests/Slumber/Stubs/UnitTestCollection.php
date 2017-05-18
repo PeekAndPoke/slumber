@@ -3,7 +3,7 @@
  * Created by gerk on 13.11.16 15:20
  */
 
-namespace PeekAndPoke\Component\Slumber\Tests\Stubs;
+namespace PeekAndPoke\Component\Slumber\Stubs;
 
 use PeekAndPoke\Component\Collections\ArrayCollection;
 

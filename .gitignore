@@ -6,5 +6,10 @@
 dataSources.ids
 datasources.xml
 
+# vagrant
+/.vagrant/
+
+# project
+/build/
 /tmp/
 /vendor/

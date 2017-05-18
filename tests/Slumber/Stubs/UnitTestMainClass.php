@@ -3,7 +3,7 @@
  * File was created 12.10.2015 06:34
  */
 
-namespace PeekAndPoke\Component\Slumber\Tests\Stubs;
+namespace PeekAndPoke\Component\Slumber\Stubs;
 
 use PeekAndPoke\Component\GeoJson\Point;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber;

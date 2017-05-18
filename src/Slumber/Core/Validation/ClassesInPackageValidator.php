@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
-use PeekAndPoke\Component\Slumber\Tests\Mocks\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

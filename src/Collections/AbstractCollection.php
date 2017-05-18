@@ -53,9 +53,13 @@ abstract class AbstractCollection implements Collection
     }
 
     /**
+     * @deprecated Use psi() instead
+     *
+     * @see psi()
+     *
      * @param callable|UnaryFunctionInterface|BinaryFunctionInterface $predicate
      *
-     * @return Collection
+     * @return static
      */
     public function filter($predicate)
     {

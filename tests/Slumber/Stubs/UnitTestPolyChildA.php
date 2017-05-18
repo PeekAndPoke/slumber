@@ -3,7 +3,7 @@
  * File was created 14.05.2016 22:28
  */
 
-namespace PeekAndPoke\Component\Slumber\Tests\Stubs;
+namespace PeekAndPoke\Component\Slumber\Stubs;
 
 use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 

@@ -3,7 +3,7 @@
  * File was created 12.10.2015 06:31
  */
 
-namespace PeekAndPoke\Component\Slumber\Tests\Functional\MongoDb;
+namespace PeekAndPoke\Component\Slumber\Functional\MongoDb;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -20,14 +20,14 @@ use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbPropertyMarkerToMapper;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbUtil;
 use PeekAndPoke\Component\Slumber\Data\StorageImpl;
-use PeekAndPoke\Component\Slumber\Tests\Mocks\UnitTestServiceProvider;
-use PeekAndPoke\Component\Slumber\Tests\Stubs\UnitTestAggregatedClass;
-use PeekAndPoke\Component\Slumber\Tests\Stubs\UnitTestCollection;
-use PeekAndPoke\Component\Slumber\Tests\Stubs\UnitTestMainClass;
-use PeekAndPoke\Component\Slumber\Tests\Stubs\UnitTestOtherClass;
-use PeekAndPoke\Component\Slumber\Tests\Stubs\UnitTestPolyChildA;
-use PeekAndPoke\Component\Slumber\Tests\Stubs\UnitTestPolyChildB;
-use PeekAndPoke\Component\Slumber\Tests\Stubs\UnitTestPolyChildC;
+use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestAggregatedClass;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestCollection;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestOtherClass;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildA;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildB;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildC;
 use PeekAndPoke\Types\LocalDate;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -171,7 +171,7 @@ class SimplePersistenceFeatureTest extends TestCase
         $reloaded = self::$mainRepo->findById($original->getId());
 
         static::assertStringStartsWith(
-            'PeekAndPoke\Component\Slumber\Tests\Stubs\UnitTestMainClass@',
+            'PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass@',
             $reloaded->getReference(),
             'The reference must be populated'
         );

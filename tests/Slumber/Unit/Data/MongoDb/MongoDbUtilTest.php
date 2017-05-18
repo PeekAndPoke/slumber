@@ -1,6 +1,6 @@
 <?php
 
-namespace PeekAndPoke\Component\Slumber\Tests\Unit\Data\MongoDb;
+namespace PeekAndPoke\Component\Slumber\Unit\Data\MongoDb;
 
 use MongoDB\BSON\ObjectID;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbUtil;

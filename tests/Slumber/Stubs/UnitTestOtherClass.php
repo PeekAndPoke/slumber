@@ -3,44 +3,43 @@
  * File was created 12.10.2015 06:39
  */
 
-namespace PeekAndPoke\Component\Slumber\Tests\Stubs;
+namespace PeekAndPoke\Component\Slumber\Stubs;
 
 use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 use PeekAndPoke\Component\Slumber\Data\Addon\PublicReference\SlumberReferenced;
-use PeekAndPoke\Component\Slumber\Data\Addon\SlumberId;
 use PeekAndPoke\Component\Slumber\Data\Addon\SlumberTimestamped;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class UnitTestAggregatedClass
+class UnitTestOtherClass
 {
-    use SlumberId;
     use SlumberReferenced;
     use SlumberTimestamped;
 
     /**
-     * @Slumber\AsString()
      * @var string
+     *
+     * @Slumber\AsString()
      */
-    private $name;
+    private $otherName;
 
     /**
      * @return string
      */
-    public function getName()
+    public function getOtherName()
     {
-        return $this->name;
+        return $this->otherName;
     }
 
     /**
-     * @param string $name
+     * @param string $otherName
      *
      * @return $this
      */
-    public function setName($name)
+    public function setOtherName($otherName)
     {
-        $this->name = $name;
+        $this->otherName = $otherName;
 
         return $this;
     }

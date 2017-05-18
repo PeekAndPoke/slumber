@@ -3,7 +3,7 @@
  * File was created 12.10.2015 06:49
  */
 
-namespace PeekAndPoke\Component\Slumber\Tests\Mocks;
+namespace PeekAndPoke\Component\Slumber\Mocks;
 
 use PeekAndPoke\Component\Slumber\SlumberDependencies;
 use Psr\Container\ContainerInterface;
