@@ -458,9 +458,6 @@ class SimplePersistenceFeatureTest extends TestCase
         static::assertSame($item->getAnInteger(), $reloaded->getAnInteger(), 'Integers must be stored correctly');
         static::assertTrue(is_int($reloaded->getAnInteger()), 'Integers must be stored correctly');
 
-        static::assertSame($item->getASmallInt(), $reloaded->getASmallInt(), 'SmallInts must be stored correctly');
-        static::assertTrue(is_int($reloaded->getASmallInt()), 'SmallInts must be stored correctly');
-
         static::assertSame($item->getAString(), $reloaded->getAString(), 'Strings must be stored correctly');
         static::assertTrue(is_string($reloaded->getAString()), 'Strings must be stored correctly');
 
@@ -1008,8 +1005,6 @@ class SimplePersistenceFeatureTest extends TestCase
             ->setADecimal(123.456)
             // integer
             ->setAnInteger(234)
-            // small int
-            ->setASmallInt(345)
             // string
             ->setAString('Test')
             ->setAStringContainingNull(null)

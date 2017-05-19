@@ -208,13 +208,6 @@ class UnitTestMainClass
     private $anInteger;
 
     /**
-     * @var int
-     *
-     * @Slumber\AsSmallInt()
-     */
-    private $aSmallInt;
-
-    /**
      * @var string
      *
      * @Slumber\AsString()
@@ -667,26 +660,6 @@ class UnitTestMainClass
     public function setAnInteger($anInteger)
     {
         $this->anInteger = $anInteger;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getASmallInt()
-    {
-        return $this->aSmallInt;
-    }
-
-    /**
-     * @param int $aSmallInt
-     *
-     * @return $this
-     */
-    public function setASmallInt($aSmallInt)
-    {
-        $this->aSmallInt = $aSmallInt;
 
         return $this;
     }

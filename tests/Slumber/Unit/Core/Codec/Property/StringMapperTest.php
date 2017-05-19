@@ -76,6 +76,7 @@ class StringMapperTest extends TestCase
             [[], null],
             [[1, 2], null],
             [$obj, $obj->format('c')],
+            [new \stdClass(), null],
             [[1, $obj], null],
         ];
     }
@@ -108,6 +109,7 @@ class StringMapperTest extends TestCase
             [[], null],
             [[1, 2], null],
             [$obj, $obj->format('c')],
+            [new \stdClass(), null],
             [[1, $obj], null],
         ];
     }
