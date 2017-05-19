@@ -31,7 +31,7 @@ class EnumMapper extends AbstractPropertyMapper
     /**
      * @return AsEnum
      */
-    public function getOptions()
+    public function getOptions() : AsEnum
     {
         return $this->options;
     }
@@ -42,7 +42,7 @@ class EnumMapper extends AbstractPropertyMapper
      *
      * @return string
      */
-    public function slumber(Slumberer $slumberer, $value)
+    public function slumber(Slumberer $slumberer, $value) : ?string
     {
         if (!$value instanceof Enumerated) {
             return null;
@@ -55,17 +55,12 @@ class EnumMapper extends AbstractPropertyMapper
      * @param Awaker $awaker
      * @param mixed  $value
      *
-     * @return \DateTime|null
+     * @return Enumerated|null
      */
-    public function awake(Awaker $awaker, $value)
+    public function awake(Awaker $awaker, $value) : ?Enumerated
     {
-        if ($value === null) {
-            return null;
-        }
-
-        $enumClass    = new \ReflectionClass($this->options->getValue());
-        $instantiator = $enumClass->getMethod('from');
-
-        return $instantiator->invoke(null, $value);
+        /** @var Enumerated $enumClass */
+        $enumClass = $this->options->getValue();
+        return $enumClass::from($value);
     }
 }

@@ -30,7 +30,7 @@ class IntegerMapper extends AbstractPropertyMapper
     /**
      * @return AsInteger
      */
-    public function getOptions()
+    public function getOptions() : AsInteger
     {
         return $this->options;
     }
@@ -41,7 +41,7 @@ class IntegerMapper extends AbstractPropertyMapper
      *
      * @return int
      */
-    public function slumber(Slumberer $slumberer, $value)
+    public function slumber(Slumberer $slumberer, $value) : int
     {
         return is_scalar($value) ? (int) $value : 0;
     }
@@ -52,8 +52,8 @@ class IntegerMapper extends AbstractPropertyMapper
      *
      * @return int
      */
-    public function awake(Awaker $awaker, $value)
+    public function awake(Awaker $awaker, $value) : int
     {
-        return (int) $value;
+        return is_scalar($value) ? (int) $value : 0;
     }
 }

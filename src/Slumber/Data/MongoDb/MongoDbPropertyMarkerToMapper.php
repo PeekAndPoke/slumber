@@ -34,12 +34,11 @@ class MongoDbPropertyMarkerToMapper extends PropertyMarker2Mapper
                 // primitive types
                 Slumber\AsBool::class               => Core\Codec\Property\BoolMapper::class,
                 Slumber\AsDecimal::class            => Core\Codec\Property\DecimalMapper::class,
-                Slumber\AsInteger::class            => MongoDb\Types\IntegerMapper::class,
-                Slumber\AsSmallInt::class           => MongoDb\Types\SmallIntMapper::class,
+                Slumber\AsInteger::class            => Core\Codec\Property\IntegerMapper::class,
                 Slumber\AsString::class             => Core\Codec\Property\StringMapper::class,
                 // object and other common types
                 Slumber\AsEnum::class               => Core\Codec\Property\EnumMapper::class,
-                Slumber\AsSimpleDate::class         => Types\SimpleDateMapper::class,
+                Slumber\AsSimpleDate::class         => MongoDb\Types\SimpleDateMapper::class,
                 Slumber\AsLocalDate::class          => MongoDb\Types\LocalDateMapper::class,
                 // geo json
                 Slumber\GeoJson\AsPoint::class      => Core\Codec\Property\GeoJson\PointMapper::class,

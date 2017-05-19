@@ -34,7 +34,6 @@ class ArrayCodecPropertyMarker2Mapper extends PropertyMarker2Mapper
                 Slumber\AsBool::class               => Core\Codec\Property\BoolMapper::class,
                 Slumber\AsDecimal::class            => Core\Codec\Property\DecimalMapper::class,
                 Slumber\AsInteger::class            => Core\Codec\Property\IntegerMapper::class,
-                Slumber\AsSmallInt::class           => Core\Codec\Property\SmallIntMapper::class,
                 Slumber\AsString::class             => Core\Codec\Property\StringMapper::class,
                 // object and other common types
                 Slumber\AsEnum::class               => Core\Codec\Property\EnumMapper::class,

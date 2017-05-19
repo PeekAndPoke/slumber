@@ -21,7 +21,7 @@
         "mongodb/mongodb": "^1.1",
         "symfony/console": "^3.2",
         "symfony/finder": "^3.2",
-        "peekandpoke/php-types": "^1.1.1"
+        "peekandpoke/php-types": "^1.1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.1"

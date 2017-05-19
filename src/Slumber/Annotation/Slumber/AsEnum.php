@@ -23,7 +23,7 @@ class AsEnum extends PropertyMappingMarkerBase
      *
      * @throws SlumberException
      */
-    public function validate($context)
+    public function validate($context) : void
     {
         if (empty($this->value)) {
             throw $this->createValidationException(
@@ -50,7 +50,7 @@ class AsEnum extends PropertyMappingMarkerBase
     /**
      * @return bool
      */
-    public function keepNullValuesInCollections()
+    public function keepNullValuesInCollections() : bool
     {
         return false;
     }
