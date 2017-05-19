@@ -5,6 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
 
+use PeekAndPoke\Component\Collections\Collection;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsMap;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
@@ -20,15 +21,15 @@ class MapMapper extends AbstractCollectionMapper
      * @param Slumberer          $slumberer
      * @param array|\Traversable $value
      *
-     * @return array|\stdClass
+     * @return null|\stdClass We return a std class as this will ensure json-encode will create something like {"0":1}
      */
-    public function slumber(Slumberer $slumberer, $value)
+    public function slumber(Slumberer $slumberer, $value) : ?\stdClass
     {
         if (! is_array($value) && ! $value instanceof \Traversable) {
             return null;
         }
 
-        $result    = [];
+        $result    = new \stdClass();
         $nested    = $this->nested;
         $keepNulls = $nested->getOptions()->keepNullValuesInCollections();
 
@@ -38,25 +39,23 @@ class MapMapper extends AbstractCollectionMapper
 
             // check if we should keep nulls
             if ($slumbering !== null || $keepNulls) {
-                $result[$k] = $slumbering;
+                $result->$k = $slumbering;
             }
         }
 
-        // when empty we return an instance of stdClass so that the json_serialize will really give us an empty object
-        // of the form: {}
-        return empty($result) ? new \stdClass() : $result;
+        return $result;
     }
 
     /**
      * @param Awaker             $awaker
      * @param array|\Traversable $value
      *
-     * @return array
+     * @return array|Collection
      */
     public function awake(Awaker $awaker, $value)
     {
         if (! is_array($value) && ! $value instanceof \Traversable) {
-            return [];
+            return $this->createAwakeResult([]);
         }
 
         $result    = [];

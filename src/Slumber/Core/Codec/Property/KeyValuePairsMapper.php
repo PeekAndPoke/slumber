@@ -5,6 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
 
+use PeekAndPoke\Component\Collections\Collection;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsKeyValuePairs;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
@@ -22,7 +23,7 @@ class KeyValuePairsMapper extends AbstractCollectionMapper
      *
      * @return array
      */
-    public function slumber(Slumberer $slumberer, $value)
+    public function slumber(Slumberer $slumberer, $value) : ?array
     {
         if (! is_array($value) && ! $value instanceof \Traversable) {
             return null;
@@ -52,12 +53,12 @@ class KeyValuePairsMapper extends AbstractCollectionMapper
      * @param Awaker             $awaker
      * @param array|\Traversable $value
      *
-     * @return array
+     * @return array|Collection
      */
     public function awake(Awaker $awaker, $value)
     {
         if (! is_array($value) && ! $value instanceof \Traversable) {
-            return [];
+            return $this->createAwakeResult([]);
         }
 
         $result    = [];
