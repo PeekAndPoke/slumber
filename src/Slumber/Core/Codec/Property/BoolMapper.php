@@ -30,7 +30,7 @@ class BoolMapper extends AbstractPropertyMapper
     /**
      * @return AsBool
      */
-    public function getOptions()
+    public function getOptions() : AsBool
     {
         return $this->options;
     }
@@ -41,7 +41,7 @@ class BoolMapper extends AbstractPropertyMapper
      *
      * @return bool
      */
-    public function slumber(Slumberer $slumberer, $value)
+    public function slumber(Slumberer $slumberer, $value) : bool
     {
         return (bool) $value;
     }
@@ -52,7 +52,7 @@ class BoolMapper extends AbstractPropertyMapper
      *
      * @return bool
      */
-    public function awake(Awaker $awaker, $value)
+    public function awake(Awaker $awaker, $value) : bool
     {
         return (bool) $value;
     }

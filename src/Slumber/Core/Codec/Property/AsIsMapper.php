@@ -30,7 +30,7 @@ class AsIsMapper extends AbstractPropertyMapper
     /**
      * @return AsIs
      */
-    public function getOptions()
+    public function getOptions() : AsIs
     {
         return $this->options;
     }

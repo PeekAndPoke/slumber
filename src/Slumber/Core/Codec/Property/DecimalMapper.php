@@ -30,7 +30,7 @@ class DecimalMapper extends AbstractPropertyMapper
     /**
      * @return AsDecimal
      */
-    public function getOptions()
+    public function getOptions() : AsDecimal
     {
         return $this->options;
     }
@@ -41,9 +41,9 @@ class DecimalMapper extends AbstractPropertyMapper
      *
      * @return float
      */
-    public function slumber(Slumberer $slumberer, $value)
+    public function slumber(Slumberer $slumberer, $value) : float
     {
-        return (float) $value;
+        return is_scalar($value) ? (float) $value : 0.0;
     }
 
     /**
@@ -52,8 +52,8 @@ class DecimalMapper extends AbstractPropertyMapper
      *
      * @return float
      */
-    public function awake(Awaker $awaker, $value)
+    public function awake(Awaker $awaker, $value) : float
     {
-        return (float) $value;
+        return is_scalar($value) ? (float) $value : 0.0;
     }
 }
