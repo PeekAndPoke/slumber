@@ -23,7 +23,7 @@ class EntityRepository implements Repository
     /** @var StorageDriver */
     private $driver;
 
-    public function __construct(string $name, StorageDriver $driver)
+    public function __construct($name, StorageDriver $driver)
     {
         $this->name   = $name;
         $this->driver = $driver;

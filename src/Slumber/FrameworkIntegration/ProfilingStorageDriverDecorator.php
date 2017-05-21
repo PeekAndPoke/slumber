@@ -38,7 +38,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
     /**
      * @return \ReflectionClass
      */
-    public function getEntityBaseClass() : \ReflectionClass
+    public function getEntityBaseClass()
     {
         return $this->driver->getEntityBaseClass();
     }
@@ -135,7 +135,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
      *
      * @return Cursor
      */
-    public function find(array $query = null) : Cursor
+    public function find(array $query = null)
     {
         return $this->profile(
             'find',
@@ -173,7 +173,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
      *
      * @return mixed
      */
-    private function profile(string $name, array $data, callable $inner)
+    private function profile($name, array $data, callable $inner)
     {
         $sample = $this->profiler->start($name, $data);
 

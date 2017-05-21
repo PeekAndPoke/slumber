@@ -28,7 +28,7 @@ abstract class BaseUtil
      * @param string $dir
      * @param int    $mode
      */
-    public static function ensureDirectory(string $dir, int $mode = 0777)
+    public static function ensureDirectory($dir, $mode = 0777)
     {
         if (!@mkdir($dir, $mode, true) && !@is_dir($dir)) {
             throw new \RuntimeException('Could not create directory');

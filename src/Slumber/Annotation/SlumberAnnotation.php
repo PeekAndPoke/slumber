@@ -94,7 +94,7 @@ abstract class SlumberAnnotation implements SlumberMarker
      */
     protected function buildValidationMessage(ValidationContext $context, $msg)
     {
-        return 'For ' . $context->getAnnotationLocation() . ' the validation of @' . get_called_class() .
+        return 'For ' . $context->getAnnotationLocation() . ' the validation of @' . static::class .
                ' failed, due to: ' . $msg . ' ';
     }
 

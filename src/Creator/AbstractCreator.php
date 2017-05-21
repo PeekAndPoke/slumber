@@ -29,7 +29,7 @@ abstract class AbstractCreator implements Creator
     /**
      * @return string
      */
-    public function getFqcn() : string
+    public function getFqcn()
     {
         return $this->fqcn;
     }

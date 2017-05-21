@@ -17,7 +17,7 @@ interface StorageDriver
     /**
      * @return \ReflectionClass
      */
-    public function getEntityBaseClass() : \ReflectionClass;
+    public function getEntityBaseClass();
 
     /**
      * @return mixed // TODO: better return type
@@ -61,7 +61,7 @@ interface StorageDriver
      *
      * @return Cursor
      */
-    public function find(array $query = null) : Cursor;
+    public function find(array $query = null);
 
     /**
      * @param array|null $query

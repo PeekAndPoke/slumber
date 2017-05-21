@@ -31,7 +31,7 @@ class ListMapperTest extends TestCase
     /** @var Awaker */
     protected $awaker;
 
-    public function setUp() : void
+    public function setUp()
     {
         $lookUp = new AnnotatedEntityConfigReader(
             new UnitTestServiceProvider(),
@@ -43,7 +43,7 @@ class ListMapperTest extends TestCase
         $this->awaker    = new GenericAwaker($lookUp);
     }
 
-    public function testConstruction() : void
+    public function testConstruction()
     {
         $options = new AsList(['value' => new AsString([])]);
         $subject = new ListMapper($options, new StringMapper(new AsString([])));
@@ -57,7 +57,7 @@ class ListMapperTest extends TestCase
      *
      * @dataProvider provideTestSlumber
      */
-    public function testSlumber($input, $expected) : void
+    public function testSlumber($input, $expected)
     {
         $options = new AsList(['value' => new AsString([])]);
         $subject = new ListMapper($options, new StringMapper(new AsString([])));
@@ -65,7 +65,7 @@ class ListMapperTest extends TestCase
         self::assertSame($expected, $subject->slumber($this->slumberer, $input), 'slumber() must work');
     }
 
-    public function provideTestSlumber() : array
+    public function provideTestSlumber()
     {
         $obj = new LocalDate('2017-01-01T12:00:00', 'Etc/UTC');
 
@@ -93,7 +93,7 @@ class ListMapperTest extends TestCase
      *
      * @dataProvider provideTestAwake
      */
-    public function testAwake($input, $expected) : void
+    public function testAwake($input, $expected)
     {
         $options = new AsList(['value' => new AsString([])]);
         $subject = new ListMapper($options, new StringMapper(new AsString([])));
@@ -105,7 +105,7 @@ class ListMapperTest extends TestCase
 
     // TODO: test with keepNullsInCollection = false
 
-    public function provideTestAwake() : array
+    public function provideTestAwake()
     {
         return [
             [null, []],

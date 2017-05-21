@@ -43,7 +43,7 @@ class MongoDbStorageDriverFactory implements StorageDriverFactory
     /**
      * @return Client[]
      */
-    public function getDns2client() : array
+    public function getDns2client()
     {
         return $this->dns2client;
     }
@@ -55,7 +55,7 @@ class MongoDbStorageDriverFactory implements StorageDriverFactory
      *
      * @return StorageDriver|MongoDbStorageDriver
      */
-    public function create($config, string $tableName, \ReflectionClass $baseClass) : StorageDriver
+    public function create($config, $tableName, \ReflectionClass $baseClass)
     {
         $client = $this->getOrCreateClient($config['dns']);
         $table  = $client->selectCollection($config['database'], $tableName);
@@ -68,7 +68,7 @@ class MongoDbStorageDriverFactory implements StorageDriverFactory
      *
      * @return Client
      */
-    private function getOrCreateClient(string $dns) : Client
+    private function getOrCreateClient($dns)
     {
         if (isset($this->dns2client[$dns])) {
             return $this->dns2client[$dns];

@@ -56,7 +56,7 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return $this->data[$offset] ?? null;
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
 
     /**

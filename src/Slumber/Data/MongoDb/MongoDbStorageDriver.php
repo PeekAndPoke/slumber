@@ -45,7 +45,7 @@ class MongoDbStorageDriver implements StorageDriver
     /**
      * @return \ReflectionClass
      */
-    public function getEntityBaseClass() : \ReflectionClass
+    public function getEntityBaseClass()
     {
         return $this->entityBaseClass;
     }
@@ -175,9 +175,9 @@ class MongoDbStorageDriver implements StorageDriver
      *
      * @return Cursor
      */
-    public function find(array $query = null) : Cursor
+    public function find(array $query = null)
     {
-        $query = $query ?? [];
+        $query = $query ?: [];
 
         $cursorProvider = function ($options) use ($query) {
 
@@ -205,7 +205,7 @@ class MongoDbStorageDriver implements StorageDriver
      */
     public function findOne(array $query = null)
     {
-        // TODO: find a better way for this
+        // TODO: find a more encapsulated way for looking it up in the pool
         // do we have it in the pool ?
         if (count($query) === 1
             && isset($query['_id'])
@@ -215,7 +215,7 @@ class MongoDbStorageDriver implements StorageDriver
         }
 
         $result = $this->collection->findOne(
-            $query ?? [],
+            $query ?: [],
             [
                 'typeMap' => ['root' => 'array', 'document' => 'array', 'array' => 'array'] // we want raw php arrays as return types
             ]

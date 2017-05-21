@@ -34,29 +34,41 @@ class RunningSample
      * @param array           $data
      * @param float|null      $startedAt
      */
-    public function __construct(StorageProfiler $profiler, string $name, array $data, float $startedAt = null)
+    public function __construct(StorageProfiler $profiler, $name, array $data, $startedAt = null)
     {
         $this->profiler  = $profiler;
         $this->name      = $name;
         $this->data      = $data;
-        $this->startedAt = $startedAt ?? microtime(true);
+        $this->startedAt = $startedAt ?: microtime(true);
     }
 
-    public function getName() : string
+    /**
+     * @return string
+     */
+    public function getName()
     {
         return $this->name;
     }
 
-    public function getData() : array
+    /**
+     * @return array
+     */
+    public function getData()
     {
         return $this->data;
     }
 
-    public function getStartedAt() : float
+    /**
+     * @return float
+     */
+    public function getStartedAt()
     {
         return $this->startedAt;
     }
 
+    /**
+     * Stop recording
+     */
     public function stop()
     {
         $this->profiler->stop($this);

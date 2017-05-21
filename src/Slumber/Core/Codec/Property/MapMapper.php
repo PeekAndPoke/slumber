@@ -23,7 +23,7 @@ class MapMapper extends AbstractCollectionMapper
      *
      * @return null|\stdClass We return a std class as this will ensure json-encode will create something like {"0":1}
      */
-    public function slumber(Slumberer $slumberer, $value) : ?\stdClass
+    public function slumber(Slumberer $slumberer, $value)
     {
         if (! is_array($value) && ! $value instanceof \Traversable) {
             return null;

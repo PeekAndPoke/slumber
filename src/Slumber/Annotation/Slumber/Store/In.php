@@ -19,7 +19,10 @@ use Doctrine\Common\Annotations\Annotation;
  */
 class In extends Annotation
 {
-    public function getRepositoryName() : string
+    /**
+     * @return string
+     */
+    public function getRepositoryName()
     {
         return (string) $this->value;
     }

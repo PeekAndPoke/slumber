@@ -51,7 +51,7 @@ class MongoDbCodecSet
     /**
      * @return MongoDbEntityConfigReader
      */
-    public function getLookUp() : MongoDbEntityConfigReader
+    public function getLookUp()
     {
         return $this->lookUp;
     }
@@ -96,7 +96,7 @@ class MongoDbCodecSet
     /**
      * @return MongoDbIndexer
      */
-    public function getIndexer() : MongoDbIndexer
+    public function getIndexer()
     {
         return $this->indexer;
     }

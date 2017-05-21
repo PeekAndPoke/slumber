@@ -32,7 +32,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
      * @param string     $pattern
      * @param array      $cls2pattern
      */
-    public function __construct(Repository $repository, string $pattern = '$$-__-########', array $cls2pattern = [])
+    public function __construct(Repository $repository, $pattern = '$$-__-########', array $cls2pattern = [])
     {
         $this->repository  = $repository;
         $this->pattern     = $pattern;
@@ -44,14 +44,14 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
      *
      * @return null|string
      */
-    public function create($subject) : ?string
+    public function create($subject)
     {
         if (! is_object($subject)) {
             return null;
         }
 
         $reflect = new \ReflectionClass($subject);
-        $pattern = $this->cls2pattern[$reflect->name] ?? $this->pattern;
+        $pattern = isset($this->cls2pattern[$reflect->name]) ? $this->cls2pattern[$reflect->name] : $this->pattern;
         $tries   = 1000;
 
         while (--$tries >= 0) {
@@ -78,7 +78,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
      *
      * @return string
      */
-    private function generate(string $pattern, string $className) : string
+    private function generate($pattern, $className)
     {
         $ret           = '';
         $classNameIdx  = 0;

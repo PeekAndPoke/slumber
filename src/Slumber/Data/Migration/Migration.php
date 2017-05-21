@@ -30,7 +30,7 @@ interface Migration
      *
      * @return LocalDate
      */
-    public function getCreationDate(): LocalDate;
+    public function getCreationDate();
 
     /**
      * @return ExecutedMigration

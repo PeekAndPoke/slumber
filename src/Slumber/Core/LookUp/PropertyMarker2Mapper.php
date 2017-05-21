@@ -25,7 +25,7 @@ class PropertyMarker2Mapper
      */
     public function __construct($default, $mappings)
     {
-        $this->default  = $default;
+        $this->default  = $default;    // TODO: get rid of the default... either we can or cannot map
         $this->mappings = $mappings;
     }
 
@@ -37,7 +37,7 @@ class PropertyMarker2Mapper
     public function createMapper(PropertyMappingMarker $marker)
     {
         $markerClass = get_class($marker);
-        $mapperClass = $this->mappings[$markerClass] ?? $this->default;
+        $mapperClass = isset($this->mappings[$markerClass]) ? $this->mappings[$markerClass] : $this->default;
 
         // descend the children
         $child = $marker->getValue() instanceof PropertyMappingMarker

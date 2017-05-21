@@ -19,7 +19,7 @@ class UnitTestPublicReferenceGenerator implements PublicReferenceGenerator
      *
      * @return string
      */
-    public function create($subject) : string
+    public function create($subject)
     {
         $reflect = new \ReflectionClass($subject);
 

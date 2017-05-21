@@ -18,8 +18,6 @@ class AsIsMapper extends AbstractPropertyMapper
     private $options;
 
     /**
-     * C'tor.
-     *
      * @param AsIs $options
      */
     public function __construct(AsIs $options)
@@ -30,7 +28,7 @@ class AsIsMapper extends AbstractPropertyMapper
     /**
      * @return AsIs
      */
-    public function getOptions() : AsIs
+    public function getOptions()
     {
         return $this->options;
     }

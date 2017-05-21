@@ -34,38 +34,38 @@ interface Storage
     /**
      * @return EntityPool
      */
-    public function getEntityPool() : EntityPool;
+    public function getEntityPool();
 
     /**
      * @return Repository[]
      */
-    public function getRepositories() : array;
+    public function getRepositories();
 
     /**
      * @param string $name
      *
      * @return Repository|null
      */
-    public function getRepositoryByName(string $name) : ?Repository;
+    public function getRepositoryByName($name);
 
     /**
      * @param string $cls
      *
      * @return bool
      */
-    public function hasRepositoryByClassName(string $cls) : bool;
+    public function hasRepositoryByClassName($cls);
 
     /**
      * @param string $cls
      *
      * @return Repository|null
      */
-    public function getRepositoryByClassName(string $cls) : ?Repository;
+    public function getRepositoryByClassName($cls);
 
     /**
      * @param mixed $entity
      *
      * @return Repository|null
      */
-    public function getRepositoryByEntity($entity) : ?Repository;
+    public function getRepositoryByEntity($entity);
 }

@@ -24,7 +24,7 @@ class Repository extends Annotation
      */
     public $storage = 'default';
 
-    public function getName() : string
+    public function getName()
     {
         return (string) $this->value;
     }
@@ -32,7 +32,7 @@ class Repository extends Annotation
     /**
      * @return string
      */
-    public function getStorage() : string
+    public function getStorage()
     {
         return $this->storage;
     }

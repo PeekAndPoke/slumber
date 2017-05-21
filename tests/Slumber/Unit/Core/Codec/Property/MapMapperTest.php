@@ -31,7 +31,7 @@ class MapMapperTest extends TestCase
     /** @var Awaker */
     protected $awaker;
 
-    public function setUp() : void
+    public function setUp()
     {
         $lookUp = new AnnotatedEntityConfigReader(
             new UnitTestServiceProvider(),
@@ -43,7 +43,7 @@ class MapMapperTest extends TestCase
         $this->awaker    = new GenericAwaker($lookUp);
     }
 
-    public function testConstruction() : void
+    public function testConstruction()
     {
         $options = new AsMap(['value' => new AsString([])]);
         $subject = new MapMapper($options, new StringMapper(new AsString([])));
@@ -57,7 +57,7 @@ class MapMapperTest extends TestCase
      *
      * @dataProvider provideTestSlumber
      */
-    public function testSlumber($input, $expected) : void
+    public function testSlumber($input, $expected)
     {
         $options = new AsMap(['value' => new AsString([])]);
         $subject = new MapMapper($options, new StringMapper(new AsString([])));
@@ -74,7 +74,7 @@ class MapMapperTest extends TestCase
         }
     }
 
-    public function provideTestSlumber() : array
+    public function provideTestSlumber()
     {
         $obj = new LocalDate('2017-01-01T12:00:00', 'Etc/UTC');
 
@@ -102,7 +102,7 @@ class MapMapperTest extends TestCase
      *
      * @dataProvider provideTestAwake
      */
-    public function testAwake($input, $expected) : void
+    public function testAwake($input, $expected)
     {
         $options = new AsMap(['value' => new AsString([])]);
         $subject = new MapMapper($options, new StringMapper(new AsString([])));
@@ -114,7 +114,7 @@ class MapMapperTest extends TestCase
 
     // TODO: test with keepNullsInCollection = false
 
-    public function provideTestAwake() : array
+    public function provideTestAwake()
     {
         return [
             [null, []],

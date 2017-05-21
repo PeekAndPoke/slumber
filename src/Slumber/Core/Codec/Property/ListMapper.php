@@ -21,9 +21,9 @@ class ListMapper extends AbstractCollectionMapper
      * @param Slumberer          $slumberer
      * @param array|\Traversable $value
      *
-     * @return array
+     * @return array|null
      */
-    public function slumber(Slumberer $slumberer, $value) : ?array
+    public function slumber(Slumberer $slumberer, $value)
     {
         if (! is_array($value) && ! $value instanceof \Traversable) {
             return null;

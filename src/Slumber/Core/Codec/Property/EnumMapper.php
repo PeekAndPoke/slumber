@@ -31,7 +31,7 @@ class EnumMapper extends AbstractPropertyMapper
     /**
      * @return AsEnum
      */
-    public function getOptions() : AsEnum
+    public function getOptions()
     {
         return $this->options;
     }
@@ -40,9 +40,9 @@ class EnumMapper extends AbstractPropertyMapper
      * @param Slumberer  $slumberer
      * @param Enumerated $value
      *
-     * @return string
+     * @return string|null
      */
-    public function slumber(Slumberer $slumberer, $value) : ?string
+    public function slumber(Slumberer $slumberer, $value)
     {
         if (!$value instanceof Enumerated) {
             return null;
@@ -57,7 +57,7 @@ class EnumMapper extends AbstractPropertyMapper
      *
      * @return Enumerated|null
      */
-    public function awake(Awaker $awaker, $value) : ?Enumerated
+    public function awake(Awaker $awaker, $value)
     {
         /** @var Enumerated $enumClass */
         $enumClass = $this->options->getValue();

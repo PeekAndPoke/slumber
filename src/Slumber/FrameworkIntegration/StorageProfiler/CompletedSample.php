@@ -23,30 +23,48 @@ class CompletedSample
     /** @var array */
     private $data;
 
-    public function __construct(RunningSample $sample, float $finishedAt = null)
+    /**
+     * CompletedSample constructor.
+     *
+     * @param RunningSample $sample
+     * @param float|null    $finishedAt
+     */
+    public function __construct(RunningSample $sample, $finishedAt = null)
     {
         $this->name       = $sample->getName();
         $this->startedAt  = $sample->getStartedAt();
-        $this->finishedAt = $finishedAt ?? microtime(true);
+        $this->finishedAt = $finishedAt ?: microtime(true);
         $this->data       = $sample->getData();
     }
 
-    public function getName() : string
+    /**
+     * @return string
+     */
+    public function getName()
     {
         return $this->name;
     }
 
-    public function getStartedAt() : float
+    /**
+     * @return float
+     */
+    public function getStartedAt()
     {
         return $this->startedAt;
     }
 
-    public function getFinishedAt() : float
+    /**
+     * @return float
+     */
+    public function getFinishedAt()
     {
         return $this->finishedAt;
     }
 
-    public function getData() : array
+    /**
+     * @return array
+     */
+    public function getData()
     {
         return $this->data;
     }

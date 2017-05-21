@@ -22,21 +22,21 @@ interface Cursor extends \IteratorAggregate, \Countable
      *
      * @return Cursor
      */
-    public function sort($sortBy) : Cursor;
+    public function sort($sortBy);
 
     /**
      * @param int $skip
      *
      * @return Cursor
      */
-    public function skip($skip) : Cursor;
+    public function skip($skip);
 
     /**
      * @param int $limit
      *
      * @return Cursor
      */
-    public function limit($limit) : Cursor;
+    public function limit($limit);
 
     /**
      * @return mixed

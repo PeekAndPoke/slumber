@@ -28,7 +28,7 @@ class StringMapperTest extends TestCase
     /** @var Awaker */
     protected $awaker;
 
-    public function setUp() : void
+    public function setUp()
     {
         $lookUp = new AnnotatedEntityConfigReader(
             new UnitTestServiceProvider(),
@@ -40,7 +40,7 @@ class StringMapperTest extends TestCase
         $this->awaker    = new GenericAwaker($lookUp);
     }
 
-    public function testConstruction() : void
+    public function testConstruction()
     {
         $options = new AsString([]);
         $subject = new StringMapper($options);
@@ -54,7 +54,7 @@ class StringMapperTest extends TestCase
      *
      * @dataProvider provideTestSlumber
      */
-    public function testSlumber($input, $expected) : void
+    public function testSlumber($input, $expected)
     {
         $options = new AsString([]);
         $subject = new StringMapper($options);
@@ -62,7 +62,7 @@ class StringMapperTest extends TestCase
         self::assertSame($expected, $subject->slumber($this->slumberer, $input), 'slumber() must work');
     }
 
-    public function provideTestSlumber() : array
+    public function provideTestSlumber()
     {
         $obj = new LocalDate('2017-01-01T12:00:00', 'Etc/UTC');
 
@@ -87,7 +87,7 @@ class StringMapperTest extends TestCase
      *
      * @dataProvider provideTestAwake
      */
-    public function testAwake($input, $expected) : void
+    public function testAwake($input, $expected)
     {
         $options = new AsString([]);
         $subject = new StringMapper($options);
@@ -95,7 +95,7 @@ class StringMapperTest extends TestCase
         self::assertSame($expected, $subject->awake($this->awaker, $input), 'slumber() must work');
     }
 
-    public function provideTestAwake() : array
+    public function provideTestAwake()
     {
         $obj = new LocalDate('2017-01-01T12:00:00', 'Etc/UTC');
 

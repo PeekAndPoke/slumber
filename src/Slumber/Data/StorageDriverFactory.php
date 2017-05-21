@@ -24,5 +24,5 @@ interface StorageDriverFactory
      *
      * @return StorageDriver
      */
-    public function create($config, string $tableName, \ReflectionClass $baseClass) : StorageDriver;
+    public function create($config, $tableName, \ReflectionClass $baseClass);
 }

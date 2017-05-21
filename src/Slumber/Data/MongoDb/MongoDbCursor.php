@@ -68,7 +68,7 @@ class MongoDbCursor implements Cursor
      *
      * @return $this|Cursor
      */
-    public function sort($sortBy) : Cursor
+    public function sort($sortBy)
     {
         $this->sort = $sortBy;
 
@@ -80,7 +80,7 @@ class MongoDbCursor implements Cursor
      *
      * @return $this|Cursor
      */
-    public function skip($skip) : Cursor
+    public function skip($skip)
     {
         $this->skip = $skip;
 
@@ -92,7 +92,7 @@ class MongoDbCursor implements Cursor
      *
      * @return $this|Cursor
      */
-    public function limit($limit) : Cursor
+    public function limit($limit)
     {
         $this->limit = $limit;
 

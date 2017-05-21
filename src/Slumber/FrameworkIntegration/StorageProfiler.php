@@ -21,7 +21,7 @@ interface StorageProfiler
      *
      * @return StorageProfiler\RunningSample
      */
-    public function start(string $name, array $data) : StorageProfiler\RunningSample;
+    public function start($name, array $data);
 
     /**
      * @param StorageProfiler\RunningSample $sample

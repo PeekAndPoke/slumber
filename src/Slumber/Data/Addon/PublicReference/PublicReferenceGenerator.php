@@ -15,5 +15,5 @@ interface PublicReferenceGenerator
      *
      * @return null|string
      */
-    public function create($subject) : ?string;
+    public function create($subject);
 }

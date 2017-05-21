@@ -35,7 +35,7 @@ class ArrayUtil
      *
      * @return mixed
      */
-    public static function getNested($src, string $chainKey, $default = null, string $separator = '.')
+    public static function getNested($src, $chainKey, $default = null, $separator = '.')
     {
         if (empty($src) || empty($chainKey) || empty($separator)) {
             return $default;

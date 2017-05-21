@@ -27,7 +27,7 @@ class IntegerMapperTest extends TestCase
     /** @var Awaker */
     protected $awaker;
 
-    public function setUp() : void
+    public function setUp()
     {
         $lookUp = new AnnotatedEntityConfigReader(
             new UnitTestServiceProvider(),
@@ -39,7 +39,7 @@ class IntegerMapperTest extends TestCase
         $this->awaker    = new GenericAwaker($lookUp);
     }
 
-    public function testConstruction() : void
+    public function testConstruction()
     {
         $options = new AsInteger([]);
         $subject = new IntegerMapper($options);
@@ -53,7 +53,7 @@ class IntegerMapperTest extends TestCase
      *
      * @dataProvider provideTestSlumber
      */
-    public function testSlumber($input, $expected) : void
+    public function testSlumber($input, $expected)
     {
         $options = new AsInteger([]);
         $subject = new IntegerMapper($options);
@@ -61,7 +61,7 @@ class IntegerMapperTest extends TestCase
         self::assertSame($expected, $subject->slumber($this->slumberer, $input), 'slumber() must work');
     }
 
-    public function provideTestSlumber() : array
+    public function provideTestSlumber()
     {
         $obj = new \DateTime();
 
@@ -88,7 +88,7 @@ class IntegerMapperTest extends TestCase
      *
      * @dataProvider provideTestAwake
      */
-    public function testAwake($input, $expected) : void
+    public function testAwake($input, $expected)
     {
         $options = new AsInteger([]);
         $subject = new IntegerMapper($options);
@@ -96,7 +96,7 @@ class IntegerMapperTest extends TestCase
         self::assertSame($expected, $subject->awake($this->awaker, $input), 'slumber() must work');
     }
 
-    public function provideTestAwake() : array
+    public function provideTestAwake()
     {
         $obj = new \DateTime();
 

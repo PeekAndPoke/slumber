@@ -39,7 +39,7 @@ class StorageImpl implements Storage
      *
      * @return StorageImpl
      */
-    public function addRepository(Repository $repository) : StorageImpl
+    public function addRepository(Repository $repository)
     {
         $this->repositories[] = $repository;
 
@@ -89,7 +89,7 @@ class StorageImpl implements Storage
     /**
      * @return EntityPool
      */
-    public function getEntityPool() : EntityPool
+    public function getEntityPool()
     {
         return $this->entityPool;
     }
@@ -97,7 +97,7 @@ class StorageImpl implements Storage
     /**
      * @return Repository[]
      */
-    public function getRepositories() : array
+    public function getRepositories()
     {
         return $this->repositories;
     }
@@ -107,7 +107,7 @@ class StorageImpl implements Storage
      *
      * @return Repository|null
      */
-    public function getRepositoryByName(string $name) : ?Repository
+    public function getRepositoryByName($name)
     {
         foreach ($this->repositories as $repository) {
             if ($repository->getName() === $name) {
@@ -123,7 +123,7 @@ class StorageImpl implements Storage
      *
      * @return bool
      */
-    public function hasRepositoryByClassName(string $cls) : bool
+    public function hasRepositoryByClassName($cls)
     {
         return $this->getRepositoryByClassName($cls) !== null;
     }
@@ -133,7 +133,7 @@ class StorageImpl implements Storage
      *
      * @return Repository|null
      */
-    public function getRepositoryByClassName(string $cls) : ?Repository
+    public function getRepositoryByClassName($cls)
     {
         foreach ($this->repositories as $repository) {
             if ($repository->getEntityClass()->getName() === $cls ||
@@ -151,7 +151,7 @@ class StorageImpl implements Storage
      *
      * @return Repository|null
      */
-    public function getRepositoryByEntity($entity) : ?Repository
+    public function getRepositoryByEntity($entity)
     {
         if (! is_object($entity)) {
             return null;

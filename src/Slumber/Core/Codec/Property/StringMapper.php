@@ -30,7 +30,7 @@ class StringMapper extends AbstractPropertyMapper
     /**
      * @return AsString
      */
-    public function getOptions() : AsString
+    public function getOptions()
     {
         return $this->options;
     }
@@ -41,7 +41,7 @@ class StringMapper extends AbstractPropertyMapper
      *
      * @return string
      */
-    public function slumber(Slumberer $slumberer, $value) : ?string
+    public function slumber(Slumberer $slumberer, $value)
     {
         return self::map($value);
     }
@@ -52,12 +52,12 @@ class StringMapper extends AbstractPropertyMapper
      *
      * @return string
      */
-    public function awake(Awaker $awaker, $value) : ?string
+    public function awake(Awaker $awaker, $value)
     {
         return self::map($value);
     }
 
-    private static function map($value) : ?string
+    private static function map($value)
     {
         // also check for objects, since we could have things like \MongoId here that can be converted via __toString
         return is_scalar($value) || (is_object($value) && method_exists($value, '__toString')) ? (string) $value : null;

@@ -15,5 +15,5 @@ interface CreatorFactory
      *
      * @return Creator
      */
-    public function create(\ReflectionClass $class) : Creator;
+    public function create(\ReflectionClass $class);
 }

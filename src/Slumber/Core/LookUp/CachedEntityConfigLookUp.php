@@ -32,7 +32,7 @@ class CachedEntityConfigLookUp extends DelegatingEntityConfigReader
      * @param string             $prefix
      * @param bool               $debug
      */
-    public function __construct(EntityConfigReader $delegate, Cache $cache, string $prefix = '[Slumber]@', bool $debug = false)
+    public function __construct(EntityConfigReader $delegate, Cache $cache, $prefix = '[Slumber]@', $debug = false)
     {
         parent::__construct($delegate);
 

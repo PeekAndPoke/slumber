@@ -19,11 +19,13 @@ class CreatorFactoryImpl implements CreatorFactory
      *
      * @return Creator
      */
-    public function create(\ReflectionClass $class) : Creator
+    public function create(\ReflectionClass $class)
     {
         $clsName = $class->name;
 
-        return self::$cache[$clsName] ?? self::$cache[$clsName] = $this->createInternal($class);
+        return isset(self::$cache[$clsName])
+            ? self::$cache[$clsName]
+            : self::$cache[$clsName] = $this->createInternal($class);
     }
 
     /**
@@ -31,7 +33,7 @@ class CreatorFactoryImpl implements CreatorFactory
      *
      * @return Creator
      */
-    private function createInternal(\ReflectionClass $class) : Creator
+    private function createInternal(\ReflectionClass $class)
     {
         $constructor = $class->getConstructor();
 
