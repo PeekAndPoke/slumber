@@ -21,8 +21,6 @@ class LocalDateMapper extends AbstractPropertyMapper
 {
     /** @var AsLocalDate */
     private $options;
-    /** @var IsDateString */
-    private $isDateString;
 
     /**
      * C'tor.
@@ -32,8 +30,6 @@ class LocalDateMapper extends AbstractPropertyMapper
     public function __construct(AsLocalDate $options)
     {
         $this->options = $options;
-
-        $this->isDateString = new IsDateString();
     }
 
     /**
@@ -83,7 +79,7 @@ class LocalDateMapper extends AbstractPropertyMapper
             return LocalDate::raw((new \DateTime())->setTimestamp($value->sec));
         }
 
-        if (is_string($value) && $this->isDateString->__invoke($value)) {
+        if (IsDateString::isValidDateString($value)) {
             return LocalDate::raw(new \DateTime($value));
         }
 

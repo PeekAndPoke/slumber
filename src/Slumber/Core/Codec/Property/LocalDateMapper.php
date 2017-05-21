@@ -63,16 +63,14 @@ class LocalDateMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        $isDateStr = new IsDateString();
-
         if ($value !== null) {
             // check for a complex input with date and timezone
-            if (isset($value['date'], $value['tz']) && $isDateStr($value['date'])) {
+            if (isset($value['date'], $value['tz']) && IsDateString::isValidDateString($value['date'])) {
 
                 return new LocalDate($value['date'], $value['tz']);
             }
             // check for a simple input
-            if ($isDateStr($value)) {
+            if (IsDateString::isValidDateString($value)) {
                 return LocalDate::raw(new \DateTime($value));
             }
         }

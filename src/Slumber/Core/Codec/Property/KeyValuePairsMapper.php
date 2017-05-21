@@ -67,7 +67,7 @@ class KeyValuePairsMapper extends AbstractCollectionMapper
 
         foreach ($value as $k => $v) {
 
-            if (is_array($v) && isset($v['k'], $v['v'])) {
+            if (isset($v['k'], $v['v'])) {
                 $keyToUse = (string) $v['k'];
                 $valToUse = $v['v'];
             } // bit of compatibility
