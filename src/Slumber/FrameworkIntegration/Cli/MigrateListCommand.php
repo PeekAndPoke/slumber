@@ -5,7 +5,6 @@
  * Date: 20.04.17
  * Time: 00:47
  */
-declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Slumber\FrameworkIntegration\Cli;
 

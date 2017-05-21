@@ -5,7 +5,6 @@
  * Date: 12.04.17
  * Time: 06:51
  */
-declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Toolbox;
 
@@ -30,7 +29,7 @@ abstract class BaseUtil
      */
     public static function ensureDirectory($dir, $mode = 0777)
     {
-        if (!@mkdir($dir, $mode, true) && !@is_dir($dir)) {
+        if (! @mkdir($dir, $mode, true) && ! @is_dir($dir)) {
             throw new \RuntimeException('Could not create directory');
         }
     }

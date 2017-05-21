@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * File was created 10.05.2016 17:13
  */

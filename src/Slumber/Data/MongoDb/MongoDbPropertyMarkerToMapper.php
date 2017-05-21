@@ -5,7 +5,6 @@
  * Date: 30.03.17
  * Time: 08:32
  */
-declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb;
 

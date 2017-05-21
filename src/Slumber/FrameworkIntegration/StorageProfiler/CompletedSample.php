@@ -5,7 +5,6 @@
  * Date: 26.01.17
  * Time: 12:25
  */
-declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Slumber\FrameworkIntegration\StorageProfiler;
 

@@ -5,7 +5,6 @@
  * Date: 04.01.17
  * Time: 06:28
  */
-declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Slumber\Annotation\Slumber;
 

@@ -5,7 +5,6 @@
  * Date: 14.04.17
  * Time: 23:11
  */
-declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Slumber\Data\Addon\PublicReference;
 

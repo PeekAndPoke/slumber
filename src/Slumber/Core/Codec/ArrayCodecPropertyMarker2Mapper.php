@@ -5,7 +5,6 @@
  * Date: 03.04.17
  * Time: 00:26
  */
-declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Slumber\Core\Codec;
 

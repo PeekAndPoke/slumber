@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * File was created 30.09.2015 07:32
  */
@@ -48,13 +47,13 @@ class LocalDateMapper extends AbstractPropertyMapper
      */
     public function slumber(Slumberer $slumberer, $value)
     {
-        if (!$value instanceof LocalDate) {
+        if (! $value instanceof LocalDate) {
             return null;
         }
 
         return [
             'date' => new UTCDateTime($value->getTimestamp() * 1000),
-            'tz' => $value->getTimezone()->getName(),
+            'tz'   => $value->getTimezone()->getName(),
         ];
     }
 

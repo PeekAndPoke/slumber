@@ -1,8 +1,6 @@
 <?php
-declare(strict_types=1);
 
 namespace PeekAndPoke\Component\Toolbox;
-
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
