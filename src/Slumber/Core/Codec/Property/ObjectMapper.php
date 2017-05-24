@@ -49,6 +49,10 @@ class ObjectMapper extends AbstractPropertyMapper
          * @see LazyDbReference
          */
         if ($value instanceof ValueHolder) {
+
+            // TODO: Rethink this! Is this really a good idea or should it only happen in the Mongo ObjectMapper and only for LazyDbReference ?
+            //       This might trigger in cases where it is not really wanted.
+
             $value = $value->getValue();
         }
 

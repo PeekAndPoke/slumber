@@ -136,7 +136,23 @@ class KeyValuePairsMapperTest extends TestCase
         self::assertSame($expected, $subject->awake($this->awaker, $input), 'slumber() must work');
     }
 
-    // TODO: test awake into collection
+    /**
+     * @param $input
+     * @param $expected
+     *
+     * @dataProvider provideTestAwake
+     */
+    public function testAwakeIntoCollection($input, $expected)
+    {
+        $options = new AsKeyValuePairs(['value' => new AsString([]), 'collection' => ArrayCollection::class]);
+        $subject = new KeyValuePairsMapper($options, new StringMapper(new AsString([])));
+
+        /** @var ArrayCollection $result */
+        $result = $subject->awake($this->awaker, $input);
+
+        self::assertInstanceOf(ArrayCollection::class, $result, 'awake() must produce an ArrayCollection');
+        self::assertSame($expected, $result->getData(), 'awake() must work');
+    }
 
     // TODO: test with keepNullsInCollection = false
 

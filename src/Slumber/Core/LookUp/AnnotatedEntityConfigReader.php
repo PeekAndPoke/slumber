@@ -56,12 +56,16 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
      */
     public function getEntityConfig(\ReflectionClass $subject)
     {
-        return new EntityConfig(
+        $config = new EntityConfig(
             $subject->name,
             $this->getCreator($subject),
             $this->getClassMarkers($subject),
             $this->getPropertyMarkersRecursive($subject)
         );
+
+        $config->warmUp();
+
+        return $config;
     }
 
     /**
