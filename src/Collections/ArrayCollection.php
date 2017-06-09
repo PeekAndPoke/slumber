@@ -24,8 +24,13 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * @param mixed    $subject
-     * @param callable $replaceWhen
+     * Add or replace
+     *
+     * The first item that meets the condition is replaced.
+     * When the condition is not met the subject will be added to the end.
+     *
+     * @param mixed    $subject     The subject to append or replace with
+     * @param callable $replaceWhen The condition to check (gets each entry passed in individually)
      *
      * @return ArrayCollection
      */
@@ -111,16 +116,32 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
      */
     public function remove($item)
     {
+        return $this->removeWhen(
+            function ($storedItem) use ($item) {
+                return $storedItem === $item;
+            }
+        );
+    }
+
+    /**
+     * Remove all items that meet the condition
+     *
+     * @param callable $removeWhen
+     */
+    public function removeWhen(callable $removeWhen)
+    {
         $result = [];
 
         foreach ($this as $storedItem) {
-            if ($storedItem !== $item) {
+            if (false === (bool) $removeWhen($storedItem)) {
                 $result[] = $storedItem;
             }
         }
 
         $this->data = $result;
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * @return \Iterator
