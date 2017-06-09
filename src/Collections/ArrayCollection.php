@@ -24,6 +24,105 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
+     * @param mixed    $subject
+     * @param callable $replaceWhen
+     *
+     * @return ArrayCollection
+     */
+    public function appendOrReplace($subject, callable $replaceWhen)
+    {
+        foreach ($this->data as &$item) {
+
+            if ($replaceWhen($item)) {
+                $item = $subject;
+                return $this;
+            }
+        }
+
+        return $this->append($subject);
+    }
+
+    /**
+     * @param array|\Traversable $items
+     *
+     * @return $this
+     */
+    public function appendAll($items)
+    {
+        if (! is_array($items) && ! $items instanceof \Traversable) {
+            return $this;
+        }
+
+        foreach ($items as $item) {
+            $this->append($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $item
+     *
+     * @return $this
+     */
+    public function appendIfNotExists($item)
+    {
+        if (! $this->contains($item)) {
+            $this->append($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $item
+     *
+     * @return bool
+     */
+    public function contains($item)
+    {
+        foreach ($this as $storedItem) {
+            if ($storedItem === $item) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getFirst()
+    {
+        return $this->count() > 0 ? $this[0] : null;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getLast()
+    {
+        return $this->count() > 0 ? $this[$this->count() - 1] : null;
+    }
+
+    /**
+     * @param $item
+     */
+    public function remove($item)
+    {
+        $result = [];
+
+        foreach ($this as $storedItem) {
+            if ($storedItem !== $item) {
+                $result[] = $storedItem;
+            }
+        }
+
+        $this->data = $result;
+    }
+
+    /**
      * @return \Iterator
      */
     public function getIterator()
