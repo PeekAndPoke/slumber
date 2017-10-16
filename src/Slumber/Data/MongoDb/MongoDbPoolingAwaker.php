@@ -65,13 +65,13 @@ class MongoDbPoolingAwaker implements MongoDbAwaker
         $primaryId = $primaryIdProperty->getValue($awoken);
 
         // Can we find this entity in the pool ?
-        if ($primaryId !== null && $this->pool->has($cls, 'id', $primaryId)) {
+        if ($primaryId !== null && $this->pool->has($cls, EntityPool::PRIMARY_ID, $primaryId)) {
 
-            return $this->pool->get($cls, 'id', $primaryId);
+            return $this->pool->get($cls, EntityPool::PRIMARY_ID, $primaryId);
         }
 
         // otherwise we set it on the pool
-        $this->pool->set($cls, 'id', $primaryId, $awoken);
+        $this->pool->set($cls, EntityPool::PRIMARY_ID, $primaryId, $awoken);
 
         return $awoken;
     }

@@ -70,26 +70,19 @@ class MongoDbStorageDriver implements StorageDriver
             unset($slumbering['_id']);
         }
 
-        // TODO: transform the result
         $result = $this->collection->insertOne($slumbering);
 
         // write back the id
         $insertedId = (string) $result->getInsertedId();
-
-        // TODO: we cannot know "setId" is present ...
-        $item->setId($insertedId);
+        $this->setItemId($item, $insertedId);
 
         // set it on the entity pool
-        $this->entityPool->set($this->entityBaseClass, 'id', $insertedId, $item);
+        $this->entityPool->set($this->entityBaseClass, EntityPool::PRIMARY_ID, $insertedId, $item);
 
         // dispatch post save events (e.g. for the Journal)
-        if ($this->entityConfig->hasPostSaveClassListeners()) {
-            $postSaveEvent = $this->codecSet->createPostSaveEventFor($item, $slumbering);
-            foreach ($this->entityConfig->getPostSaveClassListeners() as $postSave) {
-                $postSave->execute($postSaveEvent);
-            }
-        }
+        $this->invokePostSaveListeners($item, $slumbering);
 
+        // TODO: transform the result
         return $result;
     }
 
@@ -116,14 +109,12 @@ class MongoDbStorageDriver implements StorageDriver
 
             // write back the id
             $insertedId = (string) $result->getInsertedId();
-
-            // TODO: we cannot know "setId" is present ...
-            $item->setId($insertedId);
+            $this->setItemId($item, $insertedId);
 
             // set it on the entity pool
-            $this->entityPool->set($this->entityBaseClass, 'id', $insertedId, $item);
+            $this->entityPool->set($this->entityBaseClass, EntityPool::PRIMARY_ID, $insertedId, $item);
         } else {
-            // UPDATE
+            // UPDATE or INSERT with specific id
 
             // TODO: transform the result
             $result = $this->collection->updateOne(
@@ -131,15 +122,12 @@ class MongoDbStorageDriver implements StorageDriver
                 ['$set' => $slumbering],
                 ['upsert' => true]
             );
+
+            $this->entityPool->set($this->entityBaseClass, EntityPool::PRIMARY_ID, $slumbering['_id'], $item);
         }
 
         // dispatch post save events (e.g. for the Journal)
-        if ($this->entityConfig->hasPostSaveClassListeners()) {
-            $postSaveEvent = $this->codecSet->createPostSaveEventFor($item, $slumbering);
-            foreach ($this->entityConfig->getPostSaveClassListeners() as $postSave) {
-                $postSave->execute($postSaveEvent);
-            }
-        }
+        $this->invokePostSaveListeners($item, $slumbering);
 
         return $result;
     }
@@ -153,7 +141,9 @@ class MongoDbStorageDriver implements StorageDriver
     {
         // TODO: we cannot know that getId exists
         $result = $this->collection->deleteOne([
-            '_id' => MongoDbUtil::ensureMongoId($entity->getId()),
+            '_id' => MongoDbUtil::ensureMongoId(
+                $this->getItemId($entity)
+            ),
         ]);
 
         return $result;
@@ -208,9 +198,9 @@ class MongoDbStorageDriver implements StorageDriver
         // do we have it in the pool ?
         if (count($query) === 1
             && isset($query['_id'])
-            && $this->entityPool->has($this->entityBaseClass, 'id', (string) $query['_id'])
+            && $this->entityPool->has($this->entityBaseClass, EntityPool::PRIMARY_ID, (string) $query['_id'])
         ) {
-            return $this->entityPool->get($this->entityBaseClass, 'id', (string) $query['_id']);
+            return $this->entityPool->get($this->entityBaseClass, EntityPool::PRIMARY_ID, (string) $query['_id']);
         }
 
         $result = $this->collection->findOne(
@@ -225,5 +215,43 @@ class MongoDbStorageDriver implements StorageDriver
         }
 
         return $this->codecSet->getAwaker()->awake($result, $this->entityBaseClass);
+    }
+
+    /**
+     * @param mixed $item
+     *
+     * @return mixed
+     */
+    private function getItemId($item)
+    {
+        // TODO: we cannot know that getId() exists ... we need to read it from the EntityConfig
+        return $item->getId();
+    }
+
+    /**
+     * @param mixed $entity
+     * @param mixed $id
+     */
+    private function setItemId($entity, $id)
+    {
+        // TODO: we cannot know that setId() exists ... we need to read it from the EntityConfig
+        $entity->setId($id);
+    }
+
+    /**
+     * @param mixed $item       The item that was saved
+     * @param array $slumbering The serialized data
+     */
+    private function invokePostSaveListeners($item, $slumbering)
+    {
+        // dispatch post save events (e.g. for the Journal)
+        if ($this->entityConfig->hasPostSaveClassListeners()) {
+
+            $postSaveEvent = $this->codecSet->createPostSaveEventFor($item, $slumbering);
+
+            foreach ($this->entityConfig->getPostSaveClassListeners() as $postSave) {
+                $postSave->execute($postSaveEvent);
+            }
+        }
     }
 }

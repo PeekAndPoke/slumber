@@ -12,6 +12,16 @@ namespace PeekAndPoke\Component\Collections;
 class ArrayCollection extends AbstractCollection implements \ArrayAccess
 {
     /**
+     * @return $this
+     */
+    public function clear()
+    {
+        $this->data = [];
+
+        return $this;
+    }
+
+    /**
      * @param $item
      *
      * @return $this
@@ -36,10 +46,10 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
      */
     public function appendOrReplace($subject, callable $replaceWhen)
     {
-        foreach ($this->data as &$item) {
+        foreach ($this as $k => $item) {
 
             if ($replaceWhen($item)) {
-                $item = $subject;
+                $this[$k] = $subject;
                 return $this;
             }
         }
