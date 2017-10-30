@@ -5,8 +5,6 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\Error;
 
-use Throwable;
-
 /**
  *
  *
@@ -14,7 +12,7 @@ use Throwable;
  */
 class UnknownError extends StorageError
 {
-    final public function __construct($message = '', Throwable $previous = null)
+    final public function __construct($message = '', \Exception $previous = null)
     {
         parent::__construct($message, self::UNKNOWN, $previous);
     }

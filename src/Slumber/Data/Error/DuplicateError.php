@@ -5,8 +5,6 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\Error;
 
-use Throwable;
-
 /**
  *
  *
@@ -22,13 +20,13 @@ class DuplicateError extends StorageError
     private $data;
 
     /**
-     * @param string         $message
-     * @param string         $table
-     * @param string         $index
-     * @param string         $data
-     * @param Throwable|null $previous
+     * @param string          $message
+     * @param string          $table
+     * @param string          $index
+     * @param string          $data
+     * @param \Exception|null $previous
      */
-    final public function __construct($message = '', $table, $index, $data, Throwable $previous = null)
+    final public function __construct($message = '', $table, $index, $data, \Exception $previous = null)
     {
         parent::__construct($message, self::DUPLICATE_KEY, $previous);
 
