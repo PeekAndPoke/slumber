@@ -9,6 +9,7 @@
 namespace PeekAndPoke\Component\Slumber\Data;
 
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberRuntimeException;
+use PeekAndPoke\Component\Slumber\Data\Error\DuplicateError;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbUtil;
 
 
@@ -67,6 +68,8 @@ class EntityRepository implements Repository
      * @param mixed $subject
      *
      * @return mixed|null
+     *
+     * @throws DuplicateError When the underlying database permits the insert, due to a duplicate key exception
      */
     public function insert($subject)
     {

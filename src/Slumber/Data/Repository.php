@@ -6,6 +6,7 @@
 namespace PeekAndPoke\Component\Slumber\Data;
 
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberRuntimeException;
+use PeekAndPoke\Component\Slumber\Data\Error\DuplicateError;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -40,6 +41,8 @@ interface Repository
      * @param mixed $item
      *
      * @return mixed|null
+     *
+     * @throws DuplicateError When the underlying database permits the insert, due to a duplicate key exception
      */
     public function insert($item);
 

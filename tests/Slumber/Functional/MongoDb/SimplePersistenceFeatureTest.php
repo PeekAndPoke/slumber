@@ -5,22 +5,8 @@
 
 namespace PeekAndPoke\Component\Slumber\Functional\MongoDb;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Cache\ArrayCache;
-use MongoDB;
 use PeekAndPoke\Component\GeoJson\Point;
-use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
-use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
-use PeekAndPoke\Component\Slumber\Data\EntityRepository;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbCodecSet;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderCached;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderImpl;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbPropertyMarkerToMapper;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbUtil;
-use PeekAndPoke\Component\Slumber\Data\StorageImpl;
-use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestAggregatedClass;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestCollection;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
@@ -29,73 +15,12 @@ use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildA;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildB;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildC;
 use PeekAndPoke\Types\LocalDate;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\NullLogger;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class SimplePersistenceFeatureTest extends TestCase
+class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
 {
-    /** @var StorageImpl */
-    static protected $storage;
-    /** @var MongoDB\Client */
-    static protected $client;
-    /** @var EntityRepository */
-    static protected $mainRepo;
-    /** @var EntityRepository */
-    static protected $refRepo;
-
-    public static function setUpBeforeClass()
-    {
-        // setup the annotation reader for autoload
-        AnnotationRegistry::registerLoader(
-            function ($class) {
-                return class_exists($class) || interface_exists($class) || trait_exists($class);
-            }
-        );
-
-        $di               = new UnitTestServiceProvider();
-        $annotationReader = new AnnotationReader();
-        $entityPool       = new EntityPoolImpl();
-
-        self::$storage = new StorageImpl($entityPool);
-        self::$client  = new MongoDB\Client('mongodb://localhost:27017', ['connect' => false]);
-
-        $database           = self::$client->selectDatabase('slumber_tests_db');
-        $entityConfigReader = new MongoDbEntityConfigReaderCached(
-            new MongoDbEntityConfigReaderImpl(
-                new AnnotatedEntityConfigReader($di, $annotationReader, new MongoDbPropertyMarkerToMapper())
-            ),
-            new ArrayCache(),
-            'test',
-            true
-        );
-        $codecSet           = new MongoDbCodecSet($di, $entityConfigReader, self::$storage, new NullLogger());
-
-        self::$mainRepo = new EntityRepository(
-            'main_class',
-            new MongoDbStorageDriver(
-                $entityPool,
-                $codecSet,
-                $database->selectCollection('main_class'),
-                new \ReflectionClass(UnitTestMainClass::class)
-            )
-        );
-        self::$storage->addRepository(self::$mainRepo);
-
-        self::$refRepo = new EntityRepository(
-            'ref_class',
-            new MongoDbStorageDriver(
-                $entityPool,
-                $codecSet,
-                $database->selectCollection('ref_class'),
-                new \ReflectionClass(UnitTestAggregatedClass::class)
-            )
-        );
-        self::$storage->addRepository(self::$refRepo);
-    }
-
     public function setUp()
     {
         // clear the repo before every test
@@ -883,7 +808,7 @@ class SimplePersistenceFeatureTest extends TestCase
                 'a4' => false,
                 'a5' => [1, 2],
                 'a6' => [],
-                'a7' => new \stdClass()
+                'a7' => new \stdClass(),
             ],
             'b' => [
                 'b1' => 2,
@@ -892,7 +817,7 @@ class SimplePersistenceFeatureTest extends TestCase
                 'b4' => false,
                 'b5' => [1, 2],
                 'b6' => [],
-                'b7' => new \stdClass()
+                'b7' => new \stdClass(),
             ],
         ];
 
@@ -960,64 +885,74 @@ class SimplePersistenceFeatureTest extends TestCase
         ////  Build the main object  ///////////////////////////////////////////////////////
 
         $item = new UnitTestMainClass();
-        $item
-            ->setAnObject((new UnitTestAggregatedClass())->setName('anObject'))// todo: test this
-            ->setAListOfPolymorphics(
-                [
-                    (new UnitTestPolyChildA())->setPropOnA('myA')->setCommon('commonA'),
-                    (new UnitTestPolyChildB())->setPropOnB('myB')->setCommon('commonB'),
-                    (new UnitTestPolyChildC())->setPropOnC('myC')->setCommon('commonC'),
-                    (new UnitTestPolyChildA())->setPropOnA('myA2')->setCommon('commonA2'),
-                ]
-            )
-            // references to other collections
-            ->setAReferencedObject((new UnitTestAggregatedClass())->setName('ref'))
-            ->setAListOfReferencedObjects($aListOfReferencedObjects)
-            ->setAListOfMapsOfReferencedObjects($aListOfMapsOfReferencedObjects)
-            // collections
-            ->setAMapOfIntegers($collectionInput)
-            ->setAMapOfStrings($collectionInput)
-            ->setAMapOfMixed($collectionInput)
-            ->setAMapOfObjects(
-                [
-                    $objInCol1 = (new UnitTestAggregatedClass())->setName('Obj 1'),
-                    $objInCol2 = (new UnitTestAggregatedClass())->setName('Obj 2'),
-                    $otherObj = (new UnitTestOtherClass())->setOtherName('Other 1'),
-                    true,
-                    false,
-                    null,
-                ]
-            )
-            // nested list of lists, map of lists, map of maps
-            ->setAListOfListsOfIntegers($nestedInput)
-            ->setAMapOfListsOfIntegers($nestedInput)
-            ->setAMapOfMapsOfIntegers($nestedInput)
-            ->setAListOfStringWrappedInACollClass(
-                new UnitTestCollection(['a', 'b'])
-            )
-            ->setAListOfListsOfMixed($nestedInput)
-            ->setAListOfListsOfStrings($nestedInput)
-            ->setAListOfListsOfObjects($nestedInputObjects)
-            // bool
-            ->setABool(true)
-            ->setAnotherBool(false)
-            // decimal
-            ->setADecimal(123.456)
-            // integer
-            ->setAnInteger(234)
-            // string
-            ->setAString('Test')
-            ->setAStringContainingNull(null)
-            // built in types
-            ->setASimpleDate(new \DateTime('2016-04-18'))
-            ->setALocalDate(new LocalDate('2015-10-12', 'Etc/UTC'))
-            // TODO: test the AsJsonString
+        $item->setAnObject((new UnitTestAggregatedClass())->setName('anObject'));// todo: test this
 
-            // GeoJson
-            ->setAGeoJsonPoint(new Point(52.5, 13.3))
-            // mapped as it is
-            ->setASomethingAsIs('AsIs')
-            ->setASomethingElseAsIs(987);
+        $item->setAListOfPolymorphics(
+            [
+                (new UnitTestPolyChildA())->setPropOnA('myA')->setCommon('commonA'),
+                (new UnitTestPolyChildB())->setPropOnB('myB')->setCommon('commonB'),
+                (new UnitTestPolyChildC())->setPropOnC('myC')->setCommon('commonC'),
+                (new UnitTestPolyChildA())->setPropOnA('myA2')->setCommon('commonA2'),
+            ]
+        );
+
+        // references to other collections
+        $item->setAReferencedObject((new UnitTestAggregatedClass())->setName('ref'));
+        $item->setAListOfReferencedObjects($aListOfReferencedObjects);
+        $item->setAListOfMapsOfReferencedObjects($aListOfMapsOfReferencedObjects);
+
+        // collections
+        $item->setAMapOfIntegers($collectionInput);
+        $item->setAMapOfStrings($collectionInput);
+        $item->setAMapOfMixed($collectionInput);
+        $item->setAMapOfObjects(
+            [
+                $objInCol1 = (new UnitTestAggregatedClass())->setName('Obj 1'),
+                $objInCol2 = (new UnitTestAggregatedClass())->setName('Obj 2'),
+                $otherObj = (new UnitTestOtherClass())->setOtherName('Other 1'),
+                true,
+                false,
+                null,
+            ]
+        );
+
+        // nested list of lists, map of lists, map of maps
+        $item->setAListOfListsOfIntegers($nestedInput);
+        $item->setAMapOfListsOfIntegers($nestedInput);
+        $item->setAMapOfMapsOfIntegers($nestedInput);
+        $item->setAListOfStringWrappedInACollClass(
+            new UnitTestCollection(['a', 'b'])
+        );
+
+        $item->setAListOfListsOfMixed($nestedInput);
+        $item->setAListOfListsOfStrings($nestedInput);
+        $item->setAListOfListsOfObjects($nestedInputObjects);
+
+        // bool
+        $item->setABool(true);
+        $item->setAnotherBool(false);
+
+        // decimal
+        $item->setADecimal(123.456);
+
+        // integer
+        $item->setAnInteger(234);
+
+        // string
+        $item->setAString('Test');
+        $item->setAStringContainingNull(null);
+
+        // built in types
+        $item->setASimpleDate(new \DateTime('2016-04-18'));
+        $item->setALocalDate(new LocalDate('2015-10-12', 'Etc/UTC'));
+        // TODO: test the AsJsonString
+
+        // mapped as it is
+        $item->setASomethingAsIs('AsIs');
+        $item->setASomethingElseAsIs(987);
+
+        // GeoJson
+        $item->setAGeoJsonPoint(new Point(52.5, 13.3));
 
         return $item;
     }

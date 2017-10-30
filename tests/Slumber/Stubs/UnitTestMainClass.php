@@ -7,7 +7,7 @@ namespace PeekAndPoke\Component\Slumber\Stubs;
 
 use PeekAndPoke\Component\GeoJson\Point;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber;
-use PeekAndPoke\Component\Slumber\Data\Addon\PublicReference\SlumberReferenced;
+use PeekAndPoke\Component\Slumber\Data\Addon\PublicReference\SlumberUniquelyReferenced;
 use PeekAndPoke\Component\Slumber\Data\Addon\SlumberId;
 use PeekAndPoke\Component\Slumber\Data\Addon\SlumberTimestamped;
 use PeekAndPoke\Component\Slumber\Data\LazyDbReference;
@@ -20,7 +20,7 @@ use PeekAndPoke\Types\LocalDate;
 class UnitTestMainClass
 {
     use SlumberId;
-    use SlumberReferenced;
+    use SlumberUniquelyReferenced;
     use SlumberTimestamped;
 
     /**

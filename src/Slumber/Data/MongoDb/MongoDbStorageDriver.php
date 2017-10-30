@@ -12,6 +12,7 @@ use MongoDB;
 use PeekAndPoke\Component\Slumber\Data\AwakingCursorIterator;
 use PeekAndPoke\Component\Slumber\Data\Cursor;
 use PeekAndPoke\Component\Slumber\Data\EntityPool;
+use PeekAndPoke\Component\Slumber\Data\MongoDb\Error\MongoDbDuplicateError;
 use PeekAndPoke\Component\Slumber\Data\StorageDriver;
 
 /**
@@ -70,7 +71,11 @@ class MongoDbStorageDriver implements StorageDriver
             unset($slumbering['_id']);
         }
 
-        $result = $this->collection->insertOne($slumbering);
+        try {
+            $result = $this->collection->insertOne($slumbering);
+        } catch (MongoDB\Driver\Exception\WriteException $e) {
+            throw MongoDbDuplicateError::from($e);
+        }
 
         // write back the id
         $insertedId = (string) $result->getInsertedId();
