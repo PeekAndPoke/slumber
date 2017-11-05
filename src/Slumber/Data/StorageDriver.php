@@ -28,7 +28,7 @@ interface StorageDriver
      *
      * @param mixed $item
      *
-     * @return mixed     // TODO: better return type
+     * @return Result\InsertOneResult
      */
     public function insert($item);
 
@@ -37,23 +37,27 @@ interface StorageDriver
      *
      * @param mixed $item
      *
-     * @return mixed     // TODO: better return type
+     * @return Result\SaveOneResult
      */
     public function save($item);
 
     /**
      * @param $entity
      *
-     * @return mixed    // TODO: better return type
+     * @return Result\RemoveResult
      */
     public function remove($entity);
 
     /**
-     * Remove all from this collection
+     * Remove all from this collection that match the query.
      *
-     * @return mixed    // TODO: better return type
+     * If the query is not set nothing will be deleted.
+     *
+     * @param array $query
+     *
+     * @return Result\RemoveResult
      */
-    public function removeAll();
+    public function removeAll(array $query = null);
 
     /**
      * @param $query

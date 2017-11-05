@@ -97,7 +97,13 @@ interface Repository
     public function remove($entity);
 
     /**
-     * Remove all from this collection
+     * Remove all from this collection that match the quere
+     *
+     * If the query is null nothing will be deleted
+     *
+     * @param array|null $query
+     *
+     * @return
      */
-    public function removeAll();
+    public function removeAll(array $query = null);
 }

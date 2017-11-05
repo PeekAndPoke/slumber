@@ -165,18 +165,12 @@ class JournalWriterImpl implements JournalWriter
         $repoName = $repo->getName();
         $reflect  = new \ReflectionClass($subject);
 
-        // TODO: fix me somehow: We need to pass in an ID-reader into the constructor (but that thing would have the same problem ...)
-
         if ($reflect->hasProperty('reference')) {
-
             $prop = $reflect->getProperty('reference');
-
         } else if ($reflect->hasProperty('id')) {
-
             $prop = $reflect->getProperty('id');
-
         } else {
-            throw new JournalRuntimeException('Cannot calculate external reference for ' . $reflect->name);
+            throw new JournalRuntimeException('Cannot calculate external reference for ' . $reflect->name . '. Needs property "id" or "reference"');
         }
 
         $prop->setAccessible(true);

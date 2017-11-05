@@ -13,6 +13,7 @@ use PeekAndPoke\Component\Slumber\Data\AwakingCursorIterator;
 use PeekAndPoke\Component\Slumber\Data\Cursor;
 use PeekAndPoke\Component\Slumber\Data\EntityPool;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\Error\MongoDbDuplicateError;
+use PeekAndPoke\Component\Slumber\Data\Result;
 use PeekAndPoke\Component\Slumber\Data\StorageDriver;
 
 /**
@@ -61,7 +62,7 @@ class MongoDbStorageDriver implements StorageDriver
     /**
      * @param mixed $item
      *
-     * @return MongoDB\InsertOneResult
+     * @return Result\InsertOneResult
      */
     public function insert($item)
     {
@@ -87,8 +88,7 @@ class MongoDbStorageDriver implements StorageDriver
         // dispatch post save events (e.g. for the Journal)
         $this->invokePostSaveListeners($item, $slumbering);
 
-        // TODO: transform the result
-        return $result;
+        return new Result\InsertOneResult($insertedId, $result->isAcknowledged());
     }
 
     /**
@@ -96,7 +96,7 @@ class MongoDbStorageDriver implements StorageDriver
      *
      * @param mixed $item
      *
-     * @return mixed     // TODO: better return type
+     * @return Result\SaveOneResult
      */
     public function save($item)
     {
@@ -109,26 +109,43 @@ class MongoDbStorageDriver implements StorageDriver
             // unset the _id so we get an id created
             unset ($slumbering['_id']);
 
-            // TODO: transform the result
-            $result = $this->collection->insertOne($slumbering);
+            try {
+                $insertOneResult = $this->collection->insertOne($slumbering);
+            } catch (MongoDB\Driver\Exception\WriteException $e) {
+                throw MongoDbDuplicateError::from($e);
+            }
 
             // write back the id
-            $insertedId = (string) $result->getInsertedId();
+            $insertedId = (string) $insertOneResult->getInsertedId();
             $this->setItemId($item, $insertedId);
 
             // set it on the entity pool
             $this->entityPool->set($this->entityBaseClass, EntityPool::PRIMARY_ID, $insertedId, $item);
+
+            // build return result
+            $result = new Result\SaveOneResult($insertedId, $insertOneResult->isAcknowledged(), false);
+
         } else {
             // UPDATE or INSERT with specific id
+            try {
+                $updateOneResult = $this->collection->updateOne(
+                    ['_id' => MongoDbUtil::ensureMongoId($slumbering['_id'])],
+                    ['$set' => $slumbering],
+                    ['upsert' => true]
+                );
+            } catch (MongoDB\Driver\Exception\WriteException $e) {
+                throw MongoDbDuplicateError::from($e);
+            }
 
-            // TODO: transform the result
-            $result = $this->collection->updateOne(
-                ['_id' => MongoDbUtil::ensureMongoId($slumbering['_id'])],
-                ['$set' => $slumbering],
-                ['upsert' => true]
-            );
-
+            // save it on the entity pool
             $this->entityPool->set($this->entityBaseClass, EntityPool::PRIMARY_ID, $slumbering['_id'], $item);
+
+            // build return result
+            $result = new Result\SaveOneResult(
+                $updateOneResult->getUpsertedId(),
+                $updateOneResult->isAcknowledged(),
+                $updateOneResult->getUpsertedCount() === 1
+            );
         }
 
         // dispatch post save events (e.g. for the Journal)
@@ -140,28 +157,35 @@ class MongoDbStorageDriver implements StorageDriver
     /**
      * @param mixed $entity
      *
-     * @return mixed    // TODO: better return type
+     * @return Result\RemoveResult
      */
     public function remove($entity)
     {
-        // TODO: we cannot know that getId exists
+        $id = $this->getItemId($entity);
+
         $result = $this->collection->deleteOne([
-            '_id' => MongoDbUtil::ensureMongoId(
-                $this->getItemId($entity)
-            ),
+            '_id' => MongoDbUtil::ensureMongoId($id),
         ]);
 
-        return $result;
+        return new Result\RemoveResult($result->getDeletedCount(), $result->isAcknowledged());
     }
 
     /**
      * Remove all from this collection
      *
-     * @return mixed    // TODO: better return type
+     * @param array|null $query
+     *
+     * @return Result\RemoveResult
      */
-    public function removeAll()
+    public function removeAll(array $query = null)
     {
-        return $this->collection->deleteMany([]);
+        if ($query === null) {
+            return new Result\RemoveResult(0, false);
+        }
+
+        $result = $this->collection->deleteMany($query);
+
+        return new Result\RemoveResult($result->getDeletedCount(), $result->isAcknowledged());
     }
 
     /**

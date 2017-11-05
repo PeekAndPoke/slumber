@@ -5,9 +5,11 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\Journal\Exception;
 
+use PeekAndPoke\Component\Slumber\Data\Error\StorageError;
+
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class JournalRuntimeException extends \RuntimeException
+class JournalRuntimeException extends StorageError
 {
 }

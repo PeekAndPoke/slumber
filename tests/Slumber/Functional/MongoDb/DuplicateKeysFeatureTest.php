@@ -19,8 +19,8 @@ class DuplicateKeysFeatureTest extends SlumberMongoDbTestBase
     public function setUp()
     {
         // clear the repo before every test
-        self::$mainRepo->removeAll();
-        self::$refRepo->removeAll();
+        self::$mainRepo->removeAll([]);
+        self::$refRepo->removeAll([]);
     }
 
     public function testDuplicateInsertMustFailOnDuplicateId()

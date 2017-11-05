@@ -158,10 +158,14 @@ class EntityRepository implements Repository
 
     /**
      * Remove all from this collection
+     *
+     * @param array|null $query
+     *
+     * @return Result\RemoveResult
      */
-    public function removeAll()
+    public function removeAll(array $query = null)
     {
-        return $this->driver->removeAll();
+        return $this->driver->removeAll($query);
     }
 
     /**

@@ -55,7 +55,7 @@ class MongoDbEntityConfig extends EntityConfig
      */
     public static function from(EntityConfig $config)
     {
-        $result = new MongoDbEntityConfig(
+        $result = new self(
             $config->getClassName(),
             $config->getCreator(),
             $config->getMarkersOnClass(),

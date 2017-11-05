@@ -8,6 +8,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\Addon\PublicReference;
 
+use PeekAndPoke\Component\Slumber\Data\Error\DuplicateError;
 use PeekAndPoke\Component\Slumber\Data\Repository;
 
 /**
@@ -62,8 +63,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
 
                 return $new;
 
-            } catch (\Exception $e) {
-                // TODO: we need a better exception... a general StorageException would be nice
+            } catch (DuplicateError $e) {
             }
         }
 

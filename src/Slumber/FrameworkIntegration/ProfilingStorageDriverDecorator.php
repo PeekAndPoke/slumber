@@ -9,6 +9,7 @@
 namespace PeekAndPoke\Component\Slumber\FrameworkIntegration;
 
 use PeekAndPoke\Component\Slumber\Data\Cursor;
+use PeekAndPoke\Component\Slumber\Data\Result;
 use PeekAndPoke\Component\Slumber\Data\StorageDriver;
 
 
@@ -59,7 +60,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
     /**
      * @param mixed $item
      *
-     * @return mixed
+     * @return Result\InsertOneResult
      */
     public function insert($item)
     {
@@ -79,7 +80,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
      *
      * @param mixed $item
      *
-     * @return mixed
+     * @return Result\SaveOneResult
      */
     public function save($item)
     {
@@ -97,7 +98,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
     /**
      * @param $item
      *
-     * @return mixed
+     * @return Result\RemoveResult
      */
     public function remove($item)
     {
@@ -115,16 +116,19 @@ class ProfilingStorageDriverDecorator implements StorageDriver
     /**
      * Remove all from this collection
      *
-     * @return mixed
+     * @param array|null $query
+     *
+     * @return Result\RemoveResult
      */
-    public function removeAll()
+    public function removeAll(array $query = null)
     {
         return $this->profile(
             'removeAll',
             [
+                'query' => $query
             ],
-            function () {
-                return $this->driver->removeAll();
+            function () use ($query) {
+                return $this->driver->removeAll($query);
             }
         );
     }
