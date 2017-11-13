@@ -79,8 +79,8 @@ class ScopedPropertyAccess implements PropertyAccess
     private function init()
     {
         self::$initialized = true;
-        self::$getAccess   = \Closure::fromCallable(function ($prop) { return $this->$prop; });
-        self::$setAccess   = \Closure::fromCallable(function ($prop, $value) { $this->$prop = $value; });
+        self::$getAccess   = function ($prop) { return $this->$prop; };
+        self::$setAccess   = function ($prop, $value) { $this->$prop = $value; };
     }
 
     /**
