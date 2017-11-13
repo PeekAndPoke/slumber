@@ -47,7 +47,7 @@ class ReflectionPropertyAccess implements PropertyAccess
     public static function create(\ReflectionClass $class, $propertyName)
     {
         $ret               = new self;
-        $ret->className    = $class->getName();
+        $ret->className    = $class->name;
         $ret->propertyName = $propertyName;
 
         $ret->_prop = $class->getProperty($propertyName);

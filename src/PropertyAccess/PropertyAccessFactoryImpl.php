@@ -24,17 +24,17 @@ class PropertyAccessFactoryImpl implements PropertyAccessFactory
 
         // is it a public property
         if ($property->isPublic()) {
-            return PublicPropertyAccess::create($property->getName());
+            return PublicPropertyAccess::create($property->name);
         }
 
 
         // can we you the reflection accessor
         if ($property->isProtected()
-            || $property->getDeclaringClass()->getName() === $class->getName()) {
+            || $property->getDeclaringClass()->name === $class->name) {
 
-            return ReflectionPropertyAccess::create($class, $property->getName());
+            return ReflectionPropertyAccess::create($class, $property->name);
         }
 
-        return ScopedPropertyAccess::create($property->getDeclaringClass()->getName(), $property->getName());
+        return ScopedPropertyAccess::create($property->getDeclaringClass()->name, $property->name);
     }
 }

@@ -50,17 +50,10 @@ class CreatePolymorphic implements Creator
             // get the value
             $type = $data[$this->discriminator];
 
-            if (empty($type)) {
-                return $this->defaultCreator->create($data);
-            }
-
             // do we know how to map this one
-            if (isset($this->mapping[$type])) {
+            if ($type !== null && isset($this->mapping[$type])) {
                 return $this->mapping[$type]->create($data);
             }
-
-            // we do not know so return nothing
-            return null;
         }
 
         // map to the default
