@@ -15,7 +15,6 @@ use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
  */
 class DuplicateKeysFeatureTest extends SlumberMongoDbTestBase
 {
-
     public function setUp()
     {
         // clear the repo before every test

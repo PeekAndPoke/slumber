@@ -8,7 +8,8 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb;
 
-use MongoDB;
+use MongoDB\Collection;
+use MongoDB\Driver\Exception\WriteException;
 use PeekAndPoke\Component\Slumber\Data\AwakingCursorIterator;
 use PeekAndPoke\Component\Slumber\Data\Cursor;
 use PeekAndPoke\Component\Slumber\Data\EntityPool;
@@ -26,7 +27,7 @@ class MongoDbStorageDriver implements StorageDriver
 {
     /** @var EntityPool */
     private $entityPool;
-    /** @var MongoDB\Collection */
+    /** @var Collection */
     private $collection;
     /** @var MongoDbCodecSet */
     private $codecSet;
@@ -35,7 +36,7 @@ class MongoDbStorageDriver implements StorageDriver
     /** @var MongoDbEntityConfig */
     private $entityConfig;
 
-    public function __construct(EntityPool $entityPool, MongoDbCodecSet $codecSet, MongoDB\Collection $collection, \ReflectionClass $entityBaseClass)
+    public function __construct(EntityPool $entityPool, MongoDbCodecSet $codecSet, Collection $collection, \ReflectionClass $entityBaseClass)
     {
         $this->entityPool      = $entityPool;
         $this->codecSet        = $codecSet;
@@ -77,7 +78,7 @@ class MongoDbStorageDriver implements StorageDriver
 
         try {
             $result = $this->collection->insertOne($slumbering);
-        } catch (MongoDB\Driver\Exception\WriteException $e) {
+        } catch (WriteException $e) {
             throw MongoDbDuplicateError::from($e);
         }
 
@@ -116,7 +117,7 @@ class MongoDbStorageDriver implements StorageDriver
 
             try {
                 $insertOneResult = $this->collection->insertOne($slumbering);
-            } catch (MongoDB\Driver\Exception\WriteException $e) {
+            } catch (WriteException $e) {
                 throw MongoDbDuplicateError::from($e);
             }
 
@@ -138,7 +139,7 @@ class MongoDbStorageDriver implements StorageDriver
                     ['$set' => $slumbering],
                     ['upsert' => true]
                 );
-            } catch (MongoDB\Driver\Exception\WriteException $e) {
+            } catch (WriteException $e) {
                 throw MongoDbDuplicateError::from($e);
             }
 
