@@ -106,6 +106,7 @@ class MongoDbIndexer
                 /** @var AsObject $asObject */
                 $asObject = $p->getFirstMarkerOf(AsObject::class);
 
+                /** @noinspection NullPointerExceptionInspection */
                 $subCreated = $this->ensureIndexesRecursive(
                     array_merge($prefixes, [$p->alias]),
                     new \ReflectionClass($asObject->value),

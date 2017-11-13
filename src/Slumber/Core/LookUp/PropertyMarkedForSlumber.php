@@ -56,9 +56,8 @@ class PropertyMarkedForSlumber
         PropertyMappingMarker $marker,
         $allMarkers,
         Mapper $mapper
-    )
-    {
-        $ret = new PropertyMarkedForSlumber();
+    ) {
+        $ret = new self;
 
         $ret->name       = $propertyName;
         $ret->alias      = $alias;

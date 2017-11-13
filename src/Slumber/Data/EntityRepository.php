@@ -11,6 +11,8 @@ namespace PeekAndPoke\Component\Slumber\Data;
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberRuntimeException;
 use PeekAndPoke\Component\Slumber\Data\Error\DuplicateError;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbUtil;
+use PeekAndPoke\Component\Slumber\Data\Result\InsertOneResult;
+use PeekAndPoke\Component\Slumber\Data\Result\SaveOneResult;
 
 
 /**
@@ -67,9 +69,10 @@ class EntityRepository implements Repository
      *
      * @param mixed $subject
      *
-     * @return mixed|null
+     * @return InsertOneResult
      *
-     * @throws DuplicateError When the underlying database permits the insert, due to a duplicate key exception
+     * @throws SlumberRuntimeException When the given subject cannot be stored in this repository
+     * @throws DuplicateError          When the underlying database permits the insert, due to a duplicate key exception
      */
     public function insert($subject)
     {
@@ -85,9 +88,10 @@ class EntityRepository implements Repository
     /**
      * @param mixed $subject
      *
-     * @return array|null
+     * @return SaveOneResult
      *
-     * @throws SlumberRuntimeException
+     * @throws SlumberRuntimeException When the given subject cannot be stored in this repository
+     * @throws DuplicateError          When the underlying database permits the insert, due to a duplicate key exception
      */
     public function save($subject)
     {

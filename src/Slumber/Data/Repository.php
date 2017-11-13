@@ -42,7 +42,8 @@ interface Repository
      *
      * @return mixed|null
      *
-     * @throws DuplicateError When the underlying database permits the insert, due to a duplicate key exception
+     * @throws SlumberRuntimeException When the given subject cannot be stored in this repository
+     * @throws DuplicateError          When the underlying database permits the insert, due to a duplicate key exception
      */
     public function insert($item);
 
@@ -53,7 +54,8 @@ interface Repository
      *
      * @return array|null
      *
-     * @throws SlumberRuntimeException
+     * @throws SlumberRuntimeException When the given subject cannot be stored in this repository
+     * @throws DuplicateError          When the underlying database permits the insert, due to a duplicate key exception
      */
     public function save($item);
 
@@ -97,7 +99,7 @@ interface Repository
     public function remove($entity);
 
     /**
-     * Remove all from this collection that match the quere
+     * Remove all from this collection that match the query
      *
      * If the query is null nothing will be deleted
      *

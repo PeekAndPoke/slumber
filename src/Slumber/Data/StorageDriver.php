@@ -8,6 +8,8 @@
 
 namespace PeekAndPoke\Component\Slumber\Data;
 
+use PeekAndPoke\Component\Slumber\Data\Error\DuplicateError;
+
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
@@ -29,6 +31,8 @@ interface StorageDriver
      * @param mixed $item
      *
      * @return Result\InsertOneResult
+     *
+     * @throws DuplicateError
      */
     public function insert($item);
 
@@ -38,6 +42,8 @@ interface StorageDriver
      * @param mixed $item
      *
      * @return Result\SaveOneResult
+     *
+     * @throws DuplicateError
      */
     public function save($item);
 

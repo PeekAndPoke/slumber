@@ -12,6 +12,7 @@ use MongoDB;
 use PeekAndPoke\Component\Slumber\Data\AwakingCursorIterator;
 use PeekAndPoke\Component\Slumber\Data\Cursor;
 use PeekAndPoke\Component\Slumber\Data\EntityPool;
+use PeekAndPoke\Component\Slumber\Data\Error\DuplicateError;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\Error\MongoDbDuplicateError;
 use PeekAndPoke\Component\Slumber\Data\Result;
 use PeekAndPoke\Component\Slumber\Data\StorageDriver;
@@ -63,6 +64,8 @@ class MongoDbStorageDriver implements StorageDriver
      * @param mixed $item
      *
      * @return Result\InsertOneResult
+     *
+     * @throws DuplicateError
      */
     public function insert($item)
     {
@@ -97,6 +100,8 @@ class MongoDbStorageDriver implements StorageDriver
      * @param mixed $item
      *
      * @return Result\SaveOneResult
+     *
+     * @throws DuplicateError
      */
     public function save($item)
     {

@@ -5,12 +5,14 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\Error;
 
+use PeekAndPoke\Component\Slumber\Core\Exception\SlumberRuntimeException;
+
 /**
  *
  *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-abstract class StorageError extends \RuntimeException
+abstract class StorageError extends SlumberRuntimeException
 {
     const UNKNOWN = 99999;
 

@@ -93,7 +93,11 @@ class DbReferenceMapper extends AbstractPropertyMapper
         $clz  = $this->getReferencedClass();
         $repo = $awaker->getStorage()->getRepositoryByClassName($clz);
 
-        return LazyDbReference::create($repo, $value);
+        if ($repo !== null) {
+            return LazyDbReference::create($repo, $value);
+        }
+
+        return null;
     }
 
     /**
