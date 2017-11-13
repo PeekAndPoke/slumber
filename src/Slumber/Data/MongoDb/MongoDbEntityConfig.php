@@ -162,17 +162,9 @@ class MongoDbEntityConfig extends EntityConfig
             ->filter(new IsInstanceOf(PropertyMarkedForSlumber::class))
             ->map(function (PropertyMarkedForSlumber $p) {
 
-                // search for the firt AsId marker and modify it
+                // search for the first AsId marker and modify it
                 if ($this->idMarker === null && $p->getFirstMarkerOf(AsId::class)) {
                     // remember the property marked as primary id
-//                    $this->idMarker = PropertyMarkedForSlumber::create(
-//                        $p->name,
-//                        '_id',
-//                        $p->marker,
-//                        $p->allMarkers,
-//                        new PrimaryIdMapper($p->mapper->getOptions())
-//                    );
-
                     return $this->idMarker = $p->withAlias('_id')->withMapper(new PrimaryIdMapper($p->mapper->getOptions()));
                 }
 

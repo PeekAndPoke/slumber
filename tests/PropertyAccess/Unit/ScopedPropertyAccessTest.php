@@ -95,7 +95,7 @@ class ScopedPropertyAccessTest extends TestCase
         $this->assertSame('prop1', $prop1Revived->get($object), 'Getting must work after reviving');
         $this->assertSame('prop1Shadowed', $prop1ShadowedRevived->get($object), 'Getting shadowed property must work of reviving');
 
-        // assert that the revived instances will get salues correctly
+        // assert that the revived instances will get values correctly
         $prop1Revived->set($object, 'set1');
         $prop1ShadowedRevived->set($object, 'set1Shadowed');
 
