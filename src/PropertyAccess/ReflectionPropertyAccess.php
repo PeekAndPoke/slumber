@@ -25,6 +25,7 @@ namespace PeekAndPoke\Component\PropertyAccess;
  * - access private properties that are declared on a base class of the subject class
  *  -> use ScopedPropertyAccess then which is the slowest accessor
  *
+ *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
 class ReflectionPropertyAccess implements PropertyAccess

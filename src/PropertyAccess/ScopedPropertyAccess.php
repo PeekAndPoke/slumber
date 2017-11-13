@@ -23,6 +23,7 @@ namespace PeekAndPoke\Component\PropertyAccess;
  *
  * - access private properties that are declared on a base class of the subject class
  *
+ *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
 class ScopedPropertyAccess implements PropertyAccess
@@ -91,7 +92,9 @@ class ScopedPropertyAccess implements PropertyAccess
      */
     public function get($subject)
     {
-        return self::$getAccess->bindTo($subject, $this->scopeClass)($this->propertyName);
+        $func = self::$getAccess->bindTo($subject, $this->scopeClass);
+
+        return $func($this->propertyName);
     }
 
     /**
@@ -102,6 +105,7 @@ class ScopedPropertyAccess implements PropertyAccess
      */
     public function set($subject, $value)
     {
-        self::$setAccess->bindTo($subject, $this->scopeClass)($this->propertyName, $value);
+        $func = self::$setAccess->bindTo($subject, $this->scopeClass);
+        $func($this->propertyName, $value);
     }
 }
