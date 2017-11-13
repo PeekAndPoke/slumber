@@ -56,7 +56,7 @@ class GenericAwaker implements Awaker
 
             // do we have data for that property
             if (isset($data[$alias])) {
-                $entry->reflectionProperty->setValue(
+                $entry->propertyAccess->set(
                     $subject,
                     $entry->mapper->awake($this, $data[$alias])
                 );

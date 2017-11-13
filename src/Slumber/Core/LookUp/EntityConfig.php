@@ -83,21 +83,4 @@ class EntityConfig
 
         return null;
     }
-
-    public function warmUp()
-    {
-        $reflect = new \ReflectionClass($this->className);
-
-        foreach ($this->markedProperties as $markedProperty) {
-            // set up the reflection property for later use, so we only need to do it once
-            $prop = $reflect->getProperty($markedProperty->name);
-            $prop->setAccessible(true);
-
-            $markedProperty->reflectionProperty = $prop;
-        }
-
-//        foreach ($this->markedProperties as $markedProperty) {
-//            $markedProperty->reflectionProperty = new PropertyAccess($markedProperty->name);
-//        }
-    }
 }

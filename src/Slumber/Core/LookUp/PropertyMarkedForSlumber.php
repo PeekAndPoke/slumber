@@ -5,6 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\LookUp;
 
+use PeekAndPoke\Component\PropertyAccess\PropertyAccess;
 use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Annotation\PropertyMappingMarker;
@@ -26,18 +27,8 @@ class PropertyMarkedForSlumber
     public $allMarkers;
     /** @var Mapper */
     public $mapper;
-
-    /**
-     * The reflection property used for access
-     *
-     * CAUTION: this must NOT be populated before serializing. Classes of the reflection api cannot be serialized or
-     *          unserialized
-     *
-     * @see EntityConfig::warmUp
-     *
-     * @var \ReflectionProperty
-     */
-    public $reflectionProperty;
+    /** @var PropertyAccess Accessor for reading and writing the property */
+    public $propertyAccess;
 
     /**
      * PropertyMarkedForSlumber constructor.
@@ -47,6 +38,7 @@ class PropertyMarkedForSlumber
      * @param PropertyMappingMarker $marker
      * @param PropertyMarker[]      $allMarkers
      * @param Mapper                $mapper
+     * @param PropertyAccess        $propertyAccess
      *
      * @return PropertyMarkedForSlumber
      */
@@ -55,17 +47,45 @@ class PropertyMarkedForSlumber
         $alias,
         PropertyMappingMarker $marker,
         $allMarkers,
-        Mapper $mapper
+        Mapper $mapper,
+        PropertyAccess $propertyAccess
     ) {
         $ret = new self;
 
-        $ret->name       = $propertyName;
-        $ret->alias      = $alias;
-        $ret->marker     = $marker;
-        $ret->allMarkers = Psi::it($allMarkers)->filter(new IsInstanceOf(PropertyMarker::class))->toArray();
-        $ret->mapper     = $mapper;
+        $ret->name           = $propertyName;
+        $ret->alias          = $alias;
+        $ret->marker         = $marker;
+        $ret->allMarkers     = Psi::it($allMarkers)->filter(new IsInstanceOf(PropertyMarker::class))->toArray();
+        $ret->mapper         = $mapper;
+        $ret->propertyAccess = $propertyAccess;
 
         return $ret;
+    }
+
+    /**
+     * @param string $alias
+     *
+     * @return PropertyMarkedForSlumber
+     */
+    public function withAlias($alias)
+    {
+        $clone        = clone $this;
+        $clone->alias = $alias;
+
+        return $clone;
+    }
+
+    /**
+     * @param Mapper $mapper
+     *
+     * @return PropertyMarkedForSlumber
+     */
+    public function withMapper(Mapper $mapper)
+    {
+        $clone         = clone $this;
+        $clone->mapper = $mapper;
+
+        return $clone;
     }
 
     /**

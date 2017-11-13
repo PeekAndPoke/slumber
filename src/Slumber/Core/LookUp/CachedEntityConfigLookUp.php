@@ -83,8 +83,6 @@ class CachedEntityConfigLookUp extends DelegatingEntityConfigReader
             $this->saveToCache($cacheKey, $cacheData, $class);
         }
 
-        $cacheData->warmUp();
-
         return $this->known[$cacheKey] = $cacheData;
     }
 

@@ -229,6 +229,8 @@ class MongoDbStorageDriver implements StorageDriver
     public function findOne(array $query = null)
     {
         // TODO: find a more encapsulated way for looking it up in the pool
+        //       can we use the propertyAccess of the ID and use the propertyName? Is the alright ?
+
         // do we have it in the pool ?
         if (count($query) === 1
             && isset($query['_id'])
@@ -258,8 +260,7 @@ class MongoDbStorageDriver implements StorageDriver
      */
     private function getItemId($item)
     {
-        // TODO: we cannot know that getId() exists ... we need to read it from the EntityConfig
-        return $item->getId();
+        return $this->entityConfig->getIdAccess()->get($item);
     }
 
     /**
@@ -268,8 +269,7 @@ class MongoDbStorageDriver implements StorageDriver
      */
     private function setItemId($entity, $id)
     {
-        // TODO: we cannot know that setId() exists ... we need to read it from the EntityConfig
-        $entity->setId($id);
+        $this->entityConfig->getIdAccess()->set($entity, $id);
     }
 
     /**

@@ -9,6 +9,8 @@ use Doctrine\Common\Annotations\Reader;
 use PeekAndPoke\Component\Creator\Creator;
 use PeekAndPoke\Component\Creator\CreatorFactory;
 use PeekAndPoke\Component\Creator\CreatorFactoryImpl;
+use PeekAndPoke\Component\PropertyAccess\PropertyAccessFactory;
+use PeekAndPoke\Component\PropertyAccess\PropertyAccessFactoryImpl;
 use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Annotation\ClassCreatorMarker;
@@ -33,6 +35,8 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
     private $mappings;
     /** @var CreatorFactory */
     private $creatorFactory;
+    /** @var PropertyAccessFactory */
+    private $propertyAccessFactory;
 
     /**
      * @param ContainerInterface    $serviceProvider
@@ -45,7 +49,8 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
         $this->serviceProvider  = $serviceProvider;
         $this->mappings         = $mappings;
 
-        $this->creatorFactory = new CreatorFactoryImpl();
+        $this->creatorFactory        = new CreatorFactoryImpl();
+        $this->propertyAccessFactory = new PropertyAccessFactoryImpl();
     }
 
     /**
@@ -62,8 +67,6 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
             $this->getClassMarkers($subject),
             $this->getPropertyMarkersRecursive($subject)
         );
-
-        $config->warmUp();
 
         return $config;
     }
@@ -117,27 +120,40 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
     }
 
     /**
-     * @param \ReflectionClass $subject
+     * @param \ReflectionClass $subjectClass
      *
      * @return PropertyMarkedForSlumber[]
      */
-    private function getPropertyMarkersRecursive(\ReflectionClass $subject)
+    private function getPropertyMarkersRecursive(\ReflectionClass $subjectClass)
     {
         /** @var PropertyMarkedForSlumber[] $result */
-        $result     = [];
-        $properties = $subject->getProperties();
+        $result = [];
 
-        foreach ($properties as $property) {
+        // We climb up the inheritance ladder to also capture private properties that are not shadowed
+        // by other properties on derived classes.
+        while ($subjectClass instanceof \ReflectionClass && $subjectClass->isUserDefined()) {
 
-            $context = $this->getPropertyValidationContext($subject, $property);
-            $marker  = $this->getPropertyAnnotationsOfType($context);
+            $properties = $subjectClass->getProperties();
 
-            if ($marker) {
-                $result[] = $this->enrich($marker);
+            foreach ($properties as $property) {
+
+                $propertyName = $property->getName();
+
+                if (!isset($result[$propertyName])) {
+
+                    $context      = $this->getPropertyValidationContext($subjectClass, $property);
+                    $marker       = $this->getPropertyAnnotationsOfType($context);
+
+                    if ($marker) {
+                        $result[$propertyName] = $this->enrich($marker);
+                    }
+                }
             }
+
+            $subjectClass = $subjectClass->getParentClass();
         }
 
-        return $result;
+        return array_values($result);
     }
 
     /**
@@ -160,6 +176,7 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
     {
         $annotations = $this->annotationReader->getPropertyAnnotations($context->property);
 
+        // get the mapping marker like AsString() or AsObject() ...
         $marker = Psi::it($annotations)
             ->filter(new IsInstanceOf(PropertyMappingMarker::class))
             ->each($context)
@@ -171,13 +188,15 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
 
         $newEntry = new PropertyMarkedForSlumber();
 
-        $newEntry->name       = $context->property->getName();
-        $newEntry->alias      = $marker->hasAlias() ? $marker->getAlias() : $context->property->getName();
-        $newEntry->marker     = $marker;
-        $newEntry->allMarkers = Psi::it($annotations)
+        $newEntry->name           = $context->property->getName();
+        $newEntry->alias          = $marker->hasAlias() ? $marker->getAlias() : $context->property->getName();
+        $newEntry->marker         = $marker;
+        $newEntry->allMarkers     = Psi::it($annotations)
             ->filter(new IsInstanceOf(PropertyMarker::class))
             ->each($context)
             ->toArray();
+        $newEntry->mapper         = $this->mappings->createMapper($marker);
+        $newEntry->propertyAccess = $this->propertyAccessFactory->create($context->cls, $context->property);
 
         return $newEntry;
     }
