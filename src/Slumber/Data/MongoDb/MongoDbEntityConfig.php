@@ -5,6 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb;
 
+use PeekAndPoke\Component\PropertyAccess\PropertyAccess;
 use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Annotation\ClassMarker;
@@ -68,17 +69,13 @@ class MongoDbEntityConfig extends EntityConfig
     }
 
     /**
+     * Get access to the primary id in order to read and write it without having to know the name of the property
      *
-     * TODO: We need PropertyAccess implementation and do $access = $entityConfig->getIdAccess(); $access->get()
-     *
-     * Why do we need this? Because the id could be defined as private in a base class. This issue is all over the place ...
-     * So where ever getIdMarker is used, it is most likely wrong
-     *
-     * @return PropertyMarkedForSlumber
+     * @return PropertyAccess
      */
-    public function getIdMarker()
+    public function getIdAccess()
     {
-        return $this->idMarker;
+        return $this->idMarker->propertyAccess;
     }
 
     /**
@@ -165,18 +162,10 @@ class MongoDbEntityConfig extends EntityConfig
             ->filter(new IsInstanceOf(PropertyMarkedForSlumber::class))
             ->map(function (PropertyMarkedForSlumber $p) {
 
-                // modify AsId markers
+                // search for the first AsId marker and modify it
                 if ($this->idMarker === null && $p->getFirstMarkerOf(AsId::class)) {
                     // remember the property marked as primary id
-                    $this->idMarker = PropertyMarkedForSlumber::create(
-                        $p->name,
-                        '_id',
-                        $p->marker,
-                        $p->allMarkers,
-                        new PrimaryIdMapper($p->mapper->getOptions())
-                    );
-
-                    return $this->idMarker;
+                    return $this->idMarker = $p->withAlias('_id')->withMapper(new PrimaryIdMapper($p->mapper->getOptions()));
                 }
 
                 // return unmodified
@@ -198,7 +187,6 @@ class MongoDbEntityConfig extends EntityConfig
                 if ($asDbRef) {
 
                     // is it accompanied by an AsObject marker ?
-
                     /** @var AsObject $asObj */
                     $asObj = $p->getFirstMarkerOf(AsObject::class);
 
@@ -207,13 +195,7 @@ class MongoDbEntityConfig extends EntityConfig
                         $asDbRef->setObjectOptions($asObj);
 
                         // return the modified marker
-                        return PropertyMarkedForSlumber::create(
-                            $p->name,
-                            $p->alias,
-                            $p->marker,
-                            $p->allMarkers,
-                            new DbReferenceMapper($asDbRef)
-                        );
+                        return $p->withMapper(new DbReferenceMapper($asDbRef));
                     }
 
                     // is it a collection and has an ObjectMapper as leave? Then we replace t

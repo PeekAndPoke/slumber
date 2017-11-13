@@ -8,10 +8,12 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb;
 
-use MongoDB;
+use MongoDB\Collection;
+use MongoDB\Driver\Exception\WriteException;
 use PeekAndPoke\Component\Slumber\Data\AwakingCursorIterator;
 use PeekAndPoke\Component\Slumber\Data\Cursor;
 use PeekAndPoke\Component\Slumber\Data\EntityPool;
+use PeekAndPoke\Component\Slumber\Data\Error\DuplicateError;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\Error\MongoDbDuplicateError;
 use PeekAndPoke\Component\Slumber\Data\Result;
 use PeekAndPoke\Component\Slumber\Data\StorageDriver;
@@ -25,7 +27,7 @@ class MongoDbStorageDriver implements StorageDriver
 {
     /** @var EntityPool */
     private $entityPool;
-    /** @var MongoDB\Collection */
+    /** @var Collection */
     private $collection;
     /** @var MongoDbCodecSet */
     private $codecSet;
@@ -34,7 +36,7 @@ class MongoDbStorageDriver implements StorageDriver
     /** @var MongoDbEntityConfig */
     private $entityConfig;
 
-    public function __construct(EntityPool $entityPool, MongoDbCodecSet $codecSet, MongoDB\Collection $collection, \ReflectionClass $entityBaseClass)
+    public function __construct(EntityPool $entityPool, MongoDbCodecSet $codecSet, Collection $collection, \ReflectionClass $entityBaseClass)
     {
         $this->entityPool      = $entityPool;
         $this->codecSet        = $codecSet;
@@ -63,6 +65,8 @@ class MongoDbStorageDriver implements StorageDriver
      * @param mixed $item
      *
      * @return Result\InsertOneResult
+     *
+     * @throws DuplicateError
      */
     public function insert($item)
     {
@@ -74,7 +78,7 @@ class MongoDbStorageDriver implements StorageDriver
 
         try {
             $result = $this->collection->insertOne($slumbering);
-        } catch (MongoDB\Driver\Exception\WriteException $e) {
+        } catch (WriteException $e) {
             throw MongoDbDuplicateError::from($e);
         }
 
@@ -97,6 +101,8 @@ class MongoDbStorageDriver implements StorageDriver
      * @param mixed $item
      *
      * @return Result\SaveOneResult
+     *
+     * @throws DuplicateError
      */
     public function save($item)
     {
@@ -111,7 +117,7 @@ class MongoDbStorageDriver implements StorageDriver
 
             try {
                 $insertOneResult = $this->collection->insertOne($slumbering);
-            } catch (MongoDB\Driver\Exception\WriteException $e) {
+            } catch (WriteException $e) {
                 throw MongoDbDuplicateError::from($e);
             }
 
@@ -133,7 +139,7 @@ class MongoDbStorageDriver implements StorageDriver
                     ['$set' => $slumbering],
                     ['upsert' => true]
                 );
-            } catch (MongoDB\Driver\Exception\WriteException $e) {
+            } catch (WriteException $e) {
                 throw MongoDbDuplicateError::from($e);
             }
 
@@ -224,6 +230,8 @@ class MongoDbStorageDriver implements StorageDriver
     public function findOne(array $query = null)
     {
         // TODO: find a more encapsulated way for looking it up in the pool
+        //       can we use the propertyAccess of the ID and use the propertyName? Is the alright ?
+
         // do we have it in the pool ?
         if (count($query) === 1
             && isset($query['_id'])
@@ -253,8 +261,7 @@ class MongoDbStorageDriver implements StorageDriver
      */
     private function getItemId($item)
     {
-        // TODO: we cannot know that getId() exists ... we need to read it from the EntityConfig
-        return $item->getId();
+        return $this->entityConfig->getIdAccess()->get($item);
     }
 
     /**
@@ -263,8 +270,7 @@ class MongoDbStorageDriver implements StorageDriver
      */
     private function setItemId($entity, $id)
     {
-        // TODO: we cannot know that setId() exists ... we need to read it from the EntityConfig
-        $entity->setId($id);
+        $this->entityConfig->getIdAccess()->set($entity, $id);
     }
 
     /**

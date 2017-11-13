@@ -44,7 +44,7 @@ class RecordableHistory
         $notCompacted = 0;
 
         foreach ($this->records as $record) {
-            if ($record->getIsCompacted() === false) {
+            if ($record->getIsCompacted() === false || $record->getCompactedHistory() === null) {
                 $notCompacted++;
             } else {
                 $compacted += count($record->getCompactedHistory()->getDiffs());
@@ -65,7 +65,9 @@ class RecordableHistory
     {
         $record = count($this->records) > 0 ? $this->records[0] : new NullRecord();
 
-        return $record->getIsCompacted() ? $record->getCompactedHistory()->getInitialRecord() : $record;
+        return $record->getIsCompacted() && $record->getCompactedHistory() !== null
+            ? $record->getCompactedHistory()->getInitialRecord()
+            : $record;
     }
 
     /**
@@ -75,7 +77,9 @@ class RecordableHistory
     {
         $record = count($this->records) > 0 ? $this->records[count($this->records) - 1] : new NullRecord();
 
-        return $record->getIsCompacted() ? $record->getCompactedHistory()->getFinalRecord() : $record;
+        return $record->getIsCompacted() && $record->getCompactedHistory() !== null
+            ? $record->getCompactedHistory()->getFinalRecord()
+            : $record;
     }
 
     /**

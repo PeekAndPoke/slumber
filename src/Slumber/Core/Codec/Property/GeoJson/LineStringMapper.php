@@ -16,12 +16,20 @@ use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
  */
 class LineStringMapper extends AbstractPropertyMapper
 {
+    /** @var AsLineString */
+    private $options;
+
+    public function __construct(AsLineString $options)
+    {
+        $this->options = $options;
+    }
+
     /**
      * @return AsLineString
      */
     public function getOptions()
     {
-        return $this->getOptions();
+        return $this->options;
     }
 
     /**

@@ -945,7 +945,6 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
         // built in types
         $item->setASimpleDate(new \DateTime('2016-04-18'));
         $item->setALocalDate(new LocalDate('2015-10-12', 'Etc/UTC'));
-        // TODO: test the AsJsonString
 
         // mapped as it is
         $item->setASomethingAsIs('AsIs');

@@ -57,16 +57,11 @@ class MongoDbPoolingAwaker implements MongoDbAwaker
         $awokenClass = new \ReflectionClass($awoken);
 
         // We need to get the idMarker from the awoken class
-        $marker = $this->lookUp->getEntityConfig($awokenClass)->getIdMarker();
-
-        // TODO: We need PropertyAccess implementation and do $access = $entityConfig->getIdAccess(); $access->get()
-        $primaryIdProperty = $awokenClass->getProperty($marker->name);
-        $primaryIdProperty->setAccessible(true);
-        $primaryId = $primaryIdProperty->getValue($awoken);
+        $idAccess  = $this->lookUp->getEntityConfig($awokenClass)->getIdAccess();
+        $primaryId = $idAccess->get($awoken);
 
         // Can we find this entity in the pool ?
         if ($primaryId !== null && $this->pool->has($cls, EntityPool::PRIMARY_ID, $primaryId)) {
-
             return $this->pool->get($cls, EntityPool::PRIMARY_ID, $primaryId);
         }
 

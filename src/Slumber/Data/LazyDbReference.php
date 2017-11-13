@@ -43,7 +43,7 @@ class LazyDbReference implements ValueHolder
      */
     public static function unwrap($subject)
     {
-        if ($subject instanceof LazyDbReference) {
+        if ($subject instanceof self) {
             return $subject->getValue();
         }
 

@@ -16,12 +16,23 @@ use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
  */
 class PointMapper extends AbstractPropertyMapper
 {
+    /** @var AsPoint */
+    private $options;
+
+    /**
+     * @param AsPoint $options
+     */
+    public function __construct(AsPoint $options)
+    {
+        $this->options = $options;
+    }
+
     /**
      * @return AsPoint
      */
     public function getOptions()
     {
-        return $this->getOptions();
+        return $this->options;
     }
 
     /**

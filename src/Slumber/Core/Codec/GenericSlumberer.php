@@ -42,7 +42,7 @@ class GenericSlumberer implements Slumberer
                 // put the value to sleep using the alias name
                 $result[$entry->alias] = $entry->mapper->slumber(
                     $this,
-                    $entry->reflectionProperty->getValue($subject)
+                    $entry->propertyAccess->get($subject)
                 );
             }
 

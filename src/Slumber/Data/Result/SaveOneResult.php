@@ -16,7 +16,6 @@ class SaveOneResult extends InsertOneResult
     /** @var bool */
     private $upserted;
 
-
     /**
      * @param string $insertId
      * @param bool   $acknowledged
