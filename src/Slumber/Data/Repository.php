@@ -40,7 +40,7 @@ interface Repository
      *
      * @param mixed $item
      *
-     * @return mixed|null
+     * @return Result\InsertOneResult
      *
      * @throws SlumberRuntimeException When the given subject cannot be stored in this repository
      * @throws DuplicateError          When the underlying database permits the insert, due to a duplicate key exception
@@ -52,7 +52,7 @@ interface Repository
      *
      * @param mixed $item
      *
-     * @return array|null
+     * @return Result\SaveOneResult
      *
      * @throws SlumberRuntimeException When the given subject cannot be stored in this repository
      * @throws DuplicateError          When the underlying database permits the insert, due to a duplicate key exception
@@ -95,6 +95,8 @@ interface Repository
 
     /**
      * @param $entity
+     *
+     * @return Result\RemoveResult
      */
     public function remove($entity);
 
@@ -105,7 +107,7 @@ interface Repository
      *
      * @param array|null $query
      *
-     * @return
+     * @return Result\RemoveResult
      */
     public function removeAll(array $query = null);
 }

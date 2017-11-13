@@ -139,10 +139,10 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
 
                 $propertyName = $property->getName();
 
-                if (!isset($result[$propertyName])) {
+                if (! isset($result[$propertyName])) {
 
-                    $context      = $this->getPropertyValidationContext($subjectClass, $property);
-                    $marker       = $this->getPropertyAnnotationsOfType($context);
+                    $context = $this->getPropertyValidationContext($subjectClass, $property);
+                    $marker  = $this->getPropertyAnnotationsOfType($context);
 
                     if ($marker) {
                         $result[$propertyName] = $this->enrich($marker);

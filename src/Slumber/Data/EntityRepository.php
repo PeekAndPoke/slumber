@@ -153,7 +153,7 @@ class EntityRepository implements Repository
     /**
      * @param $entity
      *
-     * @return mixed
+     * @return Result\RemoveResult
      */
     public function remove($entity)
     {
