@@ -5,6 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb\Types;
 
+use MongoDB\BSON\ObjectId;
 use PeekAndPoke\Component\Slumber\Annotation\PropertyMappingMarker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\AbstractPropertyMapper;
@@ -46,7 +47,7 @@ class PrimaryIdMapper extends AbstractPropertyMapper
      */
     public function slumber(Slumberer $slumberer, $value)
     {
-        if ($value instanceof \MongoId) {
+        if ($value instanceof ObjectId) {
             return $value;
         }
 

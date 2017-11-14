@@ -18,6 +18,11 @@ class UnitTestUserRecordProvider implements UserRecordProvider
      */
     public function getUserRecord()
     {
-        return new UserRecord();
+        return (new UserRecord())
+            ->setName('UnitTestUser')
+            ->setUserAgent('CLI')
+            ->setRole('Admin')
+            ->setIp('127.0.0.1')
+            ->setUserId('UnitTest');
     }
 }

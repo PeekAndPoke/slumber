@@ -1,6 +1,6 @@
 <?php
 
-namespace PeekAndPoke\Component\Slumber\Data\Journal\DomainModel;
+namespace PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -65,9 +65,13 @@ class RecordableHistory
     {
         $record = count($this->records) > 0 ? $this->records[0] : new NullRecord();
 
-        return $record->getIsCompacted() && $record->getCompactedHistory() !== null
-            ? $record->getCompactedHistory()->getInitialRecord()
-            : $record;
+        if ($record->getIsCompacted() &&
+            $record->getCompactedHistory() !== null
+        ) {
+            return $record->getCompactedHistory()->getInitialRecord();
+        }
+
+        return $record;
     }
 
     /**
@@ -77,9 +81,12 @@ class RecordableHistory
     {
         $record = count($this->records) > 0 ? $this->records[count($this->records) - 1] : new NullRecord();
 
-        return $record->getIsCompacted() && $record->getCompactedHistory() !== null
-            ? $record->getCompactedHistory()->getFinalRecord()
-            : $record;
+        if ($record->getIsCompacted() &&
+            $record->getCompactedHistory() !== null) {
+            return $record->getCompactedHistory()->getFinalRecord();
+        }
+
+        return $record;
     }
 
     /**

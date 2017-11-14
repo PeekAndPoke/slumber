@@ -170,7 +170,7 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
     /**
      * @param PropertyAnnotationValidationContext $context
      *
-     * @return PropertyMarkedForSlumber
+     * @return PropertyMarkedForSlumber|null
      */
     private function getPropertyAnnotationsOfType(PropertyAnnotationValidationContext $context)
     {

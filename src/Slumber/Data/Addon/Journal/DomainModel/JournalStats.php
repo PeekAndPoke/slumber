@@ -3,7 +3,7 @@
  * File was created 23.04.2015 16:31
  */
 
-namespace PeekAndPoke\Component\Slumber\Data\Journal\DomainModel;
+namespace PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>

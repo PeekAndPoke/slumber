@@ -3,12 +3,12 @@
  * File was created 28.04.2016 08:30
  */
 
-namespace PeekAndPoke\Component\Slumber\Data\Journal;
+namespace PeekAndPoke\Component\Slumber\Data\Addon\Journal;
 
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\JournalEntry;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\Record;
 use PeekAndPoke\Component\Slumber\Data\Cursor;
 use PeekAndPoke\Component\Slumber\Data\EntityRepository;
-use PeekAndPoke\Component\Slumber\Data\Journal\DomainModel\JournalEntry;
-use PeekAndPoke\Component\Slumber\Data\Journal\DomainModel\Record;
 
 /**
  * @method JournalEntry[]|Cursor find(array $query = null)

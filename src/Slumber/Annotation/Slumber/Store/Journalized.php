@@ -8,9 +8,8 @@ namespace PeekAndPoke\Component\Slumber\Annotation\Slumber\Store;
 use Doctrine\Common\Annotations\Annotation;
 use PeekAndPoke\Component\Slumber\Annotation\ClassPostSaveListenerMarker;
 use PeekAndPoke\Component\Slumber\Annotation\ServiceInjectingSlumberAnnotation;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\JournalWriter;
 use PeekAndPoke\Component\Slumber\Data\Events\PostSaveEvent;
-use PeekAndPoke\Component\Slumber\Data\Journal\JournalWriter;
-use PeekAndPoke\Component\Slumber\SlumberDependencies;
 
 /**
  * @Annotation
@@ -36,7 +35,7 @@ class Journalized extends ServiceInjectingSlumberAnnotation implements ClassPost
      */
     public function getServiceDefinitionDefault()
     {
-        return SlumberDependencies::JOURNAL_WRITER;
+        return JournalWriter::SERVICE_ID;
     }
 
     /**
@@ -44,6 +43,6 @@ class Journalized extends ServiceInjectingSlumberAnnotation implements ClassPost
      */
     public function getServiceClassDefinitionDefault()
     {
-        return SlumberDependencies::JOURNAL_WRITER_CLASS;
+        return JournalWriter::class;
     }
 }

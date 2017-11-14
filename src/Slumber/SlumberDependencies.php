@@ -7,7 +7,6 @@ namespace PeekAndPoke\Component\Slumber;
 
 use PeekAndPoke\Component\Slumber\Data\Addon\PublicReference\PublicReferenceGenerator;
 use PeekAndPoke\Component\Slumber\Data\Addon\UserRecord\UserRecordProvider;
-use PeekAndPoke\Component\Slumber\Data\Journal\JournalWriter;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -35,13 +34,4 @@ class SlumberDependencies
      * @see UserRecordProvider
      */
     const USER_RECORD_PROVIDER_CLASS = UserRecordProvider::class;
-
-    /**
-     * Key the service for writing the journal
-     */
-    const JOURNAL_WRITER = 'slumber.data.journal_writer';
-    /**
-     * The type of the journal writer service
-     */
-    const JOURNAL_WRITER_CLASS = JournalWriter::class;
 }

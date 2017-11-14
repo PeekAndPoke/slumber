@@ -13,6 +13,18 @@ use Psr\Container\ContainerInterface;
  */
 class UnitTestServiceProvider implements ContainerInterface
 {
+    /** @var array */
+    private $services;
+
+    public function __construct()
+    {
+        $this->services = [
+            SlumberDependencies::PUBLIC_REFERENCE_GENERATOR => new UnitTestPublicReferenceGenerator(),
+
+            SlumberDependencies::USER_RECORD_PROVIDER => new UnitTestUserRecordProvider(),
+        ];
+    }
+
     /**
      * @param string $id
      *
@@ -20,9 +32,7 @@ class UnitTestServiceProvider implements ContainerInterface
      */
     public function has($id)
     {
-        return
-            $id === SlumberDependencies::PUBLIC_REFERENCE_GENERATOR ||
-            $id === SlumberDependencies::USER_RECORD_PROVIDER;
+        return isset($this->services[$id]);
     }
 
     /**
@@ -33,13 +43,23 @@ class UnitTestServiceProvider implements ContainerInterface
      */
     public function get($id)
     {
-        switch ($id) {
-            case SlumberDependencies::PUBLIC_REFERENCE_GENERATOR:
-                return new UnitTestPublicReferenceGenerator();
-            case SlumberDependencies::USER_RECORD_PROVIDER:
-                return new UnitTestUserRecordProvider();
+        if (isset($this->services[$id])) {
+            return $this->services[$id];
         }
 
         throw new \ErrorException('Service ' . $id . ' cannot be provided!');
+    }
+
+    /**
+     * @param string $id
+     * @param mixed  $service
+     *
+     * @return $this
+     */
+    public function set($id, $service)
+    {
+        $this->services[$id] = $service;
+
+        return $this;
     }
 }

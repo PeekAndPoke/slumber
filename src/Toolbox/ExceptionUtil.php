@@ -6,6 +6,8 @@ use Psr\Log\LoggerInterface;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
+ *
+ * @codeCoverageIgnore
  */
 class ExceptionUtil
 {

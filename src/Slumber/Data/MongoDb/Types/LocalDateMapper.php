@@ -65,13 +65,24 @@ class LocalDateMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
+        // default cases first
+        $canAccess     = $value instanceof \ArrayAccess || is_array($value);
+        $hasComponents = isset($value['date'], $value['tz']);
+
         // default case
-        /** @noinspection NotOptimalIfConditionsInspection */
-        if (($value instanceof \ArrayAccess || is_array($value))
-            && isset($value['date'], $value['tz'])
-            && $value['date'] instanceof UTCDateTime
-        ) {
-            return new LocalDate($value['date']->toDateTime(), $value['tz']);
+        if ($canAccess && $hasComponents) {
+
+            if ($value['date'] instanceof \DateTime) {
+                return new LocalDate($value['date'], $value['tz']);
+            }
+
+            if ($value['date'] instanceof UTCDateTime) {
+                return new LocalDate($value['date']->toDateTime(), $value['tz']);
+            }
+        }
+
+        if ($value instanceof \DateTime) {
+            return LocalDate::raw($value);
         }
 
         if ($value instanceof UTCDateTime) {

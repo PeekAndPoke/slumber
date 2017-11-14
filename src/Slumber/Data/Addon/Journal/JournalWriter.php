@@ -3,11 +3,11 @@
  * File was created 28.04.2016 08:16
  */
 
-namespace PeekAndPoke\Component\Slumber\Data\Journal;
+namespace PeekAndPoke\Component\Slumber\Data\Addon\Journal;
 
-use PeekAndPoke\Component\Slumber\Data\Journal\DomainModel\JournalStats;
-use PeekAndPoke\Component\Slumber\Data\Journal\DomainModel\RecordableHistory;
-use PeekAndPoke\Component\Slumber\Data\Journal\Exception\JournalRuntimeException;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\JournalStats;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\RecordableHistory;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\Exception\JournalRuntimeException;
 
 
 /**
@@ -15,6 +15,8 @@ use PeekAndPoke\Component\Slumber\Data\Journal\Exception\JournalRuntimeException
  */
 interface JournalWriter
 {
+     const SERVICE_ID = 'slumber.data.addon.journal_writer';
+
     /**
      * @param mixed $subject
      * @param array $serializedData

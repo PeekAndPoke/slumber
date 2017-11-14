@@ -60,6 +60,10 @@ class SimpleDateMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
+        if ($value instanceof \DateTime) {
+            return $value;
+        }
+
         if ($value instanceof UTCDateTime) {
             return $value->toDateTime();
         }

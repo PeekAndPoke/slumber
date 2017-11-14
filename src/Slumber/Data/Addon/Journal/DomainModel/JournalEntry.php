@@ -3,7 +3,7 @@
  * File was created 28.04.2016 08:28
  */
 
-namespace PeekAndPoke\Component\Slumber\Data\Journal\DomainModel;
+namespace PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel;
 
 use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 use PeekAndPoke\Component\Slumber\Data\Addon\SlumberId;

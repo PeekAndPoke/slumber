@@ -3,7 +3,7 @@
  * File was created 06.02.2015 10:07
  */
 
-namespace PeekAndPoke\Component\Slumber\Data\Journal\Exception;
+namespace PeekAndPoke\Component\Slumber\Data\Addon\Journal\Exception;
 
 use PeekAndPoke\Component\Slumber\Data\Error\StorageError;
 

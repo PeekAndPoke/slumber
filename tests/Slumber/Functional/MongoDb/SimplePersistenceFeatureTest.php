@@ -25,7 +25,7 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
     {
         // clear the repo before every test
         self::$mainRepo->removeAll([]);
-        self::$refRepo->removeAll([]);
+        self::$journalRepo->removeAll([]);
     }
 
     /**
@@ -259,7 +259,7 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
 
         self::$storage->getEntityPool()->clear();
         /** @var UnitTestAggregatedClass $reloadedRef */
-        $reloadedRef = self::$refRepo->findByReference($reloadedMain->getAReferencedObject()->getReference());
+        $reloadedRef = self::$journalRepo->findByReference($reloadedMain->getAReferencedObject()->getReference());
 
         static::assertNotNull($reloadedRef, 'A referenced object must be reloaded directly');
         static::assertEquals('ref', $reloadedRef->getName(), 'A referenced object must be reloaded correctly');
@@ -854,8 +854,8 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
 
         // We need to store the referenced entities individually. This is not done when storing the main object
         foreach ($aListOfReferencedObjects as $referencedObject) {
-            if (static::$refRepo) {
-                static::$refRepo->save($referencedObject);
+            if (static::$journalRepo) {
+                static::$journalRepo->save($referencedObject);
             }
         }
 
@@ -876,8 +876,8 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
         array_walk_recursive(
             $aListOfMapsOfReferencedObjects,
             function ($item) {
-                if ($item !== null && static::$refRepo) {
-                    static::$refRepo->save($item);
+                if ($item !== null && static::$journalRepo) {
+                    static::$journalRepo->save($item);
                 }
             }
         );

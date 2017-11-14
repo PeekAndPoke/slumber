@@ -203,6 +203,8 @@ class MongoDbStorageDriver implements StorageDriver
     {
         $query = $query ?: [];
 
+        // We do not provide the cursor right away.
+        // By doing so we post pone the query until the data is really requested by iterating it.
         $cursorProvider = function ($options) use ($query) {
 
             // we want raw php arrays as return types

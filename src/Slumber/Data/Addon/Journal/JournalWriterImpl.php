@@ -3,13 +3,13 @@
  * File was created 28.04.2016 07:05
  */
 
-namespace PeekAndPoke\Component\Slumber\Data\Journal;
+namespace PeekAndPoke\Component\Slumber\Data\Addon\Journal;
 
-use PeekAndPoke\Component\Slumber\Data\Journal\DomainModel\JournalEntry;
-use PeekAndPoke\Component\Slumber\Data\Journal\DomainModel\JournalStats;
-use PeekAndPoke\Component\Slumber\Data\Journal\DomainModel\Record;
-use PeekAndPoke\Component\Slumber\Data\Journal\DomainModel\RecordableHistory;
-use PeekAndPoke\Component\Slumber\Data\Journal\Exception\JournalRuntimeException;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\JournalEntry;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\JournalStats;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\Record;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\RecordableHistory;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\Exception\JournalRuntimeException;
 use PeekAndPoke\Component\Slumber\Data\Storage;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

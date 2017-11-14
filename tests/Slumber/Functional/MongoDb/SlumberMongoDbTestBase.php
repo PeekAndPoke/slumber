@@ -42,7 +42,7 @@ abstract class SlumberMongoDbTestBase extends TestCase
     /** @var EntityRepository */
     static protected $mainRepo;
     /** @var EntityRepository */
-    static protected $refRepo;
+    static protected $journalRepo;
 
     public static function setUpBeforeClass()
     {
@@ -83,7 +83,7 @@ abstract class SlumberMongoDbTestBase extends TestCase
         self::$storage->addRepository(self::$mainRepo);
         self::$mainRepo->buildIndexes();
 
-        self::$refRepo = new EntityRepository(
+        self::$journalRepo = new EntityRepository(
             'ref_class',
             new MongoDbStorageDriver(
                 $entityPool,
@@ -92,8 +92,8 @@ abstract class SlumberMongoDbTestBase extends TestCase
                 new \ReflectionClass(UnitTestAggregatedClass::class)
             )
         );
-        self::$storage->addRepository(self::$refRepo);
-        self::$refRepo->buildIndexes();
+        self::$storage->addRepository(self::$journalRepo);
+        self::$journalRepo->buildIndexes();
 
     }
 }
