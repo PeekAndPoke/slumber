@@ -4,7 +4,10 @@
  *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
+
 namespace PeekAndPoke\Component\Emitter;
+
+use PeekAndPoke\Component\Psi\Interfaces\Functions\UnaryFunctionInterface;
 
 /**
  * Emitter
@@ -32,6 +35,10 @@ class EmitterImpl implements Emitter
      */
     public function bind($eventName, $handler)
     {
+        if (! self::isListener($handler)) {
+            return $this;
+        }
+
         if (false === array_key_exists($eventName, $this->bindings)) {
             $this->bindings[$eventName] = new \SplObjectStorage();
         }
@@ -62,18 +69,26 @@ class EmitterImpl implements Emitter
 
         $listeners = $this->bindings[$eventName];
 
+        /** @var callable $listener */
         foreach ($listeners as $listener) {
 
-            if ($listener instanceof \Closure ||
-                $listener instanceof Listener ||
-                is_callable($listener)) {
-
-                $listener($event);
-            }
+            $listener($event);
 
             // TODO: check if event has been canceled
         }
 
         return $this;
+    }
+
+    /**
+     * @param Listener|UnaryFunctionInterface|callable $listener
+     *
+     * @return bool
+     */
+    public static function isListener($listener)
+    {
+        return $listener instanceof \Closure ||
+               $listener instanceof Listener ||
+               is_callable($listener);
     }
 }

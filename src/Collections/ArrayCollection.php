@@ -103,19 +103,43 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     public function contains($item, $comparator = null)
     {
         if ($comparator === null) {
+            return $this->containsPure($item);
+        }
 
-            foreach ($this as $storedItem) {
-                if ($storedItem === $item) {
-                    return true;
-                }
+        return $this->containsWithComparator($item, $comparator);
+    }
+
+    /**
+     * Perform pure contains with type safe comparison
+     *
+     * @param mixed $item
+     *
+     * @return bool
+     */
+    private function containsPure($item)
+    {
+        foreach ($this as $storedItem) {
+            if ($storedItem === $item) {
+                return true;
             }
+        }
 
-        } else {
+        return false;
+    }
 
-            foreach ($this as $storedItem) {
-                if ($comparator($storedItem, $item)) {
-                    return true;
-                }
+    /**
+     * Perform contains with comparator
+     *
+     * @param mixed                                 $item
+     * @param BinaryFunctionInterface|callable|null $comparator
+     *
+     * @return bool
+     */
+    private function containsWithComparator($item, $comparator)
+    {
+        foreach ($this as $storedItem) {
+            if ($comparator($storedItem, $item)) {
+                return true;
             }
         }
 
