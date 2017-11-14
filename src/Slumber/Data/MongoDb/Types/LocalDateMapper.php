@@ -69,26 +69,16 @@ class LocalDateMapper extends AbstractPropertyMapper
         $canAccess     = $value instanceof \ArrayAccess || is_array($value);
         $hasComponents = isset($value['date'], $value['tz']);
 
-        // default case
-        if ($canAccess && $hasComponents) {
-
-            if ($value['date'] instanceof \DateTime) {
-                return new LocalDate($value['date'], $value['tz']);
-            }
-
-            if ($value['date'] instanceof UTCDateTime) {
-                return new LocalDate($value['date']->toDateTime(), $value['tz']);
-            }
+        if ($canAccess && $hasComponents && $value['date'] instanceof \DateTime) {
+            return new LocalDate($value['date'], $value['tz']);
         }
 
+        // compatibility in case a SimpleDate was changed to a LocalDate
         if ($value instanceof \DateTime) {
             return LocalDate::raw($value);
         }
 
-        if ($value instanceof UTCDateTime) {
-            return LocalDate::raw((new \DateTime())->setTimestamp($value->sec));
-        }
-
+        // compatibility in case a string was change to a LocalDate
         if (IsDateString::isValidDateString($value)) {
             return LocalDate::raw(new \DateTime($value));
         }

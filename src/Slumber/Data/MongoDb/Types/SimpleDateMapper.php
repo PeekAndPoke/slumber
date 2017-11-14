@@ -6,6 +6,7 @@
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb\Types;
 
 use MongoDB\BSON\UTCDateTime;
+use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsDateString;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsSimpleDate;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\AbstractPropertyMapper;
@@ -64,17 +65,17 @@ class SimpleDateMapper extends AbstractPropertyMapper
             return $value;
         }
 
-        if ($value instanceof UTCDateTime) {
-            return $value->toDateTime();
+        // compatibility in case a LocalDate was changed into a SimpleDate
+        $canAccess     = $value instanceof \ArrayAccess || is_array($value);
+        $hasComponents = isset($value['date'], $value['tz']);
+
+        if ($canAccess && $hasComponents && $value['date'] instanceof \DateTime) {
+            return (new \DateTime('now', new \DateTimeZone($value['tz'])))->setTimestamp($value['date']->getTimestamp());
         }
 
-        // compatibility
-        /** @noinspection NotOptimalIfConditionsInspection */
-        if (($value instanceof \ArrayAccess || is_array($value))
-            && isset($value['date'], $value['tz'])
-            && $value['date'] instanceof UTCDateTime
-        ) {
-            return (new \DateTime('now', new \DateTimeZone($value['tz'])))->setTimestamp($value['date']->toDatetime()->getTimestamp());
+        // compatibility in case a string was change to a LocalDate
+        if (IsDateString::isValidDateString($value)) {
+            return new \DateTime($value);
         }
 
         return null;
