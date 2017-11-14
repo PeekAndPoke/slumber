@@ -5,13 +5,13 @@
 
 namespace PeekAndPoke\Component\Slumber\Data\Events;
 
-use PeekAndPoke\Component\Emitter\Interfaces\EventInterface;
+use PeekAndPoke\Component\Emitter\Event;
 use Psr\Container\ContainerInterface;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class PostDeleteEvent implements EventInterface
+class PostDeleteEvent implements Event
 {
     const NAME = 'POST_DELETE';
 

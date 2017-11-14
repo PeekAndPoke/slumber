@@ -5,7 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Annotation\Slumber\Store\ListeningTo;
 
-use PeekAndPoke\Component\Emitter\Interfaces\ListenerInterface;
+use PeekAndPoke\Component\Emitter\Listener;
 use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Slumber\Annotation\ServiceInjectingSlumberAnnotation;
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
@@ -23,7 +23,7 @@ abstract class AbstractListenerMarker extends ServiceInjectingSlumberAnnotation
      *
      * @param ContainerInterface $provider
      *
-     * @return ListenerInterface
+     * @return Listener
      */
     protected function getService(ContainerInterface $provider)
     {
@@ -41,7 +41,7 @@ abstract class AbstractListenerMarker extends ServiceInjectingSlumberAnnotation
 
         $service  = $this->getServiceDefinition();
         $instance = $this->getService($context->getProvider());
-        $ofClass  = ListenerInterface::class;
+        $ofClass  = Listener::class;
         $check    = new IsInstanceOf($ofClass);
 
         if (! $check->__invoke($instance)) {

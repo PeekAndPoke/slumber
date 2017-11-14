@@ -4,17 +4,17 @@
  *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-namespace PeekAndPoke\Component\Emitter\Interfaces;
+namespace PeekAndPoke\Component\Emitter;
 
 /**
- * ListenerInterface
+ * Listener for an emitter
  *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-interface ListenerInterface
+interface Listener
 {
     /**
-     * @param EventInterface $event
+     * @param Event $event
      */
     public function __invoke($event);
 }
