@@ -29,6 +29,16 @@ abstract class AbstractCollection implements Collection
     }
 
     /**
+     * @return $this
+     */
+    public function clear()
+    {
+        $this->data = [];
+
+        return $this;
+    }
+
+    /**
      * @return Psi
      */
     public function psi()

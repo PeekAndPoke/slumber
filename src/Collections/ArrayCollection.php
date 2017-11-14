@@ -5,22 +5,15 @@
 
 namespace PeekAndPoke\Component\Collections;
 
+use PeekAndPoke\Component\Psi\Interfaces\Functions\BinaryFunctionInterface;
+use PeekAndPoke\Component\Psi\Interfaces\Functions\UnaryFunctionInterface;
+
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
 class ArrayCollection extends AbstractCollection implements \ArrayAccess
 {
-    /**
-     * @return $this
-     */
-    public function clear()
-    {
-        $this->data = [];
-
-        return $this;
-    }
-
     /**
      * @param $item
      *
@@ -34,13 +27,13 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * Add or replace
+     * Add or replace by condition
      *
      * The first item that meets the condition is replaced.
      * When the condition is not met the subject will be added to the end.
      *
-     * @param mixed    $subject     The subject to append or replace with
-     * @param callable $replaceWhen The condition to check (gets each entry passed in individually)
+     * @param mixed                           $subject     The subject to append or replace with
+     * @param UnaryFunctionInterface|callable $replaceWhen The condition to check (gets each entry passed in individually)
      *
      * @return ArrayCollection
      */
@@ -50,6 +43,7 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
 
             if ($replaceWhen($item)) {
                 $this[$k] = $subject;
+
                 return $this;
             }
         }
@@ -76,13 +70,18 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * @param $item
+     * Append an item if it does not yet exist in the collection.
+     *
+     * @see contains()
+     *
+     * @param mixed                                 $item
+     * @param BinaryFunctionInterface|callable|null $comparator
      *
      * @return $this
      */
-    public function appendIfNotExists($item)
+    public function appendIfNotExists($item, $comparator = null)
     {
-        if (! $this->contains($item)) {
+        if (! $this->contains($item, $comparator)) {
             $this->append($item);
         }
 
@@ -90,15 +89,33 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
-     * @param $item
+     * Check if an item is in the list
+     *
+     * By default type safe comparison is used.
+     *
+     * You can provide $comparator for customer comparison.
+     *
+     * @param mixed                                 $item
+     * @param BinaryFunctionInterface|callable|null $comparator
      *
      * @return bool
      */
-    public function contains($item)
+    public function contains($item, $comparator = null)
     {
-        foreach ($this as $storedItem) {
-            if ($storedItem === $item) {
-                return true;
+        if ($comparator === null) {
+
+            foreach ($this as $storedItem) {
+                if ($storedItem === $item) {
+                    return true;
+                }
+            }
+
+        } else {
+
+            foreach ($this as $storedItem) {
+                if ($comparator($storedItem, $item)) {
+                    return true;
+                }
             }
         }
 
@@ -122,6 +139,10 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     }
 
     /**
+     * Remove items by type safe comparison
+     *
+     * @see removeWhen()
+     *
      * @param $item
      */
     public function remove($item)

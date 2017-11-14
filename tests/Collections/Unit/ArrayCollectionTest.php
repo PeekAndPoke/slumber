@@ -40,6 +40,14 @@ class ArrayCollectionTest extends TestCase
 
     //// BEGIN: testing AbstractCollection ////////////////////////////////////////////////////////////////////////
 
+    public function testClear()
+    {
+        $subject = new ArrayCollection([1, 2, 3]);
+        $subject->clear();
+
+        $this->assertCount(0, $subject, 'clear() must work');
+    }
+
     public function testPsi()
     {
         $data    = [1, 'a'];
@@ -137,6 +145,275 @@ class ArrayCollectionTest extends TestCase
             ],
         ];
     }
+
+    public function testAppendOrReplaceWillReplaceFirstOnly()
+    {
+        $subject = new ArrayCollection(
+            [
+                ['a' => 1],
+                ['a' => 2],
+                ['a' => 3],
+                ['a' => 2],
+            ]
+        );
+
+        $subject->appendOrReplace(['a' => 'REPLACED'], function ($item) {
+            return isset($item['a']) && $item['a'] === 2;
+        });
+
+        $this->assertSame(
+            [
+                ['a' => 1],
+                ['a' => 'REPLACED'],
+                ['a' => 3],
+                ['a' => 2],
+            ],
+            $subject->getData(),
+            'Replacing with appendOrReplace must work'
+        );
+    }
+
+    public function testAppendOrReplaceWillAppend()
+    {
+        $subject = new ArrayCollection(
+            [
+                ['a' => 1],
+            ]
+        );
+
+        $subject->appendOrReplace(['a' => 'APPENDED'], function () { return false; });
+
+        $this->assertSame(
+            [
+                ['a' => 1],
+                ['a' => 'APPENDED'],
+            ],
+            $subject->getData(),
+            'Appending with appendOrReplace must work'
+        );
+    }
+
+    /**
+     * @param array $base
+     * @param array $append
+     * @param array $expected
+     *
+     * @dataProvider provideTestAppendAll
+     */
+    public function testAppendAll($base, $append, $expected)
+    {
+        $subject = new ArrayCollection($base);
+        $subject->appendAll($append);
+
+        $this->assertSame(
+            $expected,
+            $subject->getData(),
+            'appendAll() must work'
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function provideTestAppendAll()
+    {
+        return [
+            // edge cases
+            [[], null, []],
+            [[], 0, []],
+            [[], new \stdClass, []],
+            // normal cases
+            [[], [], []],
+            [[], [1], [1]],
+            [[1], [], [1]],
+            [[1], [2], [1, 2]],
+            [[1, 2], [2, 3], [1, 2, 2, 3]],
+            [[1, 2], new \ArrayObject([2, 3]), [1, 2, 2, 3]],
+        ];
+    }
+
+    /**
+     * @param array    $base
+     * @param mixed    $append
+     * @param callable $comparator
+     * @param array    $expected
+     *
+     * @dataProvider provideTestAppendIfNotExists
+     */
+    public function testAppendIfNotExists($base, $append, $comparator, $expected)
+    {
+        $subject = new ArrayCollection($base);
+        $subject->appendIfNotExists($append, $comparator);
+
+        $this->assertSame(
+            $expected,
+            $subject->getData(),
+            'appendIfNotExists() must work'
+        );
+    }
+
+    public function provideTestAppendIfNotExists()
+    {
+        $comparator = function ($a, $b) { return $a - $b === 0; };
+
+        return [
+
+            [[], 1, null, [1]],
+            [[], 1, $comparator, [1]],
+
+            [[1], 1, null, [1]],
+            [[1], 1, $comparator, [1]],
+
+            [[2], 1, null, [2, 1]],
+            [[2], 1, $comparator, [2, 1]],
+
+            [[2, 1], 1, null, [2, 1]],
+            [[2, 1], 1, $comparator, [2, 1]],
+
+            [[2, 3], 1, null, [2, 3, 1]],
+            [[2, 3], 1, $comparator, [2, 3, 1]],
+        ];
+    }
+
+    /**
+     * @param array    $base
+     * @param mixed    $item
+     * @param callable $comparator
+     * @param boolean  $expected
+     *
+     * @dataProvider provideTestContains
+     */
+    public function testContains($base, $item, $comparator, $expected)
+    {
+        $subject = new ArrayCollection($base);
+
+        $this->assertSame(
+            $expected,
+            $subject->contains($item, $comparator),
+            'contains() must work'
+        );
+    }
+
+    public function provideTestContains()
+    {
+        $comparator = function ($a, $b) { return $a - $b === 0; };
+
+        return [
+
+            [[], 1, null, false],
+            [[], 1, $comparator, false],
+
+            [[1], 1, null, true],
+            [[1], 1, $comparator, true],
+
+            [[2], 1, null, false],
+            [[2], 1, $comparator, false],
+
+            [[2, 1], 1, null, true],
+            [[2, 1], 1, $comparator, true],
+
+            [[2, 3], 1, null, false],
+            [[2, 3], 1, $comparator, false],
+        ];
+    }
+
+    /**
+     * @param array $base
+     * @param mixed $expected
+     *
+     * @dataProvider provideTestGetFirst
+     */
+    public function testGetFirst($base, $expected)
+    {
+        $subject = new ArrayCollection($base);
+
+        $this->assertSame(
+            $expected,
+            $subject->getFirst(),
+            'getFirst() must work'
+        );
+    }
+
+    public function provideTestGetFirst()
+    {
+        return [
+            [[], null],
+            [[1], 1],
+            [[1, 2], 1],
+            [[1, 2, 3], 1],
+        ];
+    }
+
+    /**
+     * @param array $base
+     * @param mixed $expected
+     *
+     * @dataProvider provideTestGetLast
+     */
+    public function testGetLast($base, $expected)
+    {
+        $subject = new ArrayCollection($base);
+
+        $this->assertSame(
+            $expected,
+            $subject->getLast(),
+            'getLast() must work'
+        );
+    }
+
+    public function provideTestGetLast()
+    {
+        return [
+            [[], null],
+            [[1], 1],
+            [[1, 2], 2],
+            [[1, 2, 3], 3],
+        ];
+    }
+
+    /**
+     * @param array $base
+     * @param mixed $remove
+     * @param array $expected
+     *
+     * @dataProvider provideTestRemove
+     */
+    public function testRemove($base, $remove, $expected)
+    {
+        $subject = new ArrayCollection($base);
+
+        $subject->remove($remove);
+
+        $this->assertSame(
+            $expected,
+            $subject->getData(),
+            'remove() must work'
+        );
+    }
+
+    public function provideTestRemove()
+    {
+        $o1 = new \stdClass();
+        $o2 = new \stdClass();
+
+        return [
+            // edge cases
+            [[], null, []],
+            [[null], null, []],
+            [[null, null], null, []],
+            [[null, null, 1], null, [1]],
+            [['1', 1, '1', 1], null, ['1', 1, '1', 1]],
+            [['1', 1, '1', 1], 2, ['1', 1, '1', 1]],
+            [['1', 1, '1', 1], '2', ['1', 1, '1', 1]],
+            [['1', 1, '1', 1], $o1, ['1', 1, '1', 1]],
+            [['1', 1, '1', 1], '1', [1, 1]],
+            [['1', 1, '1', 1], 1, ['1', '1']],
+            [['1', $o1, '1', $o2], '1', [$o1, $o2]],
+            [['1', $o1, '1', $o2], $o1, ['1', '1',$o2]],
+        ];
+    }
+
+    // BEGIN: ArrayAccess methods /////////////////////////////////////////////////////////////////////////////////
 
     public function testGetIterator()
     {

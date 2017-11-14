@@ -27,10 +27,9 @@ class PropertyAccessFactoryImpl implements PropertyAccessFactory
             return PublicPropertyAccess::create($property->name);
         }
 
-
         // can we you the reflection accessor
-        if ($property->isProtected()
-            || $property->getDeclaringClass()->name === $class->name) {
+        if ($property->isProtected() ||
+            $property->getDeclaringClass()->name === $class->name) {
 
             return ReflectionPropertyAccess::create($class, $property->name);
         }
