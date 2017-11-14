@@ -11,6 +11,8 @@ namespace PeekAndPoke\Component\Slumber\Data;
 use PeekAndPoke\Component\Slumber\Data\Error\DuplicateError;
 
 /**
+ * @api
+ *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
 interface StorageDriver

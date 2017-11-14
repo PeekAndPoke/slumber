@@ -19,6 +19,8 @@ use PeekAndPoke\Component\Slumber\Data\Result;
 use PeekAndPoke\Component\Slumber\Data\StorageDriver;
 
 /**
+ * @api
+ *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  *
  * @see    https://docs.mongodb.com/php-library/master/tutorial/

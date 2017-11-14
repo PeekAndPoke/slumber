@@ -9,6 +9,8 @@ use PeekAndPoke\Component\Slumber\Annotation\IndexDefinition;
 use PeekAndPoke\Component\Slumber\Annotation\SlumberAnnotation;
 
 /**
+ * @api
+ *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
 abstract class AbstractIndexDefinition extends SlumberAnnotation implements IndexDefinition

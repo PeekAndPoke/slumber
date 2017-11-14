@@ -1,21 +1,10 @@
 tools:
-    php_analyzer:
-        config:
-            metrics_coupling:
-                stable_code:
-                    namespace_prefixes:
-
-                    classes:
-                        # there is not a lot we can do about the storage drivers dependencies
-                        - PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver
-                        # this class is a pure value object and therefore has a lot of components
-                        - PeekAndPoke\Component\Slumber\Annotation\Slumber\Store\AbstractIndexDefinition
-tools:
   php_sim: true
   php_pdepend: true
   php_analyzer: true
   external_code_coverage:
     timeout: 600  # timeout in seconds : 10 minutes
+
 
 filter:
   paths:
