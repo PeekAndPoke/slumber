@@ -36,7 +36,7 @@ class EmitterImpl implements Emitter
     public function bind($eventName, $handler)
     {
         if (! self::isListener($handler)) {
-            return $this;
+            throw new \LogicException('Invalid listener');
         }
 
         if (false === array_key_exists($eventName, $this->bindings)) {

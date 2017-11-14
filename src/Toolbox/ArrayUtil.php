@@ -26,30 +26,33 @@ class ArrayUtil
     }
 
     /**
-     * @param array  $src
-     * @param string $chainKey f.e. "root.sub.item"
-     * @param null   $default
+     * @param array  $array
+     * @param string $path e.g. "root.sub.item"
+     * @param mixed  $default
      * @param string $separator
      *
      * @return mixed
      */
-    public static function getNested($src, $chainKey, $default = null, $separator = '.')
+    public static function getNested($array, $path, $default = null, $separator = '.')
     {
-        if (empty($src) || empty($chainKey) || empty($separator)) {
+        if (empty($array) ||
+            empty($path) ||
+            empty($separator)) {
+
             return $default;
         }
 
-        $parts = explode($separator, (string) $chainKey);
+        $parts = explode($separator, (string) $path);
 
         foreach ($parts as $part) {
-            if (! isset($src[$part])) {
+            if (! isset($array[$part])) {
                 return $default;
             }
 
-            $src = $src[$part];
+            $array = $array[$part];
         }
 
-        return $src;
+        return $array;
     }
 
     /**
@@ -63,8 +66,20 @@ class ArrayUtil
             return [];
         }
 
-        if (is_array($value)) {
-            return $value;
+        if (is_array($value) ||
+            $value instanceof \ArrayObject
+        ) {
+            return (array) $value;
+        }
+
+        if ($value instanceof \Traversable) {
+            $result = [];
+
+            foreach ($value as $k => $v) {
+                $result[$k] = $v;
+            }
+
+            return $result;
         }
 
         return [$value];

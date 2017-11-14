@@ -26,6 +26,8 @@ abstract class BaseUtil
     /**
      * @param string $dir
      * @param int    $mode
+     *
+     * @codeCoverageIgnore
      */
     public static function ensureDirectory($dir, $mode = 0777)
     {

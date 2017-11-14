@@ -19,6 +19,6 @@ class NullCreatorTest extends TestCase
     {
         $subject = new NullCreator();
 
-        $this->assertNull($subject->create(null));
+        $this->assertNull($subject->create('something'));
     }
 }

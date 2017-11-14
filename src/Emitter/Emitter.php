@@ -21,6 +21,8 @@ interface Emitter
      * @param Listener|UnaryFunctionInterface|callable $handler
      *
      * @return $this
+     *
+     * @throws \LogicException When the eventName is empty or the handler is not correct
      */
     public function bind($eventName, $handler);
 

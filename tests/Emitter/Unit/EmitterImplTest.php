@@ -35,7 +35,7 @@ class EmitterImplTest extends TestCase
         $this->assertCount(
             0,
             $value,
-            'Event must not be emitted wheh emitter is disabled'
+            'Event must not be emitted when emitter is disabled'
         );
     }
 
@@ -55,7 +55,7 @@ class EmitterImplTest extends TestCase
         $this->assertCount(
             1,
             $value,
-            'Event must not be emitted wheh emitter is disabled'
+            'Event must not be emitted when emitter is disabled'
         );
     }
 
@@ -122,5 +122,14 @@ class EmitterImplTest extends TestCase
             $listener->getInvokedCount(),
             'Listener class must be invoked correct number of times'
         );
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testAddingAnInvalidListenerThrows()
+    {
+        $subject = new EmitterImpl();
+        $subject->bind('evt', 'not a listener');
     }
 }
