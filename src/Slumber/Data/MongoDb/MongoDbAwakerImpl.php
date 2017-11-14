@@ -58,17 +58,15 @@ class MongoDbAwakerImpl extends GenericAwaker implements MongoDbAwaker
 
                 if ($item instanceof BSON\UTCDateTime) {
                     $item = $item->toDateTime();
+
                     return;
                 }
 
                 if ($item instanceof BSON\ObjectID) {
                     $item = $item->__toString();
+
                     return;
                 }
-
-//                if ($item instanceof BSON\Type) {
-//                    die('unhandled mongodb type');
-//                }
             });
         }
 
