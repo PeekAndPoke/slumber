@@ -64,19 +64,31 @@ class SimpleDateMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        if ($value !== null && IsDateString::isValidDateString($value)) {
+        if ($value === null) {
+            return null;
+        }
+
+        if (IsDateString::isValidDateString($value)) {
             return new \DateTime($value);
         }
 
-        $isCompat = isset($value['date'], $value['tz'])
-                    && IsDateString::isValidDateString($value['date'])
-                    && $this->isTimezone($value['tz']);
-
-        if ($isCompat) {
+        if ($this->isAwakeLocalDateCompatible($value)) {
             return new \DateTime($value['date'], new \DateTimeZone($value['tz']));
         }
 
         return null;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
+    private function isAwakeLocalDateCompatible($value)
+    {
+        return isset($value['date'], $value['tz'])
+                    && IsDateString::isValidDateString($value['date'])
+                    && $this->isTimezone($value['tz']);
     }
 
     /**
