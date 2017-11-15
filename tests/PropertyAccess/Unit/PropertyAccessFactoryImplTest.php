@@ -10,7 +10,7 @@ use PeekAndPoke\Component\PropertyAccess\PropertyAccessFactoryImpl;
 use PeekAndPoke\Component\PropertyAccess\PublicPropertyAccess;
 use PeekAndPoke\Component\PropertyAccess\ReflectionPropertyAccess;
 use PeekAndPoke\Component\PropertyAccess\ScopedPropertyAccess;
-use PeekAndPoke\Component\PropertyAccess\Stubs\UnitTestScopedPropertyAccessMainClass;
+use PeekAndPoke\Component\PropertyAccess\Stubs\UnitTestPropertyAccessMainClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -29,9 +29,17 @@ class PropertyAccessFactoryImplTest extends TestCase
 
     public function setUp()
     {
-        $this->object  = new UnitTestScopedPropertyAccessMainClass();
+        $this->object  = new UnitTestPropertyAccessMainClass();
         $this->class   = new \ReflectionClass($this->object);
         $this->factory = new PropertyAccessFactoryImpl();
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testForStaticPropertyThrows()
+    {
+        $this->factory->create($this->class, $this->class->getProperty('staticProp'));
     }
 
     /**

@@ -5,29 +5,26 @@
 
 namespace PeekAndPoke\Component\PropertyAccess\Stubs;
 
+
 /**
- * UnitTestDirectScopedPropertyAccessMainClass
- *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class UnitTestScopedPropertyAccessMainClass extends UnitTestScopedPropertyAccessBaseClass
+class UnitTestPropertyAccessBaseClass
 {
-    /** @noinspection ClassOverridesFieldOfSuperClassInspection */
     /** @var string */
     private $prop1;
-    /** @noinspection ClassOverridesFieldOfSuperClassInspection */
     /** @var string */
     private $prop2;
 
     /** @var mixed */
-    public $publicProp;
+    public $publicPropOnBase;
     /** @var mixed */
-    protected $protectedProp;
+    protected $protectedPropOnBase;
 
     /**
      * @return string
      */
-    public function getProp1()
+    public function getProp1Shadowed()
     {
         return $this->prop1;
     }
@@ -37,7 +34,7 @@ class UnitTestScopedPropertyAccessMainClass extends UnitTestScopedPropertyAccess
      *
      * @return $this
      */
-    public function setProp1($prop1)
+    public function setProp1Shadowed($prop1)
     {
         $this->prop1 = $prop1;
 
@@ -47,7 +44,7 @@ class UnitTestScopedPropertyAccessMainClass extends UnitTestScopedPropertyAccess
     /**
      * @return string
      */
-    public function getProp2()
+    public function getProp2Shadowed()
     {
         return $this->prop2;
     }
@@ -57,7 +54,7 @@ class UnitTestScopedPropertyAccessMainClass extends UnitTestScopedPropertyAccess
      *
      * @return $this
      */
-    public function setProp2($prop2)
+    public function setProp2Shadowed($prop2)
     {
         $this->prop2 = $prop2;
 
@@ -67,19 +64,19 @@ class UnitTestScopedPropertyAccessMainClass extends UnitTestScopedPropertyAccess
     /**
      * @return mixed
      */
-    public function getPublicProp()
+    public function getPublicPropOnBase()
     {
-        return $this->publicProp;
+        return $this->publicPropOnBase;
     }
 
     /**
-     * @param mixed $publicProp
+     * @param mixed $publicPropOnBase
      *
      * @return $this
      */
-    public function setPublicProp($publicProp)
+    public function setPublicPropOnBase($publicPropOnBase)
     {
-        $this->publicProp = $publicProp;
+        $this->publicPropOnBase = $publicPropOnBase;
 
         return $this;
     }
@@ -87,19 +84,19 @@ class UnitTestScopedPropertyAccessMainClass extends UnitTestScopedPropertyAccess
     /**
      * @return mixed
      */
-    public function getProtectedProp()
+    public function getProtectedPropOnBase()
     {
-        return $this->protectedProp;
+        return $this->protectedPropOnBase;
     }
 
     /**
-     * @param mixed $protectedProp
+     * @param mixed $protectedPropOnBase
      *
      * @return $this
      */
-    public function setProtectedProp($protectedProp)
+    public function setProtectedPropOnBase($protectedPropOnBase)
     {
-        $this->protectedProp = $protectedProp;
+        $this->protectedPropOnBase = $protectedPropOnBase;
 
         return $this;
     }

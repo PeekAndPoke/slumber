@@ -17,6 +17,7 @@ namespace PeekAndPoke\Component\PropertyAccess;
  *  -> you should use PublicPropertyAccess for performance
  *
  * - access protected properties that are visible on the subject class
+ *  -> use ReflectionPropertyAccess for performance
  *
  * - access private properties declared on the subject class
  *  -> use ReflectionPropertyAccess for performance

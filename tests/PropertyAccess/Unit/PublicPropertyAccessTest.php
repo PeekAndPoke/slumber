@@ -6,7 +6,7 @@
 namespace PeekAndPoke\Component\PropertyAccess\Unit;
 
 use PeekAndPoke\Component\PropertyAccess\PublicPropertyAccess;
-use PeekAndPoke\Component\PropertyAccess\Stubs\UnitTestScopedPropertyAccessMainClass;
+use PeekAndPoke\Component\PropertyAccess\Stubs\UnitTestPropertyAccessMainClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,7 +18,7 @@ class PublicPropertyAccessTest extends TestCase
 {
     public function testGet()
     {
-        $object = new UnitTestScopedPropertyAccessMainClass();
+        $object = new UnitTestPropertyAccessMainClass();
         $object->setPublicProp('public1');
         $object->setPublicPropOnBase('public2');
 
@@ -31,7 +31,7 @@ class PublicPropertyAccessTest extends TestCase
 
     public function testSet()
     {
-        $object = new UnitTestScopedPropertyAccessMainClass();
+        $object = new UnitTestPropertyAccessMainClass();
 
         $public1 = PublicPropertyAccess::create('publicProp');
         $public2 = PublicPropertyAccess::create('publicPropOnBase');
