@@ -45,11 +45,15 @@ class SimpleDateMapper extends AbstractPropertyMapper
      */
     public function slumber(Slumberer $slumberer, $value)
     {
-        if (!$value instanceof \DateTimeInterface) {
-            return null;
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format('c');
         }
 
-        return $value->format('c');
+        if ($value instanceof LocalDate) {
+            return $value->format();
+        }
+
+        return null;
     }
 
     /**
@@ -60,12 +64,44 @@ class SimpleDateMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        $isDateStr = new IsDateString();
-
-        if ($value !== null && $isDateStr($value)) {
+        if ($value !== null && IsDateString::isValidDateString($value)) {
             return new \DateTime($value);
         }
 
+        $isCompat = isset($value['date'], $value['tz'])
+                    && IsDateString::isValidDateString($value['date'])
+                    && $this->isTimezone($value['tz']);
+
+        if ($isCompat) {
+            return new \DateTime($value['date'], new \DateTimeZone($value['tz']));
+        }
+
         return null;
+    }
+
+    /**
+     * TODO: move this to Psi and make a IsTimezoneString
+     * TODO: add more that are not in timezone_identifiers_list(): https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+     *
+     * @param $str
+     *
+     * @return bool
+     */
+    private function isTimezone($str)
+    {
+        static $identifiers;
+
+        if ($identifiers === null) {
+            $ids = timezone_identifiers_list();
+            array_walk($ids, function (&$id) { $id = strtolower($id); });
+
+            $identifiers = array_flip($ids);
+
+            // add some more
+            $identifiers['utc'] = true;
+            $identifiers['etc/utc'] = true;
+        }
+
+        return isset($identifiers[strtolower($str)]);
     }
 }
