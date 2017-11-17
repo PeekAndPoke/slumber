@@ -25,7 +25,7 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
     {
         // clear the repo before every test
         self::$mainRepo->removeAll([]);
-        self::$journalRepo->removeAll([]);
+        self::$referencedRepo->removeAll([]);
     }
 
     /**
@@ -259,7 +259,7 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
 
         self::$storage->getEntityPool()->clear();
         /** @var UnitTestAggregatedClass $reloadedRef */
-        $reloadedRef = self::$journalRepo->findByReference($reloadedMain->getAReferencedObject()->getReference());
+        $reloadedRef = self::$referencedRepo->findByReference($reloadedMain->getAReferencedObject()->getReference());
 
         static::assertNotNull($reloadedRef, 'A referenced object must be reloaded directly');
         static::assertEquals('ref', $reloadedRef->getName(), 'A referenced object must be reloaded correctly');
@@ -794,7 +794,7 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
             'b' => '2',
             'c' => true,
             'd' => false,
-            'e' => null,        // the as @Slumber\AsIs() must keep this one
+            'e' => null,        // the @Slumber\AsIs() must keep this one
             'f' => [1, 2],
             'g' => [],
             'h' => new \stdClass(),
@@ -854,8 +854,8 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
 
         // We need to store the referenced entities individually. This is not done when storing the main object
         foreach ($aListOfReferencedObjects as $referencedObject) {
-            if (static::$journalRepo) {
-                static::$journalRepo->save($referencedObject);
+            if (static::$referencedRepo) {
+                static::$referencedRepo->save($referencedObject);
             }
         }
 
@@ -876,8 +876,8 @@ class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
         array_walk_recursive(
             $aListOfMapsOfReferencedObjects,
             function ($item) {
-                if ($item !== null && static::$journalRepo) {
-                    static::$journalRepo->save($item);
+                if ($item !== null && static::$referencedRepo) {
+                    static::$referencedRepo->save($item);
                 }
             }
         );

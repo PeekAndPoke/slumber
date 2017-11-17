@@ -139,7 +139,7 @@ class GenericAwakerTest extends TestCase
         $subject = new GenericAwaker($configReaderMock);
         $result  = $subject->awake([], new \ReflectionClass(\stdClass::class));
 
-        $this->assertNull($result, 'Awaking non slumbered class must return null');
+        $this->assertNull($result, 'Awaking a class with no config available must return null');
     }
 
     public function testAwakeForCreatorReturningNull()
@@ -158,6 +158,6 @@ class GenericAwakerTest extends TestCase
         $subject = new GenericAwaker($configReaderMock);
         $result  = $subject->awake([], new \ReflectionClass(\stdClass::class));
 
-        $this->assertNull($result, 'Awaking non slumbered class must return null');
+        $this->assertNull($result, 'Awaking a class with invalid creator must return null');
     }
 }
