@@ -5,6 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\Codec;
 
+use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfig;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfigReader;
 
 /**
@@ -33,6 +34,11 @@ class GenericAwaker implements Awaker
     {
         // read the config for the given class
         $config = $this->entityConfigLookUp->getEntityConfig($cls);
+
+        if ($config === null) {
+            return null;
+        }
+
         // create an instance
         $subject = $config->getCreator()->create($data);
 
@@ -47,6 +53,14 @@ class GenericAwaker implements Awaker
             $config = $this->entityConfigLookUp->getEntityConfig(new \ReflectionClass($subject));
         }
 
+        // populate the result
+        $this->populate($subject, $data, $config);
+
+        return $subject;
+    }
+
+    private function populate($subject, $data, EntityConfig $config)
+    {
         // get the properties we need to map
         $entries = $config->getMarkedProperties();
 
@@ -62,7 +76,5 @@ class GenericAwaker implements Awaker
                 );
             }
         }
-
-        return $subject;
     }
 }

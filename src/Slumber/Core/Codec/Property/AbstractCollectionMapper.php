@@ -5,6 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
 
+use PeekAndPoke\Component\Collections\Collection;
 use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsCollection;
 use PeekAndPoke\Component\Slumber\Core\Codec\Mapper;
@@ -141,6 +142,10 @@ abstract class AbstractCollectionMapper extends AbstractPropertyMapper implement
      */
     public function setLeafParentsCollectionType($collectionClass)
     {
+        if (! is_a($collectionClass, Collection::class, true)) {
+            throw new \LogicException("The given class $collectionClass does not implement " . Collection::class);
+        }
+
         $parent = $this->getLeafParent();
 
         if ($parent !== null) {
@@ -153,7 +158,7 @@ abstract class AbstractCollectionMapper extends AbstractPropertyMapper implement
     /**
      * Get the nesting level.
      *
-     * If there is no nested element the level is 0.
+     * If there is no nested element the level is 0 (this can never be the case, as the constructor ensures the nested mapper).
      * If there is a nested element the level is 1.
      * If there is a nested element with a nested element as well the level 2.
      *
@@ -163,11 +168,6 @@ abstract class AbstractCollectionMapper extends AbstractPropertyMapper implement
      */
     public function getNestingLevel()
     {
-        // no child ... level 0
-        if ($this->getNested() === null) {
-            return 0;
-        }
-
         $nested = $this->getNested();
 
         // another collection ... increase the level by 1
