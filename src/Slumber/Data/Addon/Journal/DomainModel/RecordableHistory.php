@@ -245,20 +245,26 @@ class RecordableHistory
     private function convertToString($value, $fallback = 'N/A')
     {
         try {
-            if (is_array($value)) {
-                $str = json_encode($value, JSON_PRETTY_PRINT);
-            } elseif ($value instanceof \MongoDate) {
-                $date = (new \DateTime())->setTimestamp($value->sec);
-                $str  = $date->format('c');
-            } elseif ($value instanceof \DateTime) {
-                $str = $value->format('c');
-            } else {
-                $str = (string) $value;
+            if ($value === null) {
+                return '';
             }
-        } catch (\Exception $e) {
-            $str = $fallback;
-        }
 
-        return $str;
+            if (is_scalar($value)) {
+                return (string) $value;
+            }
+
+            if (is_array($value)) {
+                return json_encode($value, JSON_PRETTY_PRINT);
+            }
+
+            if ($value instanceof \DateTime) {
+                return $value->format('c');
+            }
+
+            return (string) $fallback;
+
+        } catch (\Exception $e) {
+            return $fallback;
+        }
     }
 }

@@ -11,6 +11,7 @@ use Doctrine\Common\Cache\ArrayCache;
 use MongoDB;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\JournalEntry;
+use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\RecordableHistory;
 use PeekAndPoke\Component\Slumber\Data\Addon\Journal\JournalEntryRepositoryImpl;
 use PeekAndPoke\Component\Slumber\Data\Addon\Journal\JournalWriter;
 use PeekAndPoke\Component\Slumber\Data\Addon\Journal\JournalWriterImpl;
@@ -122,18 +123,10 @@ class JournalWorksMongoDbFeatureTest extends TestCase
 
     public function testSaveItemMustWriteJournalEntry()
     {
+        // create and store an item twice ... record it twice in the journal
         $start = new \DateTime();
-
-        $item = new UnitTestJournalizedClass();
-        $item->setName('name1');
-        $item->setAge(1);
-        self::$mainRepo->save($item);
-
-        $item->setName('name2');
-        $item->setAge(2);
-        self::$mainRepo->save($item);
-
-        $end = new \DateTime();
+        $item  = $this->storeItemTwice();
+        $end   = new \DateTime();
 
         $allJournalEntries = self::$journalRepo->find();
 
@@ -143,14 +136,87 @@ class JournalWorksMongoDbFeatureTest extends TestCase
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // is the history reloaded correctly ?
-        $history       = self::$journal->getHistory($item);
+        $history = self::$journal->getHistory($item);
+
+        $this->assertCount(2, $history->getRecords(), 'There must be two records when the journal is not compacted');
+
+        $this->assertHistory($history, $start, $end);
+    }
+
+    public function testJournalCompactingWorks()
+    {
+        // create and store an item twice ... record it twice in the journal
+        $start = new \DateTime();
+        sleep(1); // we need to sleep one second since mongo does not store the micro-seconds
+        $item = $this->storeItemTwice();
+        sleep(1); // we need to sleep one second since mongo does not store the micro-seconds
+        $end = new \DateTime();
+
+        // execute the compacting
+        self::$journal->compact(
+            self::$journal->buildExternalReference($item)
+        );
+
+        // is the history correct ?
+        $history = self::$journal->getHistory($item);
+
+        $this->assertCount(1, $history->getRecords(), 'There must be one record when the journal is not compacted');
+
+        $this->assertHistory($history, $start, $end);
+    }
+
+    public function testJournalStatsBeforeCompacting()
+    {
+        $this->storeItemTwice();
+
+        $stats = self::$journal->getStats();
+
+        $this->assertSame(0, $stats->getCompactedRate(), 'Stats must be correct before compacting');
+        $this->assertSame(0, $stats->getNumCompacted(), 'Stats must be correct before compacting');
+        $this->assertSame(2, $stats->getNumRecords(), 'Stats must be correct before compacting');
+    }
+
+    public function testJournalStatsAfterCompacting()
+    {
+        $this->storeItemTwice();
+
+        self::$journal->compactOldest(1000);
+        $stats = self::$journal->getStats();
+
+        $this->assertSame(1, $stats->getCompactedRate(), 'Stats must be correct after compacting');
+        $this->assertSame(1, $stats->getNumCompacted(), 'Stats must be correct after compacting');
+        $this->assertSame(1, $stats->getNumRecords(), 'Stats must be correct after compacting');
+    }
+
+    /**
+     * @return UnitTestJournalizedClass
+     */
+    private function storeItemTwice()
+    {
+        $item = new UnitTestJournalizedClass();
+        $item->setName('name1');
+        $item->setAge(1);
+        self::$mainRepo->save($item);
+
+        $item->setName('name2');
+        $item->setAge(2);
+        self::$mainRepo->save($item);
+
+        return $item;
+    }
+
+    /**
+     * @param RecordableHistory $history
+     * @param \DateTime         $start
+     * @param \DateTime         $end
+     */
+    private function assertHistory(RecordableHistory $history, \DateTime $start, \DateTime $end)
+    {
         $initialRecord = $history->getInitialRecord();
         $this->assertNotNull($initialRecord, 'There must be an initial record in the journal history');
 
         $finalRecord = $history->getFinalRecord();
         $this->assertNotNull($finalRecord, 'There must be a final record in the journal history');
-
-        $this->assertCount(2, $history->getRecords(), 'There number of records in the journal history must be correct');
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // are the diffs correct ?
@@ -161,17 +227,13 @@ class JournalWorksMongoDbFeatureTest extends TestCase
         // check that changedAt is set correctly
         $diff0 = $diffs[0];
         $this->assertSame('Admin UnitTestUser@127.0.0.1', $diff0->getChangedBy(), 'Diff must contain correct "createdBy"');
-        $this->assertTrue(
-            $start <= $diff0->getChangeDate() && $diff0->getChangeDate() <= $end,
-            'Diff must contain correct "changedDate"'
-        );
+        $this->assertGreaterThanOrEqual($start, $diff0->getChangeDate(), 'changeDate must not be too early');
+        $this->assertLessThanOrEqual($end, $diff0->getChangeDate(), 'changeDate must not be too late');
 
         $diff1 = $diffs[1];
         $this->assertSame('Admin UnitTestUser@127.0.0.1', $diff1->getChangedBy(), 'Diff must contain correct "createdBy"');
-        $this->assertTrue(
-            $start <= $diff1->getChangeDate() && $diff1->getChangeDate() <= $end,
-            'Diff must contain correct "changedDate"'
-        );
+        $this->assertGreaterThanOrEqual($start, $diff1->getChangeDate(), 'changeDate must not be too early');
+        $this->assertLessThanOrEqual($end, $diff1->getChangeDate(), 'changeDate must not be too late');
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // check the diffs for the 'age' property
