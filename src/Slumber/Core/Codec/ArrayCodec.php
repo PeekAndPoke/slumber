@@ -12,8 +12,6 @@ use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfigReader;
  */
 class ArrayCodec
 {
-    /** @var EntityConfigReader */
-    private $entityConfigReader;
     /** @var GenericSlumberer */
     private $slumberer;
     /** @var GenericAwaker */
@@ -24,18 +22,8 @@ class ArrayCodec
      */
     public function __construct(EntityConfigReader $entityConfigReader)
     {
-        $this->entityConfigReader = $entityConfigReader;
-
         $this->slumberer = new GenericSlumberer($entityConfigReader);
         $this->awaker    = new GenericAwaker($entityConfigReader);
-    }
-
-    /**
-     * @return EntityConfigReader
-     */
-    public function getEntityConfigReader()
-    {
-        return $this->entityConfigReader;
     }
 
     /**
