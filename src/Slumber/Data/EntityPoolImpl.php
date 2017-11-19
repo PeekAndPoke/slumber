@@ -28,14 +28,11 @@ class EntityPoolImpl implements EntityPool
     }
 
     /**
-     * @return array
+     * @return EntityPoolStats
      */
     public function stats()
     {
-        return [
-            'hits'   => $this->numHits,
-            'misses' => $this->numMisses,
-        ];
+        return new EntityPoolStats(count($this->pool), $this->numHits, $this->numMisses);
     }
 
     ////  GET SET CHECK  ///////////////////////////////////////////////////////////////////////////////////////////////

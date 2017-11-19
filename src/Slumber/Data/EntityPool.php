@@ -18,7 +18,7 @@ interface EntityPool
     public function all();
 
     /**
-     * @return array
+     * @return EntityPoolStats
      */
     public function stats();
 

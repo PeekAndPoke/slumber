@@ -224,8 +224,6 @@ class RecordableHistory
                     $beforeValue = $before[$key];
                 }
 
-                $processedKeys[] = $key;
-
                 $this->diffRecursiveFromAfterToBefore(
                     $diff,
                     empty($pathInArray) ? $key : $pathInArray . '.' . $key,
