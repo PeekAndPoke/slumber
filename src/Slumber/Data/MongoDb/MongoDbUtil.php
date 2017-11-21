@@ -6,7 +6,7 @@
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb;
 
 use MongoDB\BSON\ObjectID;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsDateString;
+use PeekAndPoke\Component\Psi\Psi\IsDateString;
 use PeekAndPoke\Types\LocalDate;
 
 /**

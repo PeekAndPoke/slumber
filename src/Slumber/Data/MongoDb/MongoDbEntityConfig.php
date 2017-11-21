@@ -6,7 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb;
 
 use PeekAndPoke\Component\PropertyAccess\PropertyAccess;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Annotation\ClassMarker;
 use PeekAndPoke\Component\Slumber\Annotation\ClassPostDeleteListenerMarker;
@@ -159,7 +158,7 @@ class MongoDbEntityConfig extends EntityConfig
         // we modify the property markers if we find an AsId::class
 
         $this->markedProperties = Psi::it($this->getMarkedProperties())
-            ->filter(new IsInstanceOf(PropertyMarkedForSlumber::class))
+            ->filter(new Psi\IsInstanceOf(PropertyMarkedForSlumber::class))
             ->map(function (PropertyMarkedForSlumber $p) {
 
                 // search for the first AsId marker and modify it
@@ -177,7 +176,7 @@ class MongoDbEntityConfig extends EntityConfig
     private function setUpDbReferenceMarkers()
     {
         $this->markedProperties = Psi::it($this->getMarkedProperties())
-            ->filter(new IsInstanceOf(PropertyMarkedForSlumber::class))
+            ->filter(new Psi\IsInstanceOf(PropertyMarkedForSlumber::class))
             ->map(function (PropertyMarkedForSlumber $p) {
 
                 /** @var AsDbReference $asDbRef */
@@ -239,7 +238,7 @@ class MongoDbEntityConfig extends EntityConfig
         $this->preSaveVisits = array_merge(
             $this->preSaveVisits,
             Psi::it($this->getMarkedProperties())
-                ->filter(new IsInstanceOf(PropertyMarkedForSlumber::class))
+                ->filter(new Psi\IsInstanceOf(PropertyMarkedForSlumber::class))
                 ->filter(function (PropertyMarkedForSlumber $p) {
                     return $p->getFirstMarkerOf(PropertyPreSaveVisitorMarker::class) !== null;
                 })
@@ -259,7 +258,7 @@ class MongoDbEntityConfig extends EntityConfig
         $this->postSaveClassListeners = array_merge(
             $this->postSaveClassListeners,
             Psi::it($this->getMarkersOnClass())
-                ->filter(new IsInstanceOf(ClassPostSaveListenerMarker::class))
+                ->filter(new Psi\IsInstanceOf(ClassPostSaveListenerMarker::class))
                 ->toArray()
         );
     }
@@ -269,7 +268,7 @@ class MongoDbEntityConfig extends EntityConfig
         $this->postDeleteClassListeners = array_merge(
             $this->postDeleteClassListeners,
             Psi::it($this->getMarkersOnClass())
-                ->filter(new IsInstanceOf(ClassPostDeleteListenerMarker::class))
+                ->filter(new Psi\IsInstanceOf(ClassPostDeleteListenerMarker::class))
                 ->toArray()
         );
     }
@@ -281,7 +280,7 @@ class MongoDbEntityConfig extends EntityConfig
         $this->indexedProperties = array_merge(
             $this->indexedProperties,
             Psi::it($this->getMarkedProperties())
-                ->filter(new IsInstanceOf(PropertyMarkedForSlumber::class))
+                ->filter(new Psi\IsInstanceOf(PropertyMarkedForSlumber::class))
                 ->filter(function (PropertyMarkedForSlumber $p) {
                     return $p->getFirstMarkerOf(PropertyStorageIndexMarker::class) !== null;
                 })
@@ -303,8 +302,8 @@ class MongoDbEntityConfig extends EntityConfig
         $this->compoundIndexes = array_merge(
             $this->compoundIndexes,
             Psi::it($this->getMarkersOnClass())
-                ->filter(new IsInstanceOf(ClassMarker::class))
-                ->filter(new IsInstanceOf(CompoundIndexDefinition::class))
+                ->filter(new Psi\IsInstanceOf(ClassMarker::class))
+                ->filter(new Psi\IsInstanceOf(CompoundIndexDefinition::class))
                 ->toArray()
         );
     }

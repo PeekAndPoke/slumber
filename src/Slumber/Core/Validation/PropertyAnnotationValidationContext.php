@@ -5,14 +5,14 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\Validation;
 
-use PeekAndPoke\Component\Psi\Interfaces\Functions\BinaryFunctionInterface;
+use PeekAndPoke\Component\Psi\Interfaces\BinaryFunction;
 use PeekAndPoke\Component\Slumber\Annotation\SlumberMarker;
 use Psr\Container\ContainerInterface;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class PropertyAnnotationValidationContext implements ValidationContext, BinaryFunctionInterface
+class PropertyAnnotationValidationContext implements ValidationContext, BinaryFunction
 {
     /** @var ContainerInterface */
     public $provider;

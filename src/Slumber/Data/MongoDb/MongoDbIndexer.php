@@ -8,7 +8,6 @@ namespace PeekAndPoke\Component\Slumber\Data\MongoDb;
 use MongoDB\Collection;
 use MongoDB\Driver\Exception;
 use MongoDB\Model\IndexInfo;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Annotation\CompoundIndexDefinition;
 use PeekAndPoke\Component\Slumber\Annotation\IndexDefinition;
@@ -93,7 +92,7 @@ class MongoDbIndexer
 
         // also index child objects
         Psi::it($entityConfig->getMarkedProperties())
-            ->filter(new IsInstanceOf(PropertyMarkedForSlumber::class))
+            ->filter(new Psi\IsInstanceOf(PropertyMarkedForSlumber::class))
             // we also look into child objects
             ->filter(function (PropertyMarkedForSlumber $p) {
                 return $p->getFirstMarkerOf(AsObject::class) !== null;

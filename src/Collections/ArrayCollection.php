@@ -5,9 +5,8 @@
 
 namespace PeekAndPoke\Component\Collections;
 
-use PeekAndPoke\Component\Psi\Interfaces\Functions\BinaryFunctionInterface;
-use PeekAndPoke\Component\Psi\Interfaces\Functions\UnaryFunctionInterface;
-
+use PeekAndPoke\Component\Psi\Interfaces\BinaryFunction;
+use PeekAndPoke\Component\Psi\Interfaces\UnaryFunction;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -32,8 +31,8 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
      * The first item that meets the condition is replaced.
      * When the condition is not met the subject will be added to the end.
      *
-     * @param mixed                           $subject     The subject to append or replace with
-     * @param UnaryFunctionInterface|callable $replaceWhen The condition to check (gets each entry passed in individually)
+     * @param mixed                  $subject     The subject to append or replace with
+     * @param UnaryFunction|callable $replaceWhen The condition to check (gets each entry passed in individually)
      *
      * @return ArrayCollection
      */
@@ -74,8 +73,8 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
      *
      * @see contains()
      *
-     * @param mixed                                 $item
-     * @param BinaryFunctionInterface|callable|null $comparator
+     * @param mixed                        $item
+     * @param BinaryFunction|callable|null $comparator
      *
      * @return $this
      */
@@ -95,8 +94,8 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
      *
      * You can provide $comparator for customer comparison.
      *
-     * @param mixed                                 $item
-     * @param BinaryFunctionInterface|callable|null $comparator
+     * @param mixed                        $item
+     * @param BinaryFunction|callable|null $comparator
      *
      * @return bool
      */
@@ -130,8 +129,8 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
     /**
      * Perform contains with comparator
      *
-     * @param mixed                                 $item
-     * @param BinaryFunctionInterface|callable|null $comparator
+     * @param mixed                        $item
+     * @param BinaryFunction|callable|null $comparator
      *
      * @return bool
      */

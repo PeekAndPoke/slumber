@@ -6,7 +6,7 @@
 namespace PeekAndPoke\Component\Slumber\Data\MongoDb\Types;
 
 use MongoDB\BSON\UTCDateTime;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsDateString;
+use PeekAndPoke\Component\Psi\Psi\IsDateString;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsSimpleDate;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\AbstractPropertyMapper;

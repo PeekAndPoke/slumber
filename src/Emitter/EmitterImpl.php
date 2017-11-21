@@ -7,7 +7,7 @@
 
 namespace PeekAndPoke\Component\Emitter;
 
-use PeekAndPoke\Component\Psi\Interfaces\Functions\UnaryFunctionInterface;
+use PeekAndPoke\Component\Psi\Interfaces\UnaryFunction;
 
 /**
  * Emitter
@@ -81,7 +81,7 @@ class EmitterImpl implements Emitter
     }
 
     /**
-     * @param Listener|UnaryFunctionInterface|callable $listener
+     * @param Listener|UnaryFunction|callable $listener
      *
      * @return bool
      */

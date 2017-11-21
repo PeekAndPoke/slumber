@@ -6,7 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Core\LookUp;
 
 use PeekAndPoke\Component\PropertyAccess\PropertyAccess;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Annotation\PropertyMappingMarker;
 use PeekAndPoke\Component\Slumber\Annotation\PropertyMarker;
@@ -55,7 +54,7 @@ class PropertyMarkedForSlumber
         $ret->name           = $propertyName;
         $ret->alias          = $alias;
         $ret->marker         = $marker;
-        $ret->allMarkers     = Psi::it($allMarkers)->filter(new IsInstanceOf(PropertyMarker::class))->toArray();
+        $ret->allMarkers     = Psi::it($allMarkers)->filter(new Psi\IsInstanceOf(PropertyMarker::class))->toArray();
         $ret->mapper         = $mapper;
         $ret->propertyAccess = $propertyAccess;
 
@@ -95,7 +94,7 @@ class PropertyMarkedForSlumber
      */
     public function getFirstMarkerOf($type)
     {
-        $is = new IsInstanceOf($type);
+        $is = new Psi\IsInstanceOf($type);
 
         foreach ($this->allMarkers as $additionalMarker) {
             if ($is($additionalMarker)) {
@@ -114,7 +113,7 @@ class PropertyMarkedForSlumber
     public function getMarkersOf($type)
     {
         return Psi::it($this->allMarkers)
-            ->filter(new IsInstanceOf($type))
+            ->filter(new Psi\IsInstanceOf($type))
             ->toArray();
     }
 }

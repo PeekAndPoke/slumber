@@ -5,10 +5,9 @@
 
 namespace PeekAndPoke\Component\Collections;
 
-use PeekAndPoke\Component\Psi\Interfaces\Functions\BinaryFunctionInterface;
-use PeekAndPoke\Component\Psi\Interfaces\Functions\UnaryFunctionInterface;
+use PeekAndPoke\Component\Psi\Interfaces\BinaryFunction;
+use PeekAndPoke\Component\Psi\Interfaces\UnaryFunction;
 use PeekAndPoke\Component\Psi\Psi;
-
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -67,7 +66,7 @@ abstract class AbstractCollection implements Collection
      *
      * @see psi()
      *
-     * @param callable|UnaryFunctionInterface|BinaryFunctionInterface $predicate
+     * @param callable|UnaryFunction|BinaryFunction $predicate
      *
      * @return static
      */

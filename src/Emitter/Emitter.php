@@ -7,7 +7,7 @@
 
 namespace PeekAndPoke\Component\Emitter;
 
-use PeekAndPoke\Component\Psi\Interfaces\Functions\UnaryFunctionInterface;
+use PeekAndPoke\Component\Psi\Interfaces\UnaryFunction;
 
 /**
  * Emitter
@@ -17,8 +17,8 @@ use PeekAndPoke\Component\Psi\Interfaces\Functions\UnaryFunctionInterface;
 interface Emitter
 {
     /**
-     * @param string                                   $eventName
-     * @param Listener|UnaryFunctionInterface|callable $handler
+     * @param string                          $eventName
+     * @param Listener|UnaryFunction|callable $handler
      *
      * @return $this
      *

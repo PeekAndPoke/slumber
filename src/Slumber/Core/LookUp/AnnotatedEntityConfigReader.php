@@ -11,7 +11,6 @@ use PeekAndPoke\Component\Creator\CreatorFactory;
 use PeekAndPoke\Component\Creator\CreatorFactoryImpl;
 use PeekAndPoke\Component\PropertyAccess\PropertyAccessFactory;
 use PeekAndPoke\Component\PropertyAccess\PropertyAccessFactoryImpl;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Annotation\ClassCreatorMarker;
 use PeekAndPoke\Component\Slumber\Annotation\ClassMarker;
@@ -93,7 +92,7 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
         $validationContext = new ClassAnnotationValidationContext($this->serviceProvider, $subject);
 
         $creatorAnnotation = Psi::it($this->annotationReader->getClassAnnotations($subject))
-            ->filter(new IsInstanceOf(ClassCreatorMarker::class))
+            ->filter(new Psi\IsInstanceOf(ClassCreatorMarker::class))
             ->each($validationContext)
             ->getFirst();
 
@@ -114,7 +113,7 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
         $validationContext = new ClassAnnotationValidationContext($this->serviceProvider, $subject);
 
         return Psi::it($this->annotationReader->getClassAnnotations($subject))
-            ->filter(new IsInstanceOf(ClassMarker::class))
+            ->filter(new Psi\IsInstanceOf(ClassMarker::class))
             ->each($validationContext)
             ->toArray();
     }
@@ -178,7 +177,7 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
 
         // get the mapping marker like AsString() or AsObject() ...
         $marker = Psi::it($annotations)
-            ->filter(new IsInstanceOf(PropertyMappingMarker::class))
+            ->filter(new Psi\IsInstanceOf(PropertyMappingMarker::class))
             ->each($context)
             ->getFirst();
 
@@ -192,7 +191,7 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
         $newEntry->alias          = $marker->hasAlias() ? $marker->getAlias() : $context->property->getName();
         $newEntry->marker         = $marker;
         $newEntry->allMarkers     = Psi::it($annotations)
-            ->filter(new IsInstanceOf(PropertyMarker::class))
+            ->filter(new Psi\IsInstanceOf(PropertyMarker::class))
             ->each($context)
             ->toArray();
         $newEntry->mapper         = $this->mappings->createMapper($marker);

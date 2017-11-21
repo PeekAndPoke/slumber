@@ -6,7 +6,7 @@
 namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
 
 use PeekAndPoke\Component\Collections\Collection;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
+use PeekAndPoke\Component\Psi\Psi\IsInstanceOf;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsCollection;
 use PeekAndPoke\Component\Slumber\Core\Codec\Mapper;
 

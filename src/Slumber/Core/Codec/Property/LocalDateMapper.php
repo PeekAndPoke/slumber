@@ -5,7 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
 
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsDateString;
+use PeekAndPoke\Component\Psi\Psi\IsDateString;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsLocalDate;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;

@@ -6,7 +6,7 @@
 namespace PeekAndPoke\Component\Slumber\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
+use PeekAndPoke\Component\Psi\Psi\IsInstanceOf;
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
 use PeekAndPoke\Component\Slumber\Core\Validation\ValidationContext;
 use Psr\Container\ContainerInterface;

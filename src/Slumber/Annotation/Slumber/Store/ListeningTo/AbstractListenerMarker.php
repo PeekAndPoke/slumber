@@ -6,7 +6,7 @@
 namespace PeekAndPoke\Component\Slumber\Annotation\Slumber\Store\ListeningTo;
 
 use PeekAndPoke\Component\Emitter\Listener;
-use PeekAndPoke\Component\Psi\Functions\Unary\Matcher\IsInstanceOf;
+use PeekAndPoke\Component\Psi\Psi\IsInstanceOf;
 use PeekAndPoke\Component\Slumber\Annotation\ServiceInjectingSlumberAnnotation;
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
 use PeekAndPoke\Component\Slumber\Core\Validation\ClassAnnotationValidationContext;
