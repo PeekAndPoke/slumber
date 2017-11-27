@@ -5,9 +5,9 @@
 
 namespace PeekAndPoke\Component\Collections;
 
-use PeekAndPoke\Component\Psi\Interfaces\BinaryFunction;
-use PeekAndPoke\Component\Psi\Interfaces\UnaryFunction;
+use PeekAndPoke\Component\Psi\BinaryFunction;
 use PeekAndPoke\Component\Psi\Psi;
+use PeekAndPoke\Component\Psi\UnaryFunction;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -18,8 +18,6 @@ abstract class AbstractCollection implements Collection
     protected $data;
 
     /**
-     * AbstractCollection constructor.
-     *
      * @param array $data
      */
     public function __construct(array $data = [])
@@ -62,9 +60,9 @@ abstract class AbstractCollection implements Collection
     }
 
     /**
-     * @deprecated Use psi() instead
+     * @deprecated Use psi() instead as it will be removed in v1.1.0
      *
-     * @see psi()
+     * @see        psi()
      *
      * @param callable|UnaryFunction|BinaryFunction $predicate
      *

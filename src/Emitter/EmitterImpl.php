@@ -7,7 +7,7 @@
 
 namespace PeekAndPoke\Component\Emitter;
 
-use PeekAndPoke\Component\Psi\Interfaces\UnaryFunction;
+use PeekAndPoke\Component\Psi\UnaryFunction;
 
 /**
  * Emitter

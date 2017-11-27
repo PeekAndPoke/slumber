@@ -5,7 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\Validation;
 
-use PeekAndPoke\Component\Psi\Interfaces\BinaryFunction;
+use PeekAndPoke\Component\Psi\BinaryFunction;
 use PeekAndPoke\Component\Slumber\Annotation\SlumberMarker;
 use Psr\Container\ContainerInterface;
 

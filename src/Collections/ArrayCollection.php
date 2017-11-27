@@ -5,8 +5,8 @@
 
 namespace PeekAndPoke\Component\Collections;
 
-use PeekAndPoke\Component\Psi\Interfaces\BinaryFunction;
-use PeekAndPoke\Component\Psi\Interfaces\UnaryFunction;
+use PeekAndPoke\Component\Psi\BinaryFunction;
+use PeekAndPoke\Component\Psi\UnaryFunction;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
