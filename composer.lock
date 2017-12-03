@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "95ea85628530cc21f80137b74b7718f9",
+    "content-hash": "28932eeb7afd7dd906cb536ad6e40744",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -557,16 +557,16 @@
         },
         {
             "name": "peekandpoke/psi",
-            "version": "v0.6.3",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PeekAndPoke/psi.git",
-                "reference": "b69bd32597aa32a08d5eb9936ed1e53249b061cd"
+                "reference": "40b1cc8a0465abd2dd24a08fc304c6a468cf56ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PeekAndPoke/psi/zipball/b69bd32597aa32a08d5eb9936ed1e53249b061cd",
-                "reference": "b69bd32597aa32a08d5eb9936ed1e53249b061cd",
+                "url": "https://api.github.com/repos/PeekAndPoke/psi/zipball/40b1cc8a0465abd2dd24a08fc304c6a468cf56ef",
+                "reference": "40b1cc8a0465abd2dd24a08fc304c6a468cf56ef",
                 "shasum": ""
             },
             "require": {
@@ -596,7 +596,7 @@
                 }
             ],
             "description": "Java Streams Api inspired implementation for PHP. Php Streams Impl: PSI",
-            "time": "2017-11-30T07:57:35+00:00"
+            "time": "2017-12-03T11:52:03+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
