@@ -64,6 +64,96 @@ class MongoDbStorageDriver implements StorageDriver
     }
 
     /**
+     * @param $query
+     *
+     * @return Cursor
+     */
+    public function find(array $query = null)
+    {
+        return $this->guard(
+            function () use ($query) {
+                return $this->findInternal($query);
+            }
+        );
+    }
+
+    /**
+     * @param $query
+     *
+     * @return Cursor
+     */
+    private function findInternal(array $query = null)
+    {
+        $query = $query ?: [];
+
+        // We do not provide the cursor right away.
+        // By doing so we post pone the query until the data is really requested by iterating it.
+        $cursorProvider = function ($options) use ($query) {
+
+            // we want raw php arrays as return types
+            $options['typeMap'] = ['root' => 'array', 'document' => 'array', 'array' => 'array'];
+
+            return new AwakingCursorIterator(
+                $this->collection->find($query, $options),
+                $this->codecSet->getAwaker(),
+                $this->entityBaseClass
+            );
+        };
+
+        $countProvider = function ($options) use ($query) {
+            return $this->collection->count($query, $options);
+        };
+
+        return new MongoDbCursor($cursorProvider, $countProvider);
+    }
+
+    /**
+     * @param array|null $query
+     *
+     * @return null
+     */
+    public function findOne(array $query = null)
+    {
+        return $this->guard(
+            function () use ($query) {
+                return $this->findOneInternal($query);
+            }
+        );
+    }
+
+    /**
+     * @param array|null $query
+     *
+     * @return null
+     */
+    private function findOneInternal(array $query = null)
+    {
+        // TODO: find a more encapsulated way for looking it up in the pool
+        //       can we use the propertyAccess of the ID and use the propertyName? Is the alright ?
+
+        // do we have it in the pool ?
+        if (count($query) === 1
+            && isset($query['_id'])
+            && $this->entityPool->has($this->entityBaseClass, EntityPool::PRIMARY_ID, (string) $query['_id'])
+        ) {
+            return $this->entityPool->get($this->entityBaseClass, EntityPool::PRIMARY_ID, (string) $query['_id']);
+        }
+
+        $result = $this->collection->findOne(
+            $query ?: [],
+            [
+                'typeMap' => ['root' => 'array', 'document' => 'array', 'array' => 'array'] // we want raw php arrays as return types
+            ]
+        );
+
+        if ($result === null) {
+            return null;
+        }
+
+        return $this->codecSet->getAwaker()->awake($result, $this->entityBaseClass);
+    }
+
+    /**
      * @param mixed $item
      *
      * @return Result\InsertOneResult
@@ -72,17 +162,29 @@ class MongoDbStorageDriver implements StorageDriver
      */
     public function insert($item)
     {
+        return $this->guard(
+            function () use ($item) {
+                return $this->insertInternal($item);
+            }
+        );
+    }
+
+    /**
+     * @param mixed $item
+     *
+     * @return Result\InsertOneResult
+     *
+     * @throws DuplicateError
+     */
+    private function insertInternal($item)
+    {
         $slumbering = $this->codecSet->getSlumberer()->slumber($item);
 
         if (empty($slumbering['_id'])) {
             unset($slumbering['_id']);
         }
 
-        try {
-            $result = $this->collection->insertOne($slumbering);
-        } catch (WriteException $e) {
-            throw MongoDbDuplicateError::from($e);
-        }
+        $result = $this->collection->insertOne($slumbering);
 
         // write back the id
         $insertedId = (string) $result->getInsertedId();
@@ -107,6 +209,24 @@ class MongoDbStorageDriver implements StorageDriver
      * @throws DuplicateError
      */
     public function save($item)
+    {
+        return $this->guard(
+            function () use ($item) {
+                return $this->saveInternal($item);
+            }
+        );
+    }
+
+    /**
+     * Insert an item
+     *
+     * @param mixed $item
+     *
+     * @return Result\SaveOneResult
+     *
+     * @throws DuplicateError
+     */
+    private function saveInternal($item)
     {
         $slumbering = $this->codecSet->getSlumberer()->slumber($item);
 
@@ -169,6 +289,20 @@ class MongoDbStorageDriver implements StorageDriver
      */
     public function remove($entity)
     {
+        return $this->guard(
+            function () use ($entity) {
+                return $this->removeInternal($entity);
+            }
+        );
+    }
+
+    /**
+     * @param mixed $entity
+     *
+     * @return Result\RemoveResult
+     */
+    private function removeInternal($entity)
+    {
         $id = $this->getItemId($entity);
 
         $result = $this->collection->deleteOne([
@@ -187,6 +321,22 @@ class MongoDbStorageDriver implements StorageDriver
      */
     public function removeAll(array $query = null)
     {
+        return $this->guard(
+            function () use ($query) {
+                return $this->removeAllInternal($query);
+            }
+        );
+    }
+
+    /**
+     * Remove all from this collection
+     *
+     * @param array|null $query
+     *
+     * @return Result\RemoveResult
+     */
+    public function removeAllInternal(array $query = null)
+    {
         if ($query === null) {
             return new Result\RemoveResult(0, false);
         }
@@ -194,68 +344,6 @@ class MongoDbStorageDriver implements StorageDriver
         $result = $this->collection->deleteMany($query);
 
         return new Result\RemoveResult($result->getDeletedCount(), $result->isAcknowledged());
-    }
-
-    /**
-     * @param $query
-     *
-     * @return Cursor
-     */
-    public function find(array $query = null)
-    {
-        $query = $query ?: [];
-
-        // We do not provide the cursor right away.
-        // By doing so we post pone the query until the data is really requested by iterating it.
-        $cursorProvider = function ($options) use ($query) {
-
-            // we want raw php arrays as return types
-            $options['typeMap'] = ['root' => 'array', 'document' => 'array', 'array' => 'array'];
-
-            return new AwakingCursorIterator(
-                $this->collection->find($query, $options),
-                $this->codecSet->getAwaker(),
-                $this->entityBaseClass
-            );
-        };
-
-        $countProvider = function ($options) use ($query) {
-            return $this->collection->count($query, $options);
-        };
-
-        return new MongoDbCursor($cursorProvider, $countProvider);
-    }
-
-    /**
-     * @param array|null $query
-     *
-     * @return null
-     */
-    public function findOne(array $query = null)
-    {
-        // TODO: find a more encapsulated way for looking it up in the pool
-        //       can we use the propertyAccess of the ID and use the propertyName? Is the alright ?
-
-        // do we have it in the pool ?
-        if (count($query) === 1
-            && isset($query['_id'])
-            && $this->entityPool->has($this->entityBaseClass, EntityPool::PRIMARY_ID, (string) $query['_id'])
-        ) {
-            return $this->entityPool->get($this->entityBaseClass, EntityPool::PRIMARY_ID, (string) $query['_id']);
-        }
-
-        $result = $this->collection->findOne(
-            $query ?: [],
-            [
-                'typeMap' => ['root' => 'array', 'document' => 'array', 'array' => 'array'] // we want raw php arrays as return types
-            ]
-        );
-
-        if ($result === null) {
-            return null;
-        }
-
-        return $this->codecSet->getAwaker()->awake($result, $this->entityBaseClass);
     }
 
     /**
@@ -292,5 +380,10 @@ class MongoDbStorageDriver implements StorageDriver
                 $postSave->execute($postSaveEvent);
             }
         }
+    }
+
+    private function guard(callable $action)
+    {
+        return MongoDbGuard::guard($action);
     }
 }

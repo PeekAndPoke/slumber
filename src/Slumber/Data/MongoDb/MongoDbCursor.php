@@ -39,9 +39,12 @@ class MongoDbCursor implements Cursor
      */
     public function count()
     {
-        $countProvider = $this->countProvider;
+        return MongoDbGuard::guard(function () {
 
-        return (int) $countProvider($this->getOptions());
+            $countProvider = $this->countProvider;
+
+            return (int) $countProvider($this->getOptions());
+        });
     }
 
     /**
@@ -49,9 +52,12 @@ class MongoDbCursor implements Cursor
      */
     public function getIterator()
     {
-        $cursorProvider = $this->cursorProvider;
+        return MongoDbGuard::guard(function () {
 
-        return $cursorProvider ($this->getOptions());
+            $cursorProvider = $this->cursorProvider;
+
+            return $cursorProvider ($this->getOptions());
+        });
     }
 
     public function getOptions()

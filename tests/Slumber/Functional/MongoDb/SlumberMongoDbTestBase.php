@@ -47,18 +47,14 @@ abstract class SlumberMongoDbTestBase extends TestCase
     public static function setUpBeforeClass()
     {
         // setup the annotation reader for autoload
-        AnnotationRegistry::registerLoader(
-            function ($class) {
-                return class_exists($class) || interface_exists($class) || trait_exists($class);
-            }
-        );
+        AnnotationRegistry::registerLoader(function ($class) { return class_exists($class) || interface_exists($class) || trait_exists($class); });
 
         $di               = new UnitTestServiceProvider();
         $annotationReader = new AnnotationReader();
         $entityPool       = new EntityPoolImpl();
 
         self::$storage = new StorageImpl($entityPool);
-        self::$client  = new MongoDB\Client('mongodb://localhost:27017', ['connect' => false]);
+        self::$client  = new MongoDB\Client(self::getDatabaseDns(), ['connect' => false]);
 
         $database           = self::$client->selectDatabase(self::DB_NAME);
         $entityConfigReader = new MongoDbEntityConfigReaderCached(
@@ -95,5 +91,10 @@ abstract class SlumberMongoDbTestBase extends TestCase
         self::$storage->addRepository(self::$referencedRepo);
         self::$referencedRepo->buildIndexes();
 
+    }
+
+    protected static function getDatabaseDns()
+    {
+        return 'mongodb://localhost:27017';
     }
 }

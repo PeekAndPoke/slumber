@@ -17,4 +17,6 @@ abstract class StorageError extends SlumberRuntimeException
     const UNKNOWN = 99999;
 
     const DUPLICATE_KEY = 100;
+
+    const CONNECTION = 200;
 }
