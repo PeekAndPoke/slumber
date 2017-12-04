@@ -20,6 +20,21 @@ class EntityPoolImpl implements EntityPool
     private $numMisses = 0;
 
     /**
+     * @return EntityPoolImpl
+     */
+    public static function getInstance()
+    {
+        static $instance;
+
+        return $instance ?: $instance = new static;
+    }
+
+    /**
+     * Singleton constructor
+     */
+    protected function __construct() { }
+
+    /**
      * @return array
      */
     public function all()

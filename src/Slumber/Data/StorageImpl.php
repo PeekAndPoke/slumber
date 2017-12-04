@@ -19,30 +19,19 @@ class StorageImpl implements Storage
 {
     /** @var EntityPool */
     private $entityPool;
-
-    /** @var Repository[] */
-    private $repositories = [];
+    /** @var RepositoryRegistry */
+    private $registry;
 
     /**
      * StorageImpl constructor.
      *
-     * @param EntityPool $entityPool
+     * @param EntityPool         $entityPool
+     * @param RepositoryRegistry $registry
      */
-    public function __construct(EntityPool $entityPool)
+    public function __construct(EntityPool $entityPool, RepositoryRegistry $registry)
     {
         $this->entityPool = $entityPool;
-    }
-
-    /**
-     * @param Repository $repository
-     *
-     * @return StorageImpl
-     */
-    public function addRepository(Repository $repository)
-    {
-        $this->repositories[] = $repository;
-
-        return $this;
+        $this->registry   = $registry;
     }
 
     /**
@@ -56,7 +45,7 @@ class StorageImpl implements Storage
             return;
         }
 
-        $repo = $this->getRepositoryByEntity($subject);
+        $repo = $this->registry->getRepositoryByEntity($subject);
 
         if ($repo === null) {
             throw new SlumberRuntimeException('No repository is associated with objects of type "' . get_class($subject) . '"');
@@ -76,7 +65,7 @@ class StorageImpl implements Storage
             return;
         }
 
-        $repo = $this->getRepositoryByEntity($subject);
+        $repo = $this->registry->getRepositoryByEntity($subject);
 
         if ($repo === null) {
             throw new SlumberRuntimeException('No repository is associated with objects of type "' . get_class($subject) . '"');
@@ -98,7 +87,7 @@ class StorageImpl implements Storage
      */
     public function getRepositories()
     {
-        return $this->repositories;
+        return $this->registry->getRepositories();
     }
 
     /**
@@ -108,13 +97,7 @@ class StorageImpl implements Storage
      */
     public function getRepositoryByName($name)
     {
-        foreach ($this->repositories as $repository) {
-            if ($repository->getName() === $name) {
-                return $repository;
-            }
-        }
-
-        return null;
+        return $this->registry->getRepositoryByName($name);
     }
 
     /**
@@ -124,7 +107,7 @@ class StorageImpl implements Storage
      */
     public function hasRepositoryByClassName($cls)
     {
-        return $this->getRepositoryByClassName($cls) !== null;
+        return $this->registry->hasRepositoryByClassName($cls);
     }
 
     /**
@@ -134,15 +117,7 @@ class StorageImpl implements Storage
      */
     public function getRepositoryByClassName($cls)
     {
-        foreach ($this->repositories as $repository) {
-            if ($repository->getEntityClass()->getName() === $cls ||
-                in_array($cls, $repository->getEntityClassAliases(), true)
-            ) {
-                return $repository;
-            }
-        }
-
-        return null;
+        return $this->registry->getRepositoryByClassName($cls);
     }
 
     /**
@@ -152,10 +127,6 @@ class StorageImpl implements Storage
      */
     public function getRepositoryByEntity($entity)
     {
-        if (! is_object($entity)) {
-            return null;
-        }
-
-        return $this->getRepositoryByClassName(get_class($entity));
+        return $this->registry->getRepositoryByEntity($entity);
     }
 }

@@ -7,21 +7,20 @@ namespace PeekAndPoke\Component\Slumber\Functional\MongoDb;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\Cache;
 use MongoDB;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
-use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
-use PeekAndPoke\Component\Slumber\Data\EntityRepository;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbCodecSet;
+use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderCached;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderImpl;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbPropertyMarkerToMapper;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
-use PeekAndPoke\Component\Slumber\Data\StorageImpl;
+use PeekAndPoke\Component\Slumber\Data\Storage;
 use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestAggregatedClass;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 
 /**
@@ -35,66 +34,139 @@ abstract class SlumberMongoDbTestBase extends TestCase
     const MAIN_COLLECTION       = 'main_class';
     const REFERENCED_COLLECTION = 'ref_class';
 
-    /** @var StorageImpl */
-    static protected $storage;
-    /** @var MongoDB\Client */
-    static protected $client;
-    /** @var EntityRepository */
-    static protected $mainRepo;
-    /** @var EntityRepository */
-    static protected $referencedRepo;
+    /** @var ContainerInterface[] */
+    static private $diPerClass = [];
 
-    public static function setUpBeforeClass()
+    /**
+     * @return ContainerInterface|UnitTestServiceProvider
+     */
+    protected static function getDi()
     {
-        // setup the annotation reader for autoload
-        AnnotationRegistry::registerLoader(function ($class) { return class_exists($class) || interface_exists($class) || trait_exists($class); });
-
-        $di               = new UnitTestServiceProvider();
-        $annotationReader = new AnnotationReader();
-        $entityPool       = new EntityPoolImpl();
-
-        self::$storage = new StorageImpl($entityPool);
-        self::$client  = new MongoDB\Client(self::getDatabaseDns(), ['connect' => false]);
-
-        $database           = self::$client->selectDatabase(self::DB_NAME);
-        $entityConfigReader = new MongoDbEntityConfigReaderCached(
-            new MongoDbEntityConfigReaderImpl(
-                new AnnotatedEntityConfigReader($di, $annotationReader, new MongoDbPropertyMarkerToMapper())
-            ),
-            new ArrayCache(),
-            'test',
-            true
-        );
-        $codecSet           = new MongoDbCodecSet($di, $entityConfigReader, self::$storage, new NullLogger());
-
-        self::$mainRepo = new EntityRepository(
-            'main_class',
-            new MongoDbStorageDriver(
-                $entityPool,
-                $codecSet,
-                $database->selectCollection(self::MAIN_COLLECTION),
-                new \ReflectionClass(UnitTestMainClass::class)
-            )
-        );
-        self::$storage->addRepository(self::$mainRepo);
-        self::$mainRepo->buildIndexes();
-
-        self::$referencedRepo = new EntityRepository(
-            'ref_class',
-            new MongoDbStorageDriver(
-                $entityPool,
-                $codecSet,
-                $database->selectCollection(self::REFERENCED_COLLECTION),
-                new \ReflectionClass(UnitTestAggregatedClass::class)
-            )
-        );
-        self::$storage->addRepository(self::$referencedRepo);
-        self::$referencedRepo->buildIndexes();
-
+        return isset(self::$diPerClass[static::class])
+            ? self::$diPerClass[static::class]
+            : self::$diPerClass[static::class] = new UnitTestServiceProvider();
     }
 
-    protected static function getDatabaseDns()
+    /**
+     * @return Cache
+     */
+    protected static function createCache()
     {
-        return 'mongodb://localhost:27017';
+        $name = 'cache';
+
+        if (! static::getDi()->has($name)) {
+            static::getDi()->set($name, new ArrayCache());
+        }
+
+        return static::getDi()->get($name);
+    }
+
+    /**
+     * @return AnnotationReader
+     */
+    protected static function createAnnotationReader()
+    {
+        $name = 'annotation-reader';
+
+        if (! static::getDi()->has($name)) {
+
+            // setup the annotation reader for autoload
+            AnnotationRegistry::registerLoader(function ($class) { return class_exists($class) || interface_exists($class) || trait_exists($class); });
+
+            static::getDi()->set($name, new CachedReader(
+                new AnnotationReader(),
+                static::createCache(),
+                true
+            ));
+        }
+
+        return static::getDi()->get($name);
+    }
+
+    /**
+     * @return MongoDbEntityConfigReader
+     */
+    protected static function createEntityConfigReader()
+    {
+        $name = 'entity-config-reader';
+
+        if (! static::getDi()->has($name)) {
+
+            static::getDi()->set(
+                $name,
+                new MongoDbEntityConfigReaderCached(
+                    new MongoDbEntityConfigReaderImpl(
+                        new AnnotatedEntityConfigReader(
+                            static::getDi(),
+                            static::createAnnotationReader(),
+                            new MongoDbPropertyMarkerToMapper()
+                        )
+                    ),
+                    static::createCache(),
+                    'test',
+                    true
+                )
+            );
+        }
+
+        return static::getDi()->get($name);
+    }
+
+    /**
+     * @param Storage $storage
+     *
+     * @return MongoDbCodecSet
+     */
+    protected static function createCodecSet(Storage $storage)
+    {
+        $name = 'codec-set';
+
+        if (! static::getDi()->has($name)) {
+            static::getDi()->set(
+                $name,
+                new MongoDbCodecSet(
+                    static::getDi(),
+                    static::createEntityConfigReader(),
+                    $storage,
+                    new NullLogger()
+                )
+            );
+        }
+
+        return static::getDi()->get($name);
+    }
+
+    /**
+     * @return MongoDB\Client
+     */
+    protected static function createMongoClient()
+    {
+        $name = 'mongo-client';
+
+        if (! static::getDi()->has($name)) {
+            static::getDi()->set(
+                $name,
+                new MongoDB\Client('mongodb://localhost:27017', ['connect' => false])
+            );
+        }
+
+        return static::getDi()->get($name);
+    }
+
+    /**
+     * @return MongoDB\Database
+     */
+    protected static function createDatabase()
+    {
+        $name = 'mongo-database';
+
+        if (! static::getDi()->has($name)) {
+            static::getDi()->set(
+                $name,
+                static::createMongoClient()->selectDatabase(self::DB_NAME)
+            );
+        }
+
+        return static::getDi()->get($name);
     }
 }

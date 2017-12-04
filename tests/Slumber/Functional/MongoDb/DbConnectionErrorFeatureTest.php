@@ -5,81 +5,58 @@
 
 namespace PeekAndPoke\Component\Slumber\Functional\MongoDb;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Cache\ArrayCache;
 use MongoDB;
-use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
 use PeekAndPoke\Component\Slumber\Data\EntityRepository;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbCodecSet;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbCursor;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderCached;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderImpl;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbPropertyMarkerToMapper;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
+use PeekAndPoke\Component\Slumber\Data\RepositoryRegistryImpl;
 use PeekAndPoke\Component\Slumber\Data\StorageImpl;
-use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\NullLogger;
 
 /**
  *
  *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class DbConnectionErrorFeatureTest extends TestCase
+class DbConnectionErrorFeatureTest extends SlumberMongoDbTestBase
 {
-    const DB_NAME               = 'slumber_tests_db';
-    const MAIN_COLLECTION       = 'main_class';
-    const REFERENCED_COLLECTION = 'ref_class';
+    const MAIN_COLLECTION = 'main_class';
 
     /** @var StorageImpl */
     static protected $storage;
-    /** @var MongoDB\Client */
-    static protected $client;
     /** @var EntityRepository */
     static protected $mainRepo;
 
     public static function setUpBeforeClass()
     {
-        // setup the annotation reader for autoload
-        AnnotationRegistry::registerLoader(function ($class) { return class_exists($class) || interface_exists($class) || trait_exists($class); });
+        $entityPool = EntityPoolImpl::getInstance();
+        $registry   = new RepositoryRegistryImpl();
 
-        $di               = new UnitTestServiceProvider();
-        $annotationReader = new AnnotationReader();
-        $entityPool       = new EntityPoolImpl();
+        self::$storage = new StorageImpl($entityPool, $registry);
 
-        self::$storage = new StorageImpl($entityPool);
-        self::$client  = new MongoDB\Client(self::getDatabaseDns(), ['connect' => false]);
+        $codecSet = static::createCodecSet(self::$storage);
 
-        $database           = self::$client->selectDatabase(self::DB_NAME);
-        $entityConfigReader = new MongoDbEntityConfigReaderCached(
-            new MongoDbEntityConfigReaderImpl(
-                new AnnotatedEntityConfigReader($di, $annotationReader, new MongoDbPropertyMarkerToMapper())
-            ),
-            new ArrayCache(),
-            'test',
-            true
-        );
-        $codecSet           = new MongoDbCodecSet($di, $entityConfigReader, self::$storage, new NullLogger());
+        $registry->registerProvider(self::MAIN_COLLECTION, [UnitTestMainClass::class], function () use ($entityPool, $codecSet) {
 
-        self::$mainRepo = new EntityRepository(
-            'main_class',
-            new MongoDbStorageDriver(
-                $entityPool,
-                $codecSet,
-                $database->selectCollection(self::MAIN_COLLECTION),
-                new \ReflectionClass(UnitTestMainClass::class)
-            )
-        );
-        self::$storage->addRepository(self::$mainRepo);
+            $collection = static::createDatabase()->selectCollection(self::MAIN_COLLECTION);
+            $reflect    = new \ReflectionClass(UnitTestMainClass::class);
+
+            return new EntityRepository(self::MAIN_COLLECTION, new MongoDbStorageDriver($entityPool, $codecSet, $collection, $reflect));
+        });
+
+        // get the repos for use in the tests
+        self::$mainRepo = self::$storage->getRepositoryByName(self::MAIN_COLLECTION);
     }
 
-    protected static function getDatabaseDns()
+    protected static function createMongoClient()
     {
-        return 'mongodb://localhost:9999';
+        return new MongoDB\Client('mongodb://localhost:9999', ['connect' => false]);
+    }
+
+    protected static function createDatabase()
+    {
+        return self::createMongoClient()->selectDatabase(self::DB_NAME);
     }
 
     /**

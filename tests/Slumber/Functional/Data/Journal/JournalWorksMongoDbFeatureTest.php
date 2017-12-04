@@ -5,11 +5,6 @@
 
 namespace PeekAndPoke\Component\Slumber\Functional\Data\Journal;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Cache\ArrayCache;
-use MongoDB;
-use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\JournalEntry;
 use PeekAndPoke\Component\Slumber\Data\Addon\Journal\DomainModel\RecordableHistory;
 use PeekAndPoke\Component\Slumber\Data\Addon\Journal\JournalEntryRepositoryImpl;
@@ -17,23 +12,18 @@ use PeekAndPoke\Component\Slumber\Data\Addon\Journal\JournalWriter;
 use PeekAndPoke\Component\Slumber\Data\Addon\Journal\JournalWriterImpl;
 use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
 use PeekAndPoke\Component\Slumber\Data\EntityRepository;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbCodecSet;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderCached;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderImpl;
-use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbPropertyMarkerToMapper;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
+use PeekAndPoke\Component\Slumber\Data\RepositoryRegistryImpl;
 use PeekAndPoke\Component\Slumber\Data\StorageImpl;
-use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\Functional\MongoDb\SlumberMongoDbTestBase;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestJournalizedClass;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\NullLogger;
 
 /**
  *
  *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class JournalWorksMongoDbFeatureTest extends TestCase
+class JournalWorksMongoDbFeatureTest extends SlumberMongoDbTestBase
 {
     const DB_NAME            = 'slumber_tests_db';
     const COLLECTION         = 'journalized_class';
@@ -41,8 +31,6 @@ class JournalWorksMongoDbFeatureTest extends TestCase
 
     /** @var StorageImpl */
     static protected $storage;
-    /** @var MongoDB\Client */
-    static protected $client;
     /** @var EntityRepository */
     static protected $mainRepo;
     /** @var EntityRepository */
@@ -52,66 +40,43 @@ class JournalWorksMongoDbFeatureTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        // setup the annotation reader for autoload
-        AnnotationRegistry::registerLoader(
-            function ($class) {
-                return class_exists($class) || interface_exists($class) || trait_exists($class);
-            }
-        );
+        $entityPool = EntityPoolImpl::getInstance();
+        $registry   = new RepositoryRegistryImpl();
 
-        $di               = new UnitTestServiceProvider();
-        $logger           = new NullLogger();
-        $annotationReader = new AnnotationReader();
-        $entityPool       = new EntityPoolImpl();
+        self::$storage = new StorageImpl($entityPool, $registry);
 
-        self::$storage = new StorageImpl($entityPool);
-        self::$client  = new MongoDB\Client('mongodb://localhost:27017', ['connect' => false]);
+        $codecSet = static::createCodecSet(self::$storage);
 
-        $database           = self::$client->selectDatabase(self::DB_NAME);
-        $entityConfigReader = new MongoDbEntityConfigReaderCached(
-            new MongoDbEntityConfigReaderImpl(
-                new AnnotatedEntityConfigReader($di, $annotationReader, new MongoDbPropertyMarkerToMapper())
-            ),
-            new ArrayCache(),
-            'test',
-            true
-        );
+        $registry->registerProvider(self::COLLECTION, [UnitTestJournalizedClass::class], function () use ($entityPool, $codecSet) {
 
-        $codecSet = new MongoDbCodecSet($di, $entityConfigReader, self::$storage, $logger);
+            $collection = static::createDatabase()->selectCollection(self::COLLECTION);
+            $reflect    = new \ReflectionClass(UnitTestJournalizedClass::class);
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Important we need to add the Journal writer to the DI before adding the other repo to the store.
-        // The MongoDbRepository tries to read the entity config and fails if the journal writer is not known yet
+            return new EntityRepository(self::COLLECTION, new MongoDbStorageDriver($entityPool, $codecSet, $collection, $reflect));
+        });
+
         self::$journalRepo = new JournalEntryRepositoryImpl(
             self::JOURNAL_COLLECTION,
             new MongoDbStorageDriver(
                 $entityPool,
                 $codecSet,
-                $database->selectCollection(self::JOURNAL_COLLECTION),
+                static::createDatabase()->selectCollection(self::JOURNAL_COLLECTION),
                 new \ReflectionClass(JournalEntry::class)
             )
         );
-        self::$storage->addRepository(self::$journalRepo);
+
+        $registry->registerProvider(self::JOURNAL_COLLECTION, [JournalEntry::class], function () {
+            return self::$journalRepo;
+        });
 
         // set the journal writer on the DI
         self::$journal = new JournalWriterImpl(self::$storage, self::$journalRepo);
-        $di->set(JournalWriter::SERVICE_ID, self::$journal);
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Now we can add the repo that stores the journalized entity
-        self::$mainRepo = new EntityRepository(
-            self::COLLECTION,
-            new MongoDbStorageDriver(
-                $entityPool,
-                $codecSet,
-                $database->selectCollection(self::COLLECTION),
-                new \ReflectionClass(UnitTestJournalizedClass::class)
-            )
-        );
-        self::$storage->addRepository(self::$mainRepo);
+        self::getDi()->set(JournalWriter::SERVICE_ID, self::$journal);
 
         // setting up the indexes is like a little self-test
+        self::$mainRepo = self::$storage->getRepositoryByName(self::COLLECTION);
         self::$mainRepo->buildIndexes();
+
         self::$journalRepo->buildIndexes();
     }
 

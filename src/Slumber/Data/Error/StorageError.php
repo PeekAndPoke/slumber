@@ -12,7 +12,7 @@ use PeekAndPoke\Component\Slumber\Core\Exception\SlumberRuntimeException;
  *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-abstract class StorageError extends SlumberRuntimeException
+class StorageError extends SlumberRuntimeException
 {
     const UNKNOWN = 99999;
 

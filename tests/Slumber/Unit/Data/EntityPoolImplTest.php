@@ -17,14 +17,14 @@ class EntityPoolImplTest extends TestCase
 {
     public function testAllWhenPoolIsEmpty()
     {
-        $subject = new EntityPoolImpl();
+        $subject = EntityPoolImpl::getInstance();
 
         $this->assertSame([], $subject->all(), 'all() must work correct when pool is empty');
     }
 
     public function testStatsWhenPoolIsEmpty()
     {
-        $subject = new EntityPoolImpl();
+        $subject = EntityPoolImpl::getInstance();
         $stats = $subject->stats();
 
         $this->assertSame(0, $stats->getNumEntries(), 'stats.numEntries must be null when pool is empty');
@@ -34,7 +34,7 @@ class EntityPoolImplTest extends TestCase
 
     public function testSetGetHas()
     {
-        $subject = new EntityPoolImpl();
+        $subject = EntityPoolImpl::getInstance();
         $class1 = new \ReflectionClass(\stdClass::class);
         $class2 = new \ReflectionClass(\DateTime::class);
 
