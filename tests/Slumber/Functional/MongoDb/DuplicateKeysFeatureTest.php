@@ -58,7 +58,10 @@ class DuplicateKeysFeatureTest extends SlumberMongoDbTestBase
 
         // get the repos for use in the tests
         self::$mainRepo       = self::$storage->getRepositoryByName(self::MAIN_COLLECTION);
+        self::$mainRepo->buildIndexes();
+
         self::$referencedRepo = self::$storage->getRepositoryByName(self::REFERENCED_COLLECTION);
+        self::$referencedRepo->buildIndexes();
     }
 
     public function setUp()
@@ -120,7 +123,7 @@ class DuplicateKeysFeatureTest extends SlumberMongoDbTestBase
         try {
             self::$mainRepo->insert($second);
 
-            self::fail('Inserting a duplicate must fail');
+            self::fail('Inserting a duplicate on a unique field like "reference" must fail. Did you forget to set up the indexes?');
 
         } catch (DuplicateError $e) {
 

@@ -63,7 +63,10 @@ final class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
 
         // get the repos for use in the tests
         self::$mainRepo       = self::$storage->getRepositoryByName(self::MAIN_COLLECTION);
+        self::$mainRepo->buildIndexes();
+
         self::$referencedRepo = self::$storage->getRepositoryByName(self::REFERENCED_COLLECTION);
+        self::$referencedRepo->buildIndexes();
     }
 
     public function setUp()
