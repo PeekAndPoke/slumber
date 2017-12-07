@@ -1,5 +1,9 @@
 # Slumber
 
+PHP5.6 compatibility until v0.4.x
+
+
+
 # TICKETS:
 
 next ticket number: 14
