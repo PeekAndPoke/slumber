@@ -45,7 +45,7 @@ class StorageImpl implements Storage
             return;
         }
 
-        $repo = $this->registry->getRepositoryByEntity($subject);
+        $repo = $this->getRepositoryByEntity($subject);
 
         if ($repo === null) {
             throw new SlumberRuntimeException('No repository is associated with objects of type "' . get_class($subject) . '"');
@@ -65,7 +65,7 @@ class StorageImpl implements Storage
             return;
         }
 
-        $repo = $this->registry->getRepositoryByEntity($subject);
+        $repo = $this->getRepositoryByEntity($subject);
 
         if ($repo === null) {
             throw new SlumberRuntimeException('No repository is associated with objects of type "' . get_class($subject) . '"');

@@ -45,7 +45,7 @@ interface RepositoryRegistry
     public function getRepositoryByClassName($class);
 
     /**
-     * @param string $entity
+     * @param mixed $entity
      *
      * @return null|Repository
      */
