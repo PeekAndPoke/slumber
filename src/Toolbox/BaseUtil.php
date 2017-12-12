@@ -31,8 +31,17 @@ abstract class BaseUtil
      */
     public static function ensureDirectory($dir, $mode = 0777)
     {
+        $old = error_reporting(0);
+
+        if (@is_dir($dir)) {
+            return;
+        }
+
         if (! @mkdir($dir, $mode, true) && ! @is_dir($dir)) {
+            error_reporting($old);
             throw new \RuntimeException('Could not create directory');
         }
+
+        error_reporting($old);
     }
 }
