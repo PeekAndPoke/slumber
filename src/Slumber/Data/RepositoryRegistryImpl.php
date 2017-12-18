@@ -55,10 +55,16 @@ class RepositoryRegistryImpl implements RepositoryRegistry
      */
     public function registerProvider($name, array $classes, \Closure $provider)
     {
-        $this->providersByNames[$name] = $provider;
+        $realProvider = function () use ($name, $classes, $provider) {
+            $context = new RepositoryRegistry\ProviderContext($name, $classes);
+
+            return $provider($context);
+        };
+
+        $this->providersByNames[$name] = $realProvider;
 
         foreach ($classes as $class) {
-            $this->providersByClassNames[$class] = $provider;
+            $this->providersByClassNames[$class] = $realProvider;
         }
 
         return $this;

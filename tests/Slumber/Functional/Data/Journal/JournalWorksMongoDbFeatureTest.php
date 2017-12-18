@@ -13,6 +13,7 @@ use PeekAndPoke\Component\Slumber\Data\Addon\Journal\JournalWriterImpl;
 use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
 use PeekAndPoke\Component\Slumber\Data\EntityRepository;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
+use PeekAndPoke\Component\Slumber\Data\RepositoryRegistry\ProviderContext;
 use PeekAndPoke\Component\Slumber\Data\RepositoryRegistryImpl;
 use PeekAndPoke\Component\Slumber\Data\StorageImpl;
 use PeekAndPoke\Component\Slumber\Functional\MongoDb\SlumberMongoDbTestBase;
@@ -44,15 +45,14 @@ class JournalWorksMongoDbFeatureTest extends SlumberMongoDbTestBase
         $registry   = new RepositoryRegistryImpl();
 
         self::$storage = new StorageImpl($entityPool, $registry);
+        $codecSet      = static::createCodecSet(self::$storage);
 
-        $codecSet = static::createCodecSet(self::$storage);
+        $registry->registerProvider(self::COLLECTION, [UnitTestJournalizedClass::class], function (ProviderContext $context) use ($entityPool, $codecSet) {
 
-        $registry->registerProvider(self::COLLECTION, [UnitTestJournalizedClass::class], function () use ($entityPool, $codecSet) {
+            $collection = static::createDatabase()->selectCollection($context->getName());
+            $reflect    = $context->getFirstClass();
 
-            $collection = static::createDatabase()->selectCollection(self::COLLECTION);
-            $reflect    = new \ReflectionClass(UnitTestJournalizedClass::class);
-
-            return new EntityRepository(self::COLLECTION, new MongoDbStorageDriver($entityPool, $codecSet, $collection, $reflect));
+            return new EntityRepository($context->getName(), new MongoDbStorageDriver($entityPool, $codecSet, $collection, $reflect));
         });
 
         self::$journalRepo = new JournalEntryRepositoryImpl(
