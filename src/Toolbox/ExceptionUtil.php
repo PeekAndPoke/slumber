@@ -12,11 +12,11 @@ use Psr\Log\LoggerInterface;
 class ExceptionUtil
 {
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return string
      */
-    public static function toString(\Exception $e)
+    public static function toString(\Throwable $e)
     {
         // use internal exception printing
         ob_start();
@@ -26,22 +26,22 @@ class ExceptionUtil
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return string[]
      */
-    public static function toLines(\Exception $e)
+    public static function toLines(\Throwable $e)
     {
         return explode("\n", self::toString($e));
     }
 
     /**
      * @param LoggerInterface $logger
-     * @param \Exception      $e
+     * @param \Throwable      $e
      * @param string          $prefix
      * @param array           $extra
      */
-    public static function log(LoggerInterface $logger, \Exception $e, $prefix, array $extra = [])
+    public static function log(LoggerInterface $logger, \Throwable $e, $prefix, array $extra = [])
     {
         $result = static::toString($e);
 
@@ -56,11 +56,11 @@ class ExceptionUtil
 
     /**
      * @param LoggerInterface $logger
-     * @param \Exception      $e
+     * @param \Throwable      $e
      * @param string          $prefix
      * @param array           $extra
      */
-    public static function warn(LoggerInterface $logger, \Exception $e, $prefix, array $extra = [])
+    public static function warn(LoggerInterface $logger, \Throwable $e, $prefix, array $extra = [])
     {
         $result = static::toString($e);
 
@@ -71,11 +71,11 @@ class ExceptionUtil
 
     /**
      * @param LoggerInterface $logger
-     * @param \Exception      $e
+     * @param \Throwable      $e
      * @param string          $prefix
      * @param array           $extra
      */
-    public static function info(LoggerInterface $logger, \Exception $e, $prefix, array $extra = [])
+    public static function info(LoggerInterface $logger, \Throwable $e, $prefix, array $extra = [])
     {
         $result = static::toString($e);
 
@@ -85,11 +85,11 @@ class ExceptionUtil
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return array
      */
-    public static function toRaw(\Exception $e)
+    public static function toRaw(\Throwable $e)
     {
         return [
             'raw' => explode(PHP_EOL, static::toString($e)),
@@ -97,11 +97,11 @@ class ExceptionUtil
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return array
      */
-    public static function toReducedArray(\Exception $e)
+    public static function toReducedArray(\Throwable $e)
     {
         $originalException = $e;
 
@@ -143,11 +143,11 @@ class ExceptionUtil
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      *
      * @return string
      */
-    public static function formatMessage(\Exception $e)
+    public static function formatMessage(\Throwable $e)
     {
         return $e->getMessage() . ' (Code ' . $e->getCode() . ') at ' . $e->getFile() . ':' . $e->getLine();
     }
