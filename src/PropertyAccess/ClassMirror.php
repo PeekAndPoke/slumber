@@ -12,29 +12,27 @@ namespace PeekAndPoke\Component\PropertyAccess;
  */
 class ClassMirror
 {
-    /** @var \ReflectionClass */
-    private $reflect;
     /** @var PropertyAccessFactoryImpl */
     private $factory;
 
     /**
-     * ClassMirror constructor.
-     *
-     * @param string $cls
      */
-    public function __construct($cls)
+    public function __construct()
     {
-        $this->reflect = new \ReflectionClass($cls);
         $this->factory = new PropertyAccessFactoryImpl();
     }
 
     /**
+     * @param mixed $subject
+     *
      * @return PropertyAccess[]
      */
-    public function getAccessorsToAllNonStaticProperties()
+    public function getAccessors($subject)
     {
+        $class = $subject instanceof \ReflectionClass ? $subject : new \ReflectionClass($subject);
+
         $result  = [];
-        $current = $this->reflect;
+        $current = $class;
 
         while ($current) {
 
@@ -43,7 +41,7 @@ class ClassMirror
                 $propertyName = $property->getName();
 
                 if (false === isset($result[$propertyName]) && false === $property->isStatic()) {
-                    $result[$propertyName] = $this->factory->create($this->reflect, $property);
+                    $result[$propertyName] = $this->factory->create($class, $property);
                 }
             }
             $current = $current->getParentClass();
