@@ -12,6 +12,8 @@ use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
 use MongoDB;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
+use PeekAndPoke\Component\Slumber\Data\EntityPool;
+use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbCodecSet;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderCached;
@@ -113,6 +115,14 @@ abstract class SlumberMongoDbTestBase extends TestCase
     }
 
     /**
+     * @return EntityPool
+     */
+    protected static function createEntityPool()
+    {
+        return EntityPoolImpl::getInstance();
+    }
+    
+    /**
      * @param Storage $storage
      *
      * @return MongoDbCodecSet
@@ -127,6 +137,7 @@ abstract class SlumberMongoDbTestBase extends TestCase
                 new MongoDbCodecSet(
                     static::getDi(),
                     static::createEntityConfigReader(),
+                    static::createEntityPool(),
                     $storage,
                     new NullLogger()
                 )

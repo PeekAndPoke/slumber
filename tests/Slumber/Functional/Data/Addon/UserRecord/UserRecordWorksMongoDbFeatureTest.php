@@ -6,7 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Functional\Data\Journal;
 
 use PeekAndPoke\Component\Slumber\Data\Addon\UserRecord\UserRecord;
-use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
 use PeekAndPoke\Component\Slumber\Data\EntityRepository;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
 use PeekAndPoke\Component\Slumber\Data\RepositoryRegistry\ProviderContext;
@@ -32,7 +31,7 @@ class UserRecordWorksMongoDbFeatureTest extends SlumberMongoDbTestBase
 
     public static function setUpBeforeClass()
     {
-        $entityPool = EntityPoolImpl::getInstance();
+        $entityPool = static::createEntityPool();
         $registry   = new RepositoryRegistryImpl();
 
         self::$storage = new StorageImpl($entityPool, $registry);

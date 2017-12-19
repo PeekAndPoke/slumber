@@ -6,7 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Functional\MongoDb;
 
 use PeekAndPoke\Component\GeoJson\Point;
-use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
 use PeekAndPoke\Component\Slumber\Data\EntityRepository;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbUtil;
@@ -38,7 +37,7 @@ final class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
 
     public static function setUpBeforeClass()
     {
-        $entityPool = EntityPoolImpl::getInstance();
+        $entityPool = static::createEntityPool();
         $registry   = new RepositoryRegistryImpl();
 
         self::$storage = new StorageImpl($entityPool, $registry);
@@ -62,7 +61,7 @@ final class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
         });
 
         // get the repos for use in the tests
-        self::$mainRepo       = self::$storage->getRepositoryByName(self::MAIN_COLLECTION);
+        self::$mainRepo = self::$storage->getRepositoryByName(self::MAIN_COLLECTION);
         self::$mainRepo->buildIndexes();
 
         self::$referencedRepo = self::$storage->getRepositoryByName(self::REFERENCED_COLLECTION);

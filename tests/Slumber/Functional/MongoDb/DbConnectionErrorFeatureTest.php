@@ -6,7 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Functional\MongoDb;
 
 use MongoDB;
-use PeekAndPoke\Component\Slumber\Data\EntityPoolImpl;
 use PeekAndPoke\Component\Slumber\Data\EntityRepository;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbCursor;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
@@ -30,7 +29,7 @@ class DbConnectionErrorFeatureTest extends SlumberMongoDbTestBase
 
     public static function setUpBeforeClass()
     {
-        $entityPool = EntityPoolImpl::getInstance();
+        $entityPool = static::createEntityPool();
         $registry   = new RepositoryRegistryImpl();
 
         self::$storage = new StorageImpl($entityPool, $registry);
