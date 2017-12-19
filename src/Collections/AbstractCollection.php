@@ -60,6 +60,14 @@ abstract class AbstractCollection implements Collection
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return $this->count() === 0;
+    }
+
+    /**
      * @deprecated Use psi() instead as it will be removed in v1.1.0
      *
      * @see        psi()

@@ -14,6 +14,11 @@ use PeekAndPoke\Component\Psi\Psi;
 interface Collection extends \IteratorAggregate, \Countable
 {
     /**
+     * @return bool
+     */
+    public function isEmpty();
+
+    /**
      * @return Psi
      */
     public function psi();
