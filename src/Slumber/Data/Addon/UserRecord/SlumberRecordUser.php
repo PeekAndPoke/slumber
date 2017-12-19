@@ -14,11 +14,9 @@ use PeekAndPoke\Component\Slumber\SlumberDependencies;
 trait SlumberRecordUser
 {
     /**
-     * @var UserRecord
-     *
      * @see SlumberDependencies
      *
-     * @Slumber\AsObject(UserRecord::class)
+     * @Slumber\AsObject(\PeekAndPoke\Component\Slumber\Data\Addon\UserRecord\UserRecord::class)
      *
      * @Slumber\Store\AsUserRecord(
      *     service=SlumberDependencies::USER_RECORD_PROVIDER,

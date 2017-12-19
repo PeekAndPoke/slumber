@@ -10,6 +10,7 @@ use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 use PeekAndPoke\Component\Slumber\Data\Addon\PublicReference\SlumberUniquelyReferenced;
 use PeekAndPoke\Component\Slumber\Data\Addon\SlumberId;
 use PeekAndPoke\Component\Slumber\Data\Addon\SlumberTimestamped;
+use PeekAndPoke\Component\Slumber\Data\Addon\UserRecord\SlumberRecordUser;
 use PeekAndPoke\Component\Slumber\Data\LazyDbReference;
 use PeekAndPoke\Component\Slumber\Data\LazyDbReferenceCollection;
 use PeekAndPoke\Types\LocalDate;
@@ -22,6 +23,7 @@ class UnitTestMainClass
     use SlumberId;
     use SlumberUniquelyReferenced;
     use SlumberTimestamped;
+    use SlumberRecordUser;
 
     /**
      * @var UnitTestAggregatedClass
