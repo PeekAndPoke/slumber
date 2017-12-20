@@ -17,6 +17,11 @@ use PeekAndPoke\Component\Psi\Psi;
 interface Cursor extends \IteratorAggregate, \Countable
 {
     /**
+     * @return \Iterator
+     */
+    public function getIterator();
+
+    /**
      * @param mixed $sortBy
      *
      * @return Cursor

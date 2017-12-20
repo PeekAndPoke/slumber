@@ -24,6 +24,22 @@ abstract class BaseUtil
     }
 
     /**
+     * @param int $length
+     *
+     * @return string
+     */
+    public static function createRandomToken($length = 10)
+    {
+        $result = '';
+
+        while (strlen($result) < $length) {
+            $result .= uniqid('', true);
+        }
+
+        return substr($result, 0, $length);
+    }
+
+    /**
      * @param string $dir
      * @param int    $mode
      *

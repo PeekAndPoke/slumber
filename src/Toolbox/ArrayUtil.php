@@ -84,4 +84,64 @@ class ArrayUtil
 
         return [$value];
     }
+
+    /**
+     * @param $arr
+     *
+     * @return bool
+     */
+    public static function isAssoc($arr)
+    {
+        if (! is_array($arr)) {
+            return false;
+        }
+
+        return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
+    /**
+     * Removes all empty values recursively
+     *
+     * @param mixed $input
+     *
+     * @return mixed
+     */
+    public static function clean($input)
+    {
+        if (is_array($input)) {
+
+            $output = [];
+
+            /** @var array $input */
+            foreach ($input as $k => $v) {
+
+                $cleaned = self::clean($v);
+
+                if ($cleaned !== null || (is_array($cleaned) && count($cleaned) === 0)) {
+                    $output[$k] = $cleaned;
+                }
+            }
+
+            return $output;
+        }
+
+        if (is_object($input)) {
+
+            $output = new \stdClass();
+
+            /** @var array $input */
+            foreach ((array) $input as $k => $v) {
+
+                $cleaned = self::clean($v);
+
+                if ($cleaned !== null || (is_array($cleaned) && count($cleaned) === 0)) {
+                    $output->{$k} = $cleaned;
+                }
+            }
+
+            return $output;
+        }
+
+        return $input;
+    }
 }

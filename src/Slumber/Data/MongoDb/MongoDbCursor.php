@@ -63,10 +63,11 @@ class MongoDbCursor implements Cursor
     public function getOptions()
     {
         // see https://docs.mongodb.com/php-library/master/reference/method/MongoDBCollection-find/
+        /** @noinspection UnnecessaryCastingInspection */
         return [
             'sort'  => $this->sort,
-            'skip'  => $this->skip,
-            'limit' => $this->limit,
+            'skip'  => (int) $this->skip,
+            'limit' => (int) $this->limit,
         ];
     }
 
@@ -89,7 +90,7 @@ class MongoDbCursor implements Cursor
      */
     public function skip($skip)
     {
-        $this->skip = $skip;
+        $this->skip = (int) $skip;
 
         return $this;
     }
@@ -101,7 +102,7 @@ class MongoDbCursor implements Cursor
      */
     public function limit($limit)
     {
-        $this->limit = $limit;
+        $this->limit = (int) $limit;
 
         return $this;
     }
