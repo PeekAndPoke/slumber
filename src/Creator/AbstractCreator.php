@@ -12,8 +12,6 @@ abstract class AbstractCreator implements Creator
 {
     /** @var string */
     protected $fqcn;
-    /** @var \ReflectionClass */
-    protected $reflect;
 
     /**
      * WithoutConstructor constructor.
@@ -39,6 +37,8 @@ abstract class AbstractCreator implements Creator
      */
     public function getClass()
     {
-        return $this->reflect ?: $this->reflect = new \ReflectionClass($this->fqcn);
+        static $registry = [];
+
+        return $registry[$this->fqcn] ?? $registry[$this->fqcn] = new \ReflectionClass($this->fqcn);
     }
 }
