@@ -3,7 +3,7 @@
  * Created by gerk on 14.11.17 17:47
  */
 
-namespace PeekAndPoke\Component\Slumber\Functional\Data\Journal;
+namespace PeekAndPoke\Component\Slumber\Functional\Data\Addon\UserRecord;
 
 use PeekAndPoke\Component\Slumber\Data\Addon\UserRecord\UserRecord;
 use PeekAndPoke\Component\Slumber\Data\EntityRepository;
@@ -11,7 +11,6 @@ use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbStorageDriver;
 use PeekAndPoke\Component\Slumber\Data\RepositoryRegistry\ProviderContext;
 use PeekAndPoke\Component\Slumber\Data\RepositoryRegistryImpl;
 use PeekAndPoke\Component\Slumber\Data\StorageImpl;
-use PeekAndPoke\Component\Slumber\Functional\Data\Addon\UserRecord\UnitTestUserRecordClass;
 use PeekAndPoke\Component\Slumber\Functional\MongoDb\SlumberMongoDbTestBase;
 
 /**

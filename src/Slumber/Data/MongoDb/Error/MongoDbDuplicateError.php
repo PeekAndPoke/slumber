@@ -19,9 +19,9 @@ class MongoDbDuplicateError extends DuplicateError
     {
         preg_match('/^E11000 duplicate key error collection: (.*) index: (.*) dup key: (.*)$/', $exception->getMessage(), $matches);
 
-        $table = isset($matches[1]) ? $matches[1] : '';
-        $index = isset($matches[2]) ? $matches[2] : '';
-        $data  = isset($matches[3]) ? $matches[3] : '';
+        $table = $matches[1] ?? '';
+        $index = $matches[2] ?? '';
+        $data  = $matches[3] ?? '';
 
         return new static($exception->getMessage(), $table, $index, $data, $exception);
     }

@@ -84,8 +84,10 @@ class ScopedPropertyAccessTest extends TestCase
 
         // serialize and unserialize the accessors
         /** @var ScopedPropertyAccess $prop1Revived */
+        /** @noinspection UnserializeExploitsInspection */
         $prop1Revived = unserialize(serialize($prop1));
         /** @var ScopedPropertyAccess $prop1ShadowedRevived */
+        /** @noinspection UnserializeExploitsInspection */
         $prop1ShadowedRevived = unserialize(serialize($prop1Shadowed));
 
         // assert that the revived instances will get values correctly
@@ -118,6 +120,7 @@ class ScopedPropertyAccessTest extends TestCase
         $serialized = "O:57:\"PeekAndPoke\Component\PropertyAccess\ScopedPropertyAccess\":2:{s:69:\"\000PeekAndPoke\Component\PropertyAccess\ScopedPropertyAccess\000scopeClass\";s:74:\"PeekAndPoke\Component\PropertyAccess\Stubs\UnitTestPropertyAccessMainClass\";s:71:\"\000PeekAndPoke\Component\PropertyAccess\ScopedPropertyAccess\000propertyName\";s:5:\"prop1\";}";
 
         /** @var ScopedPropertyAccess $subject */
+        /** @noinspection UnserializeExploitsInspection */
         $subject = unserialize($serialized);
 
         $object = new UnitTestPropertyAccessMainClass();

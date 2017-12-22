@@ -117,11 +117,11 @@ class ExceptionUtil
             foreach ($trace as $traceItem) {
 
                 $currentRenderedTrace['#' . $idx++] =
-                    (isset($traceItem['file']) ? $traceItem['file'] : '') . '(' .
-                    (isset($traceItem['line']) ? $traceItem['line'] : '') . ') ' .
-                    (isset($traceItem['class']) ? $traceItem['class'] : '') .
-                    (isset($traceItem['type']) ? $traceItem['type'] : '') .
-                    (isset($traceItem['function']) ? $traceItem['function'] : '');
+                    ($traceItem['file'] ?? '') . '(' .
+                    ($traceItem['line'] ?? '') . ') ' .
+                    ($traceItem['class'] ?? '') .
+                    ($traceItem['type'] ?? '') .
+                    ($traceItem['function'] ?? '');
             }
 
             $renderedTrace[] = [

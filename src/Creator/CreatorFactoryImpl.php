@@ -23,9 +23,7 @@ class CreatorFactoryImpl implements CreatorFactory
     {
         $clsName = $class->name;
 
-        return isset(self::$cache[$clsName])
-            ? self::$cache[$clsName]
-            : self::$cache[$clsName] = $this->createInternal($class);
+        return self::$cache[$clsName] ?? self::$cache[$clsName] = $this->createInternal($class);
     }
 
     /**

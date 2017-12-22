@@ -3,13 +3,12 @@
  * File was created 16.10.2015 08:08
  */
 
-namespace PeekAndPoke\Component\Slumber\Core\Validation;
+namespace PeekAndPoke\Component\Slumber\Helper;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use PeekAndPoke\Component\Psi\Psi;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
-use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -36,6 +35,8 @@ class ClassesInPackageValidator
     {
         $this->logger   = $logger ?: new NullLogger();
         $this->provider = $provider;
+
+//        AnnotationRegistry::registerLoader('class_exists');
     }
 
     /**

@@ -5,7 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Functional\Core;
 
-use PeekAndPoke\Component\Slumber\Mocks\TestHelper;
+use PeekAndPoke\Component\Slumber\Helper\TestHelper;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestClassInheritingAPrivateProperty;
 use PHPUnit\Framework\TestCase;
 

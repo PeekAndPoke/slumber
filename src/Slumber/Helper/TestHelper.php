@@ -3,10 +3,9 @@
  * Created by gerk on 09.11.17 16:32
  */
 
-namespace PeekAndPoke\Component\Slumber\Mocks;
+namespace PeekAndPoke\Component\Slumber\Helper;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Cache\ArrayCache;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodec;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
@@ -45,11 +44,7 @@ class TestHelper
         }
 
         // setup the annotation reader for autoload
-        AnnotationRegistry::registerLoader(
-            function ($class) {
-                return class_exists($class) || interface_exists($class) || trait_exists($class);
-            }
-        );
+//        AnnotationRegistry::registerLoader('class_exists');
 
         $i = new ArrayCodec(
             new CachedEntityConfigLookUp(

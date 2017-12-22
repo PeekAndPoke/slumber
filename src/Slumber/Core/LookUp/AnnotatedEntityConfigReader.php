@@ -5,6 +5,7 @@
 
 namespace PeekAndPoke\Component\Slumber\Core\LookUp;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Reader;
 use PeekAndPoke\Component\Creator\Creator;
 use PeekAndPoke\Component\Creator\CreatorFactory;
@@ -44,6 +45,13 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
      */
     public function __construct(ContainerInterface $serviceProvider, Reader $annotationReader, PropertyMarker2Mapper $mappings)
     {
+        static $autoloader = false;
+
+        if ($autoloader === false) {
+            $autoloader= true;
+            AnnotationRegistry::registerLoader('class_exists');
+        }
+
         $this->annotationReader = $annotationReader;
         $this->serviceProvider  = $serviceProvider;
         $this->mappings         = $mappings;

@@ -14,7 +14,7 @@ use PeekAndPoke\Component\Slumber\Core\Codec\GenericSlumberer;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\LocalDateMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
-use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
 use PeekAndPoke\Types\LocalDate;
 use PHPUnit\Framework\TestCase;
 

@@ -6,7 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Unit\Core\Codec;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use PeekAndPoke\Component\Creator\NullCreator;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\GenericAwaker;
@@ -14,7 +13,7 @@ use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfig;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfigReader;
 use PeekAndPoke\Component\Slumber\Functional\MongoDb\SimplePersistenceFeatureTest;
-use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildA;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildB;
@@ -35,11 +34,7 @@ class GenericAwakerTest extends TestCase
     public function setUp()
     {
         // setup the annotation reader for autoload
-        AnnotationRegistry::registerLoader(
-            function ($class) {
-                return class_exists($class) || interface_exists($class) || trait_exists($class);
-            }
-        );
+//        AnnotationRegistry::registerLoader('class_exists');
 
         $di               = new UnitTestServiceProvider();
         $annotationReader = new AnnotationReader();

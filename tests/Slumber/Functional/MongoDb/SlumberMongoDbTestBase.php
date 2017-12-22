@@ -6,7 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Functional\MongoDb;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\Cache\Cache;
@@ -20,7 +19,7 @@ use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderCached;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbEntityConfigReaderImpl;
 use PeekAndPoke\Component\Slumber\Data\MongoDb\MongoDbPropertyMarkerToMapper;
 use PeekAndPoke\Component\Slumber\Data\Storage;
-use PeekAndPoke\Component\Slumber\Mocks\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
@@ -44,9 +43,7 @@ abstract class SlumberMongoDbTestBase extends TestCase
      */
     protected static function getDi()
     {
-        return isset(self::$diPerClass[static::class])
-            ? self::$diPerClass[static::class]
-            : self::$diPerClass[static::class] = new UnitTestServiceProvider();
+        return self::$diPerClass[static::class] ?? self::$diPerClass[static::class] = new UnitTestServiceProvider();
     }
 
     /**
@@ -73,7 +70,7 @@ abstract class SlumberMongoDbTestBase extends TestCase
         if (! static::getDi()->has($name)) {
 
             // setup the annotation reader for autoload
-            AnnotationRegistry::registerLoader(function ($class) { return class_exists($class) || interface_exists($class) || trait_exists($class); });
+//            AnnotationRegistry::registerLoader('class_exists');
 
             static::getDi()->set($name, new CachedReader(
                 new AnnotationReader(),
@@ -121,7 +118,7 @@ abstract class SlumberMongoDbTestBase extends TestCase
     {
         return EntityPoolImpl::getInstance();
     }
-    
+
     /**
      * @param Storage $storage
      *

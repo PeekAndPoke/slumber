@@ -51,7 +51,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
         }
 
         $reflect = new \ReflectionClass($subject);
-        $pattern = isset($this->cls2pattern[$reflect->name]) ? $this->cls2pattern[$reflect->name] : $this->pattern;
+        $pattern = $this->cls2pattern[$reflect->name] ?? $this->pattern;
         $tries   = 1000;
 
         while (--$tries >= 0) {

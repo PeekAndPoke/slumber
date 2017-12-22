@@ -53,6 +53,7 @@ class ReflectionPropertyAccessTest extends TestCase
 
         // serialize and unserialize the accessors
         /** @var ReflectionPropertyAccess $prop1Revived */
+        /** @noinspection UnserializeExploitsInspection */
         $prop1Revived = unserialize(serialize($prop1));
 
         // assert that the revived instances will get values correctly
