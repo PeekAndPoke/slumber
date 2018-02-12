@@ -33,11 +33,11 @@ class ArrayCodec
      */
     public function slumber($subject)
     {
-        if (is_scalar($subject)) {  // todo: test this
+        if (\is_scalar($subject)) {  // todo: test this
             return $subject;
         }
 
-        if (is_array($subject)) {
+        if (\is_array($subject)) {
             return $this->slumberArray($subject);
         }
 
@@ -77,7 +77,7 @@ class ArrayCodec
      */
     public function awake($data, $cls)
     {
-        if ($data === null || ! is_array($data)) {
+        if ($data === null || ! \is_array($data)) {
             return null;
         }
 
@@ -96,7 +96,7 @@ class ArrayCodec
      */
     public function awakeList($data, $cls)
     {
-        if (! is_array($data) && ! $data instanceof \Traversable) {
+        if (! \is_array($data) && ! $data instanceof \Traversable) {
             return [];
         }
 

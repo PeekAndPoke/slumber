@@ -23,7 +23,7 @@ use PeekAndPoke\Component\Slumber\Core\Validation\ValidationContext;
  */
 class Polymorphic extends SlumberAnnotation implements ClassCreatorMarker
 {
-    const DEFAULT_TELL_BY = 'type';
+    public const DEFAULT_TELL_BY = 'type';
 
     /**
      * The data field to look at in order to tell which kind of object to instantiate
@@ -56,7 +56,7 @@ class Polymorphic extends SlumberAnnotation implements ClassCreatorMarker
     {
         $mapping = $this->getMapping();
 
-        if (! is_array($mapping)) {
+        if (! \is_array($mapping)) {
             throw $this->createValidationException($context, 'The type-mapping is missing');
         }
 

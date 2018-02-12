@@ -3,17 +3,18 @@
  * Created by gerk on 18.05.17 23:45
  */
 
-namespace PeekAndPoke\Component\Slumber\Unit\Core\Codec\Property;
+namespace PeekAndPoke\Component\Slumber\Unit\Data\MongoDb\Types;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use MongoDB\BSON\UTCDateTime;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsLocalDate;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\GenericAwaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\GenericSlumberer;
-use PeekAndPoke\Component\Slumber\Core\Codec\Property\LocalDateMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
+use PeekAndPoke\Component\Slumber\Data\MongoDb\Types\LocalDateMapper;
 use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
 use PeekAndPoke\Types\LocalDate;
 use PHPUnit\Framework\TestCase;
@@ -58,8 +59,17 @@ class LocalDateMapperTest extends TestCase
     {
         $options = new AsLocalDate([]);
         $subject = new LocalDateMapper($options);
+        $result  = $subject->slumber($this->slumberer, $input);
 
-        self::assertSame($expected, $subject->slumber($this->slumberer, $input), 'slumber() must work');
+        if ($input instanceof LocalDate) {
+
+            self::assertEquals($expected['date'], $result['date'], 'slumber() must work');
+            self::assertSame($expected['tz'], $result['tz'], 'slumber() must work');
+
+        } else {
+
+            self::assertSame($expected, $result, 'slumber() must work');
+        }
     }
 
     public function provideTestSlumber()
@@ -68,66 +78,38 @@ class LocalDateMapperTest extends TestCase
 
         return [
             [
-                new LocalDate('2017-01-01T00:00:00+00:00', 'Etc/UTC'),
+                new LocalDate('2017-01-01T12:00:00+00:00', 'Etc/UTC'),
                 [
-                    'date' => '2017-01-01T00:00:00.000000+00:00',
-                    'tz' => 'Etc/UTC',
+                    'date' => new UTCDateTime(1483272000000),
+                    'tz'   => 'Etc/UTC',
                 ],
             ],
             [
-                new LocalDate('2017-01-01T00:00:00.010000+00:00', 'Etc/UTC'),
+                new LocalDate('2017-01-01T12:00:00.100000+00:00', 'Etc/UTC'),
                 [
-                    'date' => '2017-01-01T00:00:00.010000+00:00',
-                    'tz' => 'Etc/UTC',
+                    'date' => new UTCDateTime(1483272000100),
+                    'tz'   => 'Etc/UTC',
                 ],
             ],
             [
-                new LocalDate('2017-01-01T00:00:00+00:00', 'Europe/Berlin'),
+                new LocalDate('2017-01-01T12:00:00.120000+00:00', 'Etc/UTC'),
                 [
-                    'date' => '2017-01-01T01:00:00.000000+01:00',
-                    'tz' => 'Europe/Berlin',
+                    'date' => new UTCDateTime(1483272000120),
+                    'tz'   => 'Etc/UTC',
                 ],
             ],
             [
-                new LocalDate('2017-01-01T00:00:00.100000+01:00', 'Europe/Berlin'),
+                new LocalDate('2017-01-01T12:00:00.123000+00:00', 'Etc/UTC'),
                 [
-                    'date' => '2017-01-01T00:00:00.100000+01:00',
-                    'tz' => 'Europe/Berlin',
+                    'date' => new UTCDateTime(1483272000123),
+                    'tz'   => 'Etc/UTC',
                 ],
             ],
             [
-                new LocalDate('2017-01-01T00:00:00.120000+01:00', 'Europe/Berlin'),
+                new LocalDate('2017-01-01T12:00:00.123999+00:00', 'Etc/UTC'),
                 [
-                    'date' => '2017-01-01T00:00:00.120000+01:00',
-                    'tz' => 'Europe/Berlin',
-                ],
-            ],
-            [
-                new LocalDate('2017-01-01T00:00:00.123000+01:00', 'Europe/Berlin'),
-                [
-                    'date' => '2017-01-01T00:00:00.123000+01:00',
-                    'tz' => 'Europe/Berlin',
-                ],
-            ],
-            [
-                new LocalDate('2017-01-01T00:00:00.123400+01:00', 'Europe/Berlin'),
-                [
-                    'date' => '2017-01-01T00:00:00.123400+01:00',
-                    'tz' => 'Europe/Berlin',
-                ],
-            ],
-            [
-                new LocalDate('2017-01-01T00:00:00.123450+01:00', 'Europe/Berlin'),
-                [
-                    'date' => '2017-01-01T00:00:00.123450+01:00',
-                    'tz' => 'Europe/Berlin',
-                ],
-            ],
-            [
-                new LocalDate('2017-01-01T00:00:00.123456+01:00', 'Europe/Berlin'),
-                [
-                    'date' => '2017-01-01T00:00:00.123456+01:00',
-                    'tz' => 'Europe/Berlin',
+                    'date' => new UTCDateTime(1483272000123),
+                    'tz'   => 'Etc/UTC',
                 ],
             ],
             // things that map to null
@@ -135,7 +117,7 @@ class LocalDateMapperTest extends TestCase
             [0, null],
             ['a', null],
             [[1, 2], null],
-            [[1, $obj], null]
+            [[1, $obj], null],
         ];
     }
 
@@ -172,18 +154,22 @@ class LocalDateMapperTest extends TestCase
 
             // things that map to a local date
             [
-                ['date' => '2017-02-03T12:00:00+00:00', 'tz' => 'Etc/UTC'],
+                ['date' => new \DateTime('2017-02-03T12:00:00+00:00'), 'tz' => 'Etc/UTC'],
                 new LocalDate('2017-02-03T12:00:00+00:00', 'Etc/UTC'),
             ],
             [
-                ['date' => '2017-02-03T13:00:00+01:00', 'tz' => 'Europe/Berlin'],
+                ['date' => new \DateTime('2017-02-03T13:00:00+01:00'), 'tz' => 'Europe/Berlin'],
                 new LocalDate('2017-02-03T13:00:00+01:00', 'Europe/Berlin'),
             ],
             [
-                ['date' => '2017-02-03T12:00:00+00:00', 'tz' => 'Europe/Berlin'],
+                ['date' => new \DateTime('2017-02-03T12:00:00+00:00'), 'tz' => 'Europe/Berlin'],
                 new LocalDate('2017-02-03T13:00:00+01:00', 'Europe/Berlin'),
             ],
             // compat
+            [
+                new \DateTime('2017-02-03T12:00:00+00:00'),
+                new LocalDate('2017-02-03T12:00:00+00:00', '+00:00'),
+            ],
             [
                 '2017-02-03T12:00:00+00:00',
                 new LocalDate('2017-02-03T12:00:00+00:00', '+00:00'),
@@ -205,7 +191,7 @@ class LocalDateMapperTest extends TestCase
             [null, null],
             [0, null],
             [[1, 2], null],
-            [[1, $obj], null]
+            [[1, $obj], null],
         ];
     }
 }

@@ -132,7 +132,7 @@ class MongoDbStorageDriver implements StorageDriver
         //       can we use the propertyAccess of the ID and use the propertyName? Is the alright ?
 
         // do we have it in the pool ?
-        if (count($query) === 1
+        if (\count($query) === 1
             && isset($query['_id'])
             && $this->entityPool->has($this->entityBaseClass, EntityPool::PRIMARY_ID, (string) $query['_id'])
         ) {

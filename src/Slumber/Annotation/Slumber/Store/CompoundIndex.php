@@ -42,7 +42,7 @@ class CompoundIndex extends AbstractIndexDefinition implements ClassMarker, Comp
             );
         }
 
-        if (! is_array($this->def)) {
+        if (! \is_array($this->def)) {
             throw $this->createValidationException(
                 $context,
                 'The compound index definition must be defined as a key value pair. Example: { \'one\': 1, \'two\': -1 }'

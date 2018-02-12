@@ -41,14 +41,14 @@ class StorageImpl implements Storage
      */
     public function save($subject)
     {
-        if (! is_object($subject)) {
+        if (! \is_object($subject)) {
             return;
         }
 
         $repo = $this->getRepositoryByEntity($subject);
 
         if ($repo === null) {
-            throw new SlumberRuntimeException('No repository is associated with objects of type "' . get_class($subject) . '"');
+            throw new SlumberRuntimeException('No repository is associated with objects of type "' . \get_class($subject) . '"');
         }
 
         $repo->save($subject);
@@ -61,14 +61,14 @@ class StorageImpl implements Storage
      */
     public function remove($subject)
     {
-        if (! is_object($subject)) {
+        if (! \is_object($subject)) {
             return;
         }
 
         $repo = $this->getRepositoryByEntity($subject);
 
         if ($repo === null) {
-            throw new SlumberRuntimeException('No repository is associated with objects of type "' . get_class($subject) . '"');
+            throw new SlumberRuntimeException('No repository is associated with objects of type "' . \get_class($subject) . '"');
         }
 
         $repo->remove($subject);

@@ -1,24 +1,27 @@
 <?php
 /**
- * Created by gerk on 18.05.17 23:45
+ * Created by gerk on 12.02.18 09:23
  */
 
-namespace PeekAndPoke\Component\Slumber\Unit\Core\Codec\Property;
+namespace PeekAndPoke\Component\Slumber\Unit\Data\MongoDb\Types;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use MongoDB\BSON\UTCDateTime;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsSimpleDate;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\GenericAwaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\GenericSlumberer;
-use PeekAndPoke\Component\Slumber\Core\Codec\Property\SimpleDateMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
+use PeekAndPoke\Component\Slumber\Data\MongoDb\Types\SimpleDateMapper;
 use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
 use PeekAndPoke\Types\LocalDate;
 use PHPUnit\Framework\TestCase;
 
 /**
+ *
+ *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
 class SimpleDateMapperTest extends TestCase
@@ -59,7 +62,9 @@ class SimpleDateMapperTest extends TestCase
         $options = new AsSimpleDate([]);
         $subject = new SimpleDateMapper($options);
 
-        self::assertSame($expected, $subject->slumber($this->slumberer, $input), 'slumber() must work');
+        $result = $subject->slumber($this->slumberer, $input);
+
+        self::assertEquals($expected, $result, 'slumber() must work correctly');
     }
 
     public function provideTestSlumber()
@@ -68,22 +73,49 @@ class SimpleDateMapperTest extends TestCase
 
         return [
             [
-                new \DateTime('2017-01-01T00:00:00+00:00', new \DateTimeZone('Etc/UTC')),
-                'date' => '2017-01-01T00:00:00.000000+00:00',
+                new \DateTime('2017-01-01T12:00:00+00:00', new \DateTimeZone('Etc/UTC')),
+                new UTCDateTime(1483272000000)
             ],
             [
-                new \DateTime('2017-01-01T00:00:00.0123+00:00', new \DateTimeZone('Etc/UTC')),
-                'date' => '2017-01-01T00:00:00.012300+00:00',
+                new \DateTime('2017-01-01T12:00:00.100000+00:00', new \DateTimeZone('Etc/UTC')),
+                new UTCDateTime(1483272000100)
             ],
             [
-                new LocalDate('2017-01-01T00:00:00+00:00', 'Europe/Berlin'),
-                'date' => '2017-01-01T01:00:00.000000+01:00',
-                'tz' => 'Europe/Berlin',
+                new \DateTime('2017-01-01T12:00:00.120000+00:00', new \DateTimeZone('Etc/UTC')),
+                new UTCDateTime(1483272000120)
             ],
             [
-                new LocalDate('2017-01-01T00:00:00.0123+00:00', 'Europe/Berlin'),
-                'date' => '2017-01-01T01:00:00.012300+01:00',
-                'tz' => 'Europe/Berlin',
+                new \DateTime('2017-01-01T12:00:00.123000+00:00', new \DateTimeZone('Etc/UTC')),
+                new UTCDateTime(1483272000123)
+            ],
+            [
+                new \DateTime('2017-01-01T12:00:00.123400+00:00', new \DateTimeZone('Etc/UTC')),
+                new UTCDateTime(1483272000123)
+            ],
+            [
+                new \DateTime('2017-01-01T12:00:00.123450+00:00', new \DateTimeZone('Etc/UTC')),
+                new UTCDateTime(1483272000123)
+            ],
+            [
+                new \DateTime('2017-01-01T12:00:00.123456+00:00', new \DateTimeZone('Etc/UTC')),
+                new UTCDateTime(1483272000123)
+            ],
+            [
+                new \DateTime('2017-01-01T12:00:00.123999+00:00', new \DateTimeZone('Etc/UTC')),
+                new UTCDateTime(1483272000123)
+            ],
+
+            [
+                new LocalDate('2017-01-01T12:00:00+00:00', 'Europe/Berlin'),
+                new UTCDateTime(1483272000000)
+            ],
+            [
+                new LocalDate('2017-01-01T12:00:00.100000+00:00', 'Europe/Berlin'),
+                new UTCDateTime(1483272000100)
+            ],
+            [
+                new LocalDate('2017-01-01T12:00:00.123999+00:00', 'Europe/Berlin'),
+                new UTCDateTime(1483272000123)
             ],
             // things that map to null
             [null, null],
@@ -107,14 +139,7 @@ class SimpleDateMapperTest extends TestCase
 
         $result = $subject->awake($this->awaker, $input);
 
-        if ($result instanceof \DateTime && $expected instanceof \DateTime) {
-            self::assertSame($expected->getTimezone()->getName(), $result->getTimezone()->getName(), 'awake() must create the correct timezone');
-            self::assertSame($expected->format('c'), $result->format('c'), 'awake() must create the correct date');
-
-        } else {
-
-            self::assertEquals($expected, $subject->awake($this->awaker, $input), 'awake() must work');
-        }
+        self::assertEquals($expected, $result, 'awake() must work');
     }
 
     public function provideTestAwake()
@@ -125,9 +150,8 @@ class SimpleDateMapperTest extends TestCase
             // TODO: things that should not work
             // ['a', null],
 
-            // things that map to a local date
             [
-                '2017-02-03T12:00:00+00:00',
+                new \DateTime('2017-02-03T12:00:00+00:00'),
                 new \DateTime('2017-02-03T12:00:00+00:00'),
             ],
             // compatibility
@@ -155,4 +179,5 @@ class SimpleDateMapperTest extends TestCase
             [[1, $obj], null]
         ];
     }
+
 }

@@ -89,6 +89,6 @@ class EmitterImpl implements Emitter
     {
         return $listener instanceof \Closure ||
                $listener instanceof Listener ||
-               is_callable($listener);
+               \is_callable($listener);
     }
 }

@@ -64,10 +64,10 @@ class PointMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        if (($value instanceof \ArrayAccess || is_array($value))
+        if (($value instanceof \ArrayAccess || \is_array($value))
             && $value['type'] === 'Point'
             && isset($value['type'], $value['coordinates'])
-            && count($value['coordinates']) === 2
+            && \count($value['coordinates']) === 2
         ) {
             $coords = $value['coordinates'];
 

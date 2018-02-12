@@ -25,7 +25,7 @@ class UnitTestPublicReferenceGenerator implements PublicReferenceGenerator
 
         do {
             $reference = $reflect->getName() . '@' . mt_rand();
-        } while (in_array($reference, $this->used, true));
+        } while (\in_array($reference, $this->used, true));
 
         $this->used[] = $reference;
 

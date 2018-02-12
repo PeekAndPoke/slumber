@@ -47,7 +47,7 @@ class EntityPoolImpl implements EntityPool
      */
     public function stats()
     {
-        return new EntityPoolStats(count($this->pool), $this->numHits, $this->numMisses);
+        return new EntityPoolStats(\count($this->pool), $this->numHits, $this->numMisses);
     }
 
     ////  GET SET CHECK  ///////////////////////////////////////////////////////////////////////////////////////////////

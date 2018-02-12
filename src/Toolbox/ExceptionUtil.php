@@ -125,7 +125,7 @@ class ExceptionUtil
             }
 
             $renderedTrace[] = [
-                'ex'      => get_class($e),
+                'ex'      => \get_class($e),
                 'message' => static::formatMessage($e),
                 'trace'   => $currentRenderedTrace,
             ];
@@ -134,7 +134,7 @@ class ExceptionUtil
         }
 
         $json = [
-            'ex'      => get_class($originalException),
+            'ex'      => \get_class($originalException),
             'message' => static::formatMessage($originalException),
             'trace'   => $renderedTrace,
         ];

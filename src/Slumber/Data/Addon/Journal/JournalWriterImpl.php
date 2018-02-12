@@ -120,9 +120,9 @@ class JournalWriterImpl implements JournalWriter
 
             $oldestEntries = $this->repository->findOldestNotCompacted($subBatchSize);
 
-            $this->logger->info('Will compact ' . ($i + $subBatchSize) . ' / ' . $batchSize . ' / ' . count($oldestEntries) . ' of the oldest entries');
+            $this->logger->info('Will compact ' . ($i + $subBatchSize) . ' / ' . $batchSize . ' / ' . \count($oldestEntries) . ' of the oldest entries');
 
-            if (count($oldestEntries) === 0) {
+            if (\count($oldestEntries) === 0) {
                 return;
             }
 
@@ -133,7 +133,7 @@ class JournalWriterImpl implements JournalWriter
                 try {
                     $history = $this->compact($extRef);
 
-                    $this->logger->info('Compacted ' . $extRef . ' with ' . count($history->getDiffs()) . ' entries');
+                    $this->logger->info('Compacted ' . $extRef . ' with ' . \count($history->getDiffs()) . ' entries');
                 } catch (\Exception $e) {
                     $this->logger->error('Cannot compact ' . $extRef . ': ' . $e->getMessage());
                 }

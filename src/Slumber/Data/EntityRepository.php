@@ -76,7 +76,7 @@ class EntityRepository implements Repository
      */
     public function insert($subject)
     {
-        if ($subject === null || ! is_object($subject)) {
+        if ($subject === null || ! \is_object($subject)) {
             return null;
         }
 
@@ -95,7 +95,7 @@ class EntityRepository implements Repository
      */
     public function save($subject)
     {
-        if ($subject === null || ! is_object($subject)) {
+        if ($subject === null || ! \is_object($subject)) {
             return null;
         }
 
@@ -181,12 +181,12 @@ class EntityRepository implements Repository
     {
         $entityClassName = $this->driver->getEntityBaseClass()->name;
 
-        $isOk = is_object($subject) && $subject instanceof $entityClassName;
+        $isOk = \is_object($subject) && $subject instanceof $entityClassName;
 
         if (! $isOk) {
             throw new SlumberRuntimeException(
-                'Repository ' . get_class($this) . ' can only store objects of type ' . $entityClassName .
-                ' but a ' . get_class($subject) . ' was given!'
+                'Repository ' . \get_class($this) . ' can only store objects of type ' . $entityClassName .
+                ' but a ' . \get_class($subject) . ' was given!'
             );
         }
     }

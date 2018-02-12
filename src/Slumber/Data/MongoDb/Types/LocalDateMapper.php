@@ -51,8 +51,16 @@ class LocalDateMapper extends AbstractPropertyMapper
             return null;
         }
 
+        $date = $value->getDate();
+
+        if (! $date instanceof \DateTimeInterface) {
+            return null;
+        }
+
+        $millis = ($date->getTimestamp() * 1000) + ((int) ($date->format('u') / 1000));
+
         return [
-            'date' => new UTCDateTime($value->getTimestamp() * 1000),
+            'date' => new UTCDateTime($millis),
             'tz'   => $value->getTimezone()->getName(),
         ];
     }
@@ -66,8 +74,8 @@ class LocalDateMapper extends AbstractPropertyMapper
     public function awake(Awaker $awaker, $value)
     {
         // default cases first
-        $canAccess     = $value instanceof \ArrayAccess || is_array($value);
-        $hasComponents = isset($value['date'], $value['tz']);
+        $canAccess     = $value instanceof \ArrayAccess || \is_array($value);
+        $hasComponents = $canAccess && isset($value['date'], $value['tz']);
 
         if ($canAccess && $hasComponents && $value['date'] instanceof \DateTime) {
             return new LocalDate($value['date'], $value['tz']);

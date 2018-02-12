@@ -46,13 +46,13 @@ class MongoDbAwakerImpl extends GenericAwaker implements MongoDbAwaker
         // - \MongoDB\BSON\UTCDateTime
         // - \MongoDB\BSON\ObjectID
         //
-        if (is_array($data)) {
+        if (\is_array($data)) {
             array_walk_recursive($data, function (&$item) {
 
                 /** @noinspection ReferenceMismatchInspection */
                 if ($item === null ||
                     is_scalar($item) ||
-                    is_array($item)) {
+                    \is_array($item)) {
                     return;
                 }
 

@@ -40,7 +40,7 @@ class Alias extends SlumberAnnotation
             );
         }
 
-        if (! is_string($this->value)) {
+        if (! \is_string($this->value)) {
             throw $this->createValidationException(
                 $context,
                 'The type alias must be a string'

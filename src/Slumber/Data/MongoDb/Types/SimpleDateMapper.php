@@ -11,6 +11,7 @@ use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsSimpleDate;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\AbstractPropertyMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
+use PeekAndPoke\Types\LocalDate;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -46,11 +47,17 @@ class SimpleDateMapper extends AbstractPropertyMapper
      */
     public function slumber(Slumberer $slumberer, $value)
     {
+        if ($value instanceof LocalDate) {
+            $value = $value->getDate();
+        }
+
         if (! $value instanceof \DateTimeInterface) {
             return null;
         }
 
-        return new UTCDateTime($value->getTimestamp() * 1000);
+        $millis = ($value->getTimestamp() * 1000) + ((int) ($value->format('u') / 1000));
+
+        return new UTCDateTime($millis);
     }
 
     /**
@@ -66,11 +73,8 @@ class SimpleDateMapper extends AbstractPropertyMapper
         }
 
         // compatibility in case a LocalDate was changed into a SimpleDate
-        $canAccess     = $value instanceof \ArrayAccess || is_array($value);
-        $hasComponents = isset($value['date'], $value['tz']);
-
-        if ($canAccess && $hasComponents && $value['date'] instanceof \DateTime) {
-            return (new \DateTime('now', new \DateTimeZone($value['tz'])))->setTimestamp($value['date']->getTimestamp());
+        if ($this->isAwakeLocalDateCompatible($value)) {
+            return (new LocalDate($value['date'], $value['tz']))->getDate();
         }
 
         // compatibility in case a string was change to a LocalDate
@@ -79,5 +83,43 @@ class SimpleDateMapper extends AbstractPropertyMapper
         }
 
         return null;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
+    private function isAwakeLocalDateCompatible($value)
+    {
+        return isset($value['date'], $value['tz'])
+               && IsDateString::isValidDateString($value['date'])
+               && $this->isTimezone($value['tz']);
+    }
+
+    /**
+     * TODO: move this to Psi and make a IsTimezoneString
+     * TODO: add more that are not in timezone_identifiers_list(): https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+     *
+     * @param $str
+     *
+     * @return bool
+     */
+    private function isTimezone($str)
+    {
+        static $identifiers;
+
+        if ($identifiers === null) {
+            $ids = timezone_identifiers_list();
+            array_walk($ids, function (&$id) { $id = strtolower($id); });
+
+            $identifiers = array_flip($ids);
+
+            // add some more
+            $identifiers['utc'] = true;
+            $identifiers['etc/utc'] = true;
+        }
+
+        return isset($identifiers[strtolower($str)]);
     }
 }

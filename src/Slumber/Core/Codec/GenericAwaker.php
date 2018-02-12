@@ -49,7 +49,7 @@ class GenericAwaker implements Awaker
 
         // NOTICE: creating the instance can change the type (e.g. for polymorphic mapping)
         //         Therefore we need to read the config again if the type has changed
-        if ($cls->name !== get_class($subject)) {
+        if ($cls->name !== \get_class($subject)) {
             $config = $this->entityConfigLookUp->getEntityConfig(new \ReflectionClass($subject));
         }
 

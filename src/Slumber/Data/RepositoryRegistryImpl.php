@@ -110,11 +110,11 @@ class RepositoryRegistryImpl implements RepositoryRegistry
      */
     public function getRepositoryByEntity($entity)
     {
-        if (! is_object($entity)) {
+        if (! \is_object($entity)) {
             return null;
         }
 
-        return $this->getRepositoryByClassName(get_class($entity));
+        return $this->getRepositoryByClassName(\get_class($entity));
     }
 
     /**

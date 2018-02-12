@@ -104,7 +104,7 @@ class LazyDbReference implements ValueHolder
             );
         }
 
-        $type = is_object($value) ? get_class($value) : gettype($value);
+        $type = \is_object($value) ? \get_class($value) : \gettype($value);
 
         throw new \RuntimeException(
             'Tried to access a DbReference without previously unwrapping it. Call $...->getValue() first. ' .

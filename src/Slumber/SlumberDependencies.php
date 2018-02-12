@@ -16,22 +16,22 @@ class SlumberDependencies
     /**
      * Key of the service for providing public references
      */
-    const PUBLIC_REFERENCE_GENERATOR = 'slumber.public_reference_generator';
+    public const PUBLIC_REFERENCE_GENERATOR = 'slumber.public_reference_generator';
     /**
      * The expected type of the service
      *
      * @see \PeekAndPoke\Component\Slumber\Data\Addon\PublicReference\PublicReferenceGenerator
      */
-    const PUBLIC_REFERENCE_GENERATOR_CLASS = PublicReferenceGenerator::class;
+    public const PUBLIC_REFERENCE_GENERATOR_CLASS = PublicReferenceGenerator::class;
 
     /**
      * Key of the service providing info about the currently logged in user
      */
-    const USER_RECORD_PROVIDER = 'slumber.user_record_provider';
+    public const USER_RECORD_PROVIDER = 'slumber.user_record_provider';
     /**
      * The expected type of the service
      *
      * @see UserRecordProvider
      */
-    const USER_RECORD_PROVIDER_CLASS = UserRecordProvider::class;
+    public const USER_RECORD_PROVIDER_CLASS = UserRecordProvider::class;
 }

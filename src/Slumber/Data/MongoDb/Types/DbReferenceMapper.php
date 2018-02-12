@@ -60,14 +60,14 @@ class DbReferenceMapper extends AbstractPropertyMapper
 
         } else {
 
-            if (! is_object($value)) {
+            if (! \is_object($value)) {
                 return null;
             }
 
             // TODO: we need a better way to ensure that getId() is available on the object
             // -> ask the repo and use the idMarker for this
             if (! method_exists($value, 'getId')) {
-                throw new SlumberException('The referenced entity ' . get_class($value) . ' must have a method called getId()');
+                throw new SlumberException('The referenced entity ' . \get_class($value) . ' must have a method called getId()');
             }
 
             // we do nothing. we only want the id of the referenced object

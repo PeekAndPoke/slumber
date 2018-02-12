@@ -10,8 +10,8 @@ namespace PeekAndPoke\Component\Slumber\Annotation;
  */
 interface IndexDefinition
 {
-    const ASCENDING  = 'ASC';
-    const DESCENDING = 'DESC';
+    public const ASCENDING  = 'ASC';
+    public const DESCENDING = 'DESC';
 
     /**
      * @return boolean

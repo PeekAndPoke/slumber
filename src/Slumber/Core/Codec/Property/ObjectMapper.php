@@ -71,7 +71,7 @@ class ObjectMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        if ($value === null || (! is_array($value) && ! $value instanceof \ArrayAccess)) {
+        if ($value === null || (! \is_array($value) && ! $value instanceof \ArrayAccess)) {
             return null;
         }
 

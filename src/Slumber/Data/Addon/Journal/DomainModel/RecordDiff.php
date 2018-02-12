@@ -58,7 +58,7 @@ class RecordDiff
      */
     public function getChangesCount()
     {
-        return count($this->changes);
+        return \count($this->changes);
     }
 
     /**

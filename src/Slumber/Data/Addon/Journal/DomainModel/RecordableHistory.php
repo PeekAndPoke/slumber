@@ -47,7 +47,7 @@ class RecordableHistory
             if ($record->getIsCompacted() === false || $record->getCompactedHistory() === null) {
                 $notCompacted++;
             } else {
-                $compacted += count($record->getCompactedHistory()->getDiffs());
+                $compacted += \count($record->getCompactedHistory()->getDiffs());
             }
         }
 
@@ -63,7 +63,7 @@ class RecordableHistory
      */
     public function getInitialRecord()
     {
-        $record = count($this->records) > 0 ? $this->records[0] : new NullRecord();
+        $record = \count($this->records) > 0 ? $this->records[0] : new NullRecord();
 
         if ($record->getIsCompacted() &&
             $record->getCompactedHistory() !== null
@@ -79,7 +79,7 @@ class RecordableHistory
      */
     public function getFinalRecord()
     {
-        $record = count($this->records) > 0 ? $this->records[count($this->records) - 1] : new NullRecord();
+        $record = \count($this->records) > 0 ? $this->records[\count($this->records) - 1] : new NullRecord();
 
         if ($record->getIsCompacted() &&
             $record->getCompactedHistory() !== null) {
@@ -169,7 +169,7 @@ class RecordableHistory
      */
     private function diffRecursiveFromBeforeToAfter(RecordDiff $diff, $pathInArray, $before, $after)
     {
-        if (! is_array($before) && ! $before instanceof \Traversable) {
+        if (! \is_array($before) && ! $before instanceof \Traversable) {
 
             $beforeValue = $this->convertToString($before);
             $afterValue  = $this->convertToString($after);
@@ -183,7 +183,7 @@ class RecordableHistory
 
                 $afterValue = null;
 
-                if ((is_array($after) || $after instanceof \ArrayAccess) && isset($after[$key])) {
+                if ((\is_array($after) || $after instanceof \ArrayAccess) && isset($after[$key])) {
                     $afterValue = $after[$key];
                 }
 
@@ -205,7 +205,7 @@ class RecordableHistory
      */
     private function diffRecursiveFromAfterToBefore(RecordDiff $diff, $pathInArray, $before, $after)
     {
-        if (! is_array($after) && ! $after instanceof \Traversable) {
+        if (! \is_array($after) && ! $after instanceof \Traversable) {
 
             $beforeValue = $this->convertToString($before);
             $afterValue  = $this->convertToString($after);
@@ -220,7 +220,7 @@ class RecordableHistory
 
                 $beforeValue = null;
 
-                if ((is_array($before) || $before instanceof \ArrayAccess) && isset($before[$key])) {
+                if ((\is_array($before) || $before instanceof \ArrayAccess) && isset($before[$key])) {
                     $beforeValue = $before[$key];
                 }
 
@@ -251,7 +251,7 @@ class RecordableHistory
                 return (string) $value;
             }
 
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 return json_encode($value, JSON_PRETTY_PRINT);
             }
 

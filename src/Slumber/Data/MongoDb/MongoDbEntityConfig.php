@@ -106,7 +106,7 @@ class MongoDbEntityConfig extends EntityConfig
      */
     public function hasPostSaveClassListeners()
     {
-        return count($this->postSaveClassListeners) > 0;
+        return \count($this->postSaveClassListeners) > 0;
     }
 
     /**
@@ -122,7 +122,7 @@ class MongoDbEntityConfig extends EntityConfig
      */
     public function hasPostDeleteClassListeners()
     {
-        return count($this->postDeleteClassListeners) > 0;
+        return \count($this->postDeleteClassListeners) > 0;
     }
 
     /**

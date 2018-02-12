@@ -20,8 +20,8 @@ use PeekAndPoke\Component\Slumber\Functional\MongoDb\SlumberMongoDbTestBase;
  */
 class UserRecordWorksMongoDbFeatureTest extends SlumberMongoDbTestBase
 {
-    const DB_NAME    = 'slumber_tests_db';
-    const COLLECTION = 'user_record_collection';
+    public const DB_NAME    = 'slumber_tests_db';
+    public const COLLECTION = 'user_record_collection';
 
     /** @var StorageImpl */
     static protected $storage;

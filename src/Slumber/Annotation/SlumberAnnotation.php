@@ -43,7 +43,7 @@ abstract class SlumberAnnotation implements SlumberMarker
     public function __get($name)
     {
         throw new \BadMethodCallException(
-            sprintf("Unknown property '%s' on annotation '%s'.", $name, get_class($this))
+            sprintf("Unknown property '%s' on annotation '%s'.", $name, \get_class($this))
         );
     }
 
@@ -58,7 +58,7 @@ abstract class SlumberAnnotation implements SlumberMarker
     public function __set($name, $value)
     {
         throw new \BadMethodCallException(
-            sprintf("Unknown property '%s' on annotation '%s'.", $name, get_class($this))
+            sprintf("Unknown property '%s' on annotation '%s'.", $name, \get_class($this))
         );
     }
 
@@ -72,7 +72,7 @@ abstract class SlumberAnnotation implements SlumberMarker
     public function __isset($name)
     {
         throw new \BadMethodCallException(
-            sprintf("Unknown property '%s' on annotation '%s'.", $name, get_class($this))
+            sprintf("Unknown property '%s' on annotation '%s'.", $name, \get_class($this))
         );
     }
 

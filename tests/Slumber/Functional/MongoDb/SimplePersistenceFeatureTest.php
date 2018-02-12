@@ -25,8 +25,8 @@ use PeekAndPoke\Types\LocalDate;
  */
 final class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
 {
-    const MAIN_COLLECTION       = 'main_class';
-    const REFERENCED_COLLECTION = 'ref_class';
+    public const MAIN_COLLECTION       = 'main_class';
+    public const REFERENCED_COLLECTION = 'ref_class';
 
     /** @var StorageImpl */
     static protected $storage;
@@ -419,19 +419,19 @@ final class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
         static::assertNotNull($reloaded, 'Reloading by id must work');
 
         static::assertSame($item->getABool(), $reloaded->getABool(), 'Boolean must be stored correctly');
-        static::assertTrue(is_bool($reloaded->getABool()), 'Boolean must be stored correctly');
+        static::assertTrue(\is_bool($reloaded->getABool()), 'Boolean must be stored correctly');
 
         static::assertSame($item->getAnotherBool(), $reloaded->getAnotherBool(), 'Boolean must be stored correctly');
-        static::assertTrue(is_bool($reloaded->getAnotherBool()), 'Boolean must be stored correctly');
+        static::assertTrue(\is_bool($reloaded->getAnotherBool()), 'Boolean must be stored correctly');
 
         static::assertSame($item->getADecimal(), $reloaded->getADecimal(), 'Decimals must be stored correctly');
-        static::assertTrue(is_float($reloaded->getADecimal()), 'Decimals must be stored correctly');
+        static::assertTrue(\is_float($reloaded->getADecimal()), 'Decimals must be stored correctly');
 
         static::assertSame($item->getAnInteger(), $reloaded->getAnInteger(), 'Integers must be stored correctly');
-        static::assertTrue(is_int($reloaded->getAnInteger()), 'Integers must be stored correctly');
+        static::assertTrue(\is_int($reloaded->getAnInteger()), 'Integers must be stored correctly');
 
         static::assertSame($item->getAString(), $reloaded->getAString(), 'Strings must be stored correctly');
-        static::assertTrue(is_string($reloaded->getAString()), 'Strings must be stored correctly');
+        static::assertTrue(\is_string($reloaded->getAString()), 'Strings must be stored correctly');
 
         static::assertNull($reloaded->getAStringContainingNull(), 'It must be able to save null for a string');
 
@@ -440,14 +440,14 @@ final class SimplePersistenceFeatureTest extends SlumberMongoDbTestBase
             $reloaded->getASomethingAsIs(),
             'Mixed things must be stored correctly'
         );
-        static::assertTrue(is_string($reloaded->getASomethingAsIs()), 'SmallInts must be stored correctly');
+        static::assertTrue(\is_string($reloaded->getASomethingAsIs()), 'SmallInts must be stored correctly');
 
         static::assertSame(
             $item->getASomethingElseAsIs(),
             $reloaded->getASomethingElseAsIs(),
             'Mixed things must be stored correctly'
         );
-        static::assertTrue(is_int($reloaded->getASomethingElseAsIs()), 'SmallInts must be stored correctly');
+        static::assertTrue(\is_int($reloaded->getASomethingElseAsIs()), 'SmallInts must be stored correctly');
 
         static::assertSame(
             $item->getASimpleDate()->getTimestamp(),

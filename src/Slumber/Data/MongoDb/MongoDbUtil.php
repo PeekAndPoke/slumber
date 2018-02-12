@@ -49,7 +49,7 @@ class MongoDbUtil
      */
     public static function isValidMongoIdString($id)
     {
-        return $id !== null && strlen($id) === 24 && preg_match('/[a-fA-F0-9]{24}/', $id);
+        return $id !== null && \strlen($id) === 24 && preg_match('/[a-fA-F0-9]{24}/', $id);
     }
 
     /**

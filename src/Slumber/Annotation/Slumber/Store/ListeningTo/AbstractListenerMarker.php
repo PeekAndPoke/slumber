@@ -48,7 +48,7 @@ abstract class AbstractListenerMarker extends ServiceInjectingSlumberAnnotation
             throw $this->createValidationException(
                 $context,
                 "the service '$service' is not of instance '$ofClass' but is '" .
-                (is_object($instance) ? get_class($instance) : gettype($instance)) . "'"
+                (\is_object($instance) ? \get_class($instance) : \gettype($instance)) . "'"
             );
         }
     }

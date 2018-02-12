@@ -66,7 +66,7 @@ class ArrayUtil
             return [];
         }
 
-        if (is_array($value) ||
+        if (\is_array($value) ||
             $value instanceof \ArrayObject
         ) {
             return (array) $value;
@@ -92,11 +92,11 @@ class ArrayUtil
      */
     public static function isAssoc($arr)
     {
-        if (! is_array($arr)) {
+        if (! \is_array($arr)) {
             return false;
         }
 
-        return array_keys($arr) !== range(0, count($arr) - 1);
+        return array_keys($arr) !== range(0, \count($arr) - 1);
     }
 
     /**
@@ -108,7 +108,7 @@ class ArrayUtil
      */
     public static function clean($input)
     {
-        if (is_array($input)) {
+        if (\is_array($input)) {
 
             $output = [];
 
@@ -117,7 +117,7 @@ class ArrayUtil
 
                 $cleaned = self::clean($v);
 
-                if ($cleaned !== null || (is_array($cleaned) && count($cleaned) === 0)) {
+                if ($cleaned !== null || (\is_array($cleaned) && \count($cleaned) === 0)) {
                     $output[$k] = $cleaned;
                 }
             }
@@ -125,7 +125,7 @@ class ArrayUtil
             return $output;
         }
 
-        if (is_object($input)) {
+        if (\is_object($input)) {
 
             $output = new \stdClass();
 
@@ -134,7 +134,7 @@ class ArrayUtil
 
                 $cleaned = self::clean($v);
 
-                if ($cleaned !== null || (is_array($cleaned) && count($cleaned) === 0)) {
+                if ($cleaned !== null || (\is_array($cleaned) && \count($cleaned) === 0)) {
                     $output->{$k} = $cleaned;
                 }
             }

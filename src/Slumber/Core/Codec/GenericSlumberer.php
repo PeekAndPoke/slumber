@@ -30,7 +30,7 @@ class GenericSlumberer implements Slumberer
      */
     public function slumber($subject)
     {
-        if (is_object($subject) &&
+        if (\is_object($subject) &&
             $config = $this->entityConfigLookUp->getEntityConfig(new \ReflectionClass($subject))
         ) {
 

@@ -25,7 +25,7 @@ class MapMapper extends AbstractCollectionMapper
      */
     public function slumber(Slumberer $slumberer, $value)
     {
-        if (! is_array($value) && ! $value instanceof \Traversable) {
+        if (! \is_array($value) && ! $value instanceof \Traversable) {
             return null;
         }
 
@@ -54,7 +54,7 @@ class MapMapper extends AbstractCollectionMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        if (! is_array($value) && ! $value instanceof \Traversable) {
+        if (! \is_array($value) && ! $value instanceof \Traversable) {
             return $this->createAwakeResult([]);
         }
 

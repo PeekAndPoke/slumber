@@ -32,7 +32,7 @@ abstract class BaseUtil
     {
         $result = '';
 
-        while (strlen($result) < $length) {
+        while (\strlen($result) < $length) {
             $result .= uniqid('', true);
         }
 

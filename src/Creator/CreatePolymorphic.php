@@ -41,7 +41,7 @@ class CreatePolymorphic implements Creator
      */
     public function create($data = null)
     {
-        if (! is_array($data) && ! $data instanceof \ArrayAccess) {
+        if (! \is_array($data) && ! $data instanceof \ArrayAccess) {
             return null;
         }
 

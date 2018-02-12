@@ -20,7 +20,7 @@ use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
  */
 class DbConnectionErrorFeatureTest extends SlumberMongoDbTestBase
 {
-    const MAIN_COLLECTION = 'main_class';
+    public const MAIN_COLLECTION = 'main_class';
 
     /** @var StorageImpl */
     static protected $storage;

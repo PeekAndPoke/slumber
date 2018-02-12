@@ -48,7 +48,7 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
         static $autoloader = false;
 
         if ($autoloader === false) {
-            $autoloader= true;
+            $autoloader = true;
             AnnotationRegistry::registerLoader('class_exists');
         }
 

@@ -14,9 +14,9 @@ use PeekAndPoke\Component\Slumber\Core\Exception\SlumberRuntimeException;
  */
 class StorageError extends SlumberRuntimeException
 {
-    const UNKNOWN = 99999;
+    public const UNKNOWN = 99999;
 
-    const DUPLICATE_KEY = 100;
+    public const DUPLICATE_KEY = 100;
 
-    const CONNECTION = 200;
+    public const CONNECTION = 200;
 }

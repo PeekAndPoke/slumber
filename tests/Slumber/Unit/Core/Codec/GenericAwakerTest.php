@@ -53,11 +53,12 @@ class GenericAwakerTest extends TestCase
      */
     public function testAwakePolymorphic($data, $baseClass, $expectedClass)
     {
+        /** @var mixed $result */
         $result = $this->subject->awake($data, new \ReflectionClass($baseClass));
 
         $this->assertSame(
             $expectedClass,
-            get_class($result),
+            \get_class($result),
             'Polymorphic awakening must work'
         );
     }

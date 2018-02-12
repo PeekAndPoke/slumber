@@ -59,7 +59,7 @@ class MongoDbIndexer
 
             $indexInfoName = $indexInfo->getName();
 
-            if ($indexInfoName !== '_id_' && ! in_array($indexInfoName, $createdIndexes, true)) {
+            if ($indexInfoName !== '_id_' && ! \in_array($indexInfoName, $createdIndexes, true)) {
                 $collection->dropIndex($indexInfoName);
                 $deletedIndexes[] = $indexInfoName;
             }
@@ -246,7 +246,7 @@ class MongoDbIndexer
      */
     private function buildFieldName($prefixes, $fieldName)
     {
-        if (count($prefixes) === 0) {
+        if (\count($prefixes) === 0) {
             return $fieldName;
         }
 
@@ -269,7 +269,7 @@ class MongoDbIndexer
             $rest = $propertyName . '_' . $this->mapDirection($marker);
         }
 
-        if (count($prefixes) > 0) {
+        if (\count($prefixes) > 0) {
             return implode('.', $prefixes) . '.' . $rest;
         }
 
@@ -292,7 +292,7 @@ class MongoDbIndexer
 
         $rest = implode('_', $parts);
 
-        if (count($prefixes) > 0) {
+        if (\count($prefixes) > 0) {
             return implode('.', $prefixes) . '.' . $rest;
         }
 

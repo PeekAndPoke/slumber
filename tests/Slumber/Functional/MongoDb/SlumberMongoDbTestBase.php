@@ -31,9 +31,9 @@ use Psr\Log\NullLogger;
  */
 abstract class SlumberMongoDbTestBase extends TestCase
 {
-    const DB_NAME               = 'slumber_tests_db';
-    const MAIN_COLLECTION       = 'main_class';
-    const REFERENCED_COLLECTION = 'ref_class';
+    public const DB_NAME               = 'slumber_tests_db';
+    public const MAIN_COLLECTION       = 'main_class';
+    public const REFERENCED_COLLECTION = 'ref_class';
 
     /** @var ContainerInterface[] */
     static private $diPerClass = [];

@@ -46,11 +46,11 @@ class SimpleDateMapper extends AbstractPropertyMapper
     public function slumber(Slumberer $slumberer, $value)
     {
         if ($value instanceof \DateTimeInterface) {
-            return $value->format('c');
+            return $value->format('Y-m-d\TH:i:s.uP');
         }
 
         if ($value instanceof LocalDate) {
-            return $value->format();
+            return $value->format('Y-m-d\TH:i:s.uP');
         }
 
         return null;

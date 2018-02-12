@@ -67,7 +67,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
         return $this->profile(
             'insert',
             [
-                'type' => get_class($item),
+                'type' => \get_class($item),
             ],
             function () use ($item) {
                 return $this->driver->insert($item);
@@ -87,7 +87,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
         return $this->profile(
             'save',
             [
-                'type' => get_class($item),
+                'type' => \get_class($item),
             ],
             function () use ($item) {
                 return $this->driver->save($item);
@@ -105,7 +105,7 @@ class ProfilingStorageDriverDecorator implements StorageDriver
         return $this->profile(
             'remove',
             [
-                'type' => get_class($item),
+                'type' => \get_class($item),
             ],
             function () use ($item) {
                 return $this->driver->remove($item);

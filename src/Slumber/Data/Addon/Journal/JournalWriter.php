@@ -15,7 +15,7 @@ use PeekAndPoke\Component\Slumber\Data\Addon\Journal\Exception\JournalRuntimeExc
  */
 interface JournalWriter
 {
-     const SERVICE_ID = 'slumber.data.addon.journal_writer';
+    public const SERVICE_ID = 'slumber.data.addon.journal_writer';
 
     /**
      * @param mixed $subject

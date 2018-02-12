@@ -20,8 +20,8 @@ use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
  */
 class DuplicateKeysFeatureTest extends SlumberMongoDbTestBase
 {
-    const MAIN_COLLECTION       = 'main_class';
-    const REFERENCED_COLLECTION = 'ref_class';
+    public const MAIN_COLLECTION       = 'main_class';
+    public const REFERENCED_COLLECTION = 'ref_class';
 
     /** @var StorageImpl */
     static protected $storage;

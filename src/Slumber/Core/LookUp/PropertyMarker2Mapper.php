@@ -36,7 +36,7 @@ class PropertyMarker2Mapper
      */
     public function createMapper(PropertyMappingMarker $marker)
     {
-        $markerClass = get_class($marker);
+        $markerClass = \get_class($marker);
         $mapperClass = $this->mappings[$markerClass] ?? $this->default;
 
         // descend the children

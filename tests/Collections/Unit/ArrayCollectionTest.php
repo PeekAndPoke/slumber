@@ -65,7 +65,7 @@ class ArrayCollectionTest extends TestCase
      */
     public function testCount(array $data)
     {
-        $count   = count($data);
+        $count   = \count($data);
         $subject = new ArrayCollection($data);
 
         self::assertSame($count, $subject->count(), 'count() must work');

@@ -10,7 +10,7 @@ namespace PeekAndPoke\Component\Slumber\Data;
  */
 interface EntityPool
 {
-    const PRIMARY_ID = '__id__';
+    public const PRIMARY_ID = '__id__';
 
     /**
      * @return array

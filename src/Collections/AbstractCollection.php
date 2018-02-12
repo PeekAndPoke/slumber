@@ -56,7 +56,7 @@ abstract class AbstractCollection implements Collection
      */
     public function count()
     {
-        return count($this->data);
+        return \count($this->data);
     }
 
     /**

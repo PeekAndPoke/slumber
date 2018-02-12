@@ -57,7 +57,7 @@ class ArrayCollection extends AbstractCollection implements \ArrayAccess
      */
     public function appendAll($items)
     {
-        if (! is_array($items) && ! $items instanceof \Traversable) {
+        if (! \is_array($items) && ! $items instanceof \Traversable) {
             return $this;
         }
 

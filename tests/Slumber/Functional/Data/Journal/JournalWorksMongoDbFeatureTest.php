@@ -26,9 +26,9 @@ use PeekAndPoke\Component\Slumber\Stubs\UnitTestJournalizedClass;
  */
 class JournalWorksMongoDbFeatureTest extends SlumberMongoDbTestBase
 {
-    const DB_NAME            = 'slumber_tests_db';
-    const COLLECTION         = 'journalized_class';
-    const JOURNAL_COLLECTION = 'journal_entries';
+    public const DB_NAME            = 'slumber_tests_db';
+    public const COLLECTION         = 'journalized_class';
+    public const JOURNAL_COLLECTION = 'journal_entries';
 
     /** @var StorageImpl */
     static protected $storage;

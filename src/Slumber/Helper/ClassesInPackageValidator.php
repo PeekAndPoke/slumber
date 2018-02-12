@@ -56,7 +56,7 @@ class ClassesInPackageValidator
 
         $errors = [];
 
-        if (count($fqcns) === 0) {
+        if (\count($fqcns) === 0) {
             $errors[] = 'No classes found in dirs ' . implode(', ', (array) $directories);
         }
 
@@ -114,12 +114,12 @@ class ClassesInPackageValidator
                 }
                 if (T_NAMESPACE === $tokens[$index][0]) {
                     $index += 2; // Skip namespace keyword and whitespace
-                    while (isset($tokens[$index]) && is_array($tokens[$index])) {
+                    while (isset($tokens[$index]) && \is_array($tokens[$index])) {
                         $namespace .= $tokens[$index++][1];
                     }
                 }
 
-                if (T_CLASS === $tokens[$index][0] && count($tokens[$index + 2]) > 1) {
+                if (T_CLASS === $tokens[$index][0] && \count($tokens[$index + 2]) > 1) {
                     $index += 2; // Skip class keyword and whitespace
 
                     $fqcn = $namespace . '\\' . $tokens[$index][1];

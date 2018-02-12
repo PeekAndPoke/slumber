@@ -13,7 +13,7 @@ use Psr\Container\ContainerInterface;
  */
 class PostSaveEvent implements Event
 {
-    const NAME = 'POST_SAVE';
+    public const NAME = 'POST_SAVE';
 
     /** @var ContainerInterface */
     private $provider;

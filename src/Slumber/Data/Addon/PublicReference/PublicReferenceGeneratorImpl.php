@@ -46,7 +46,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
      */
     public function create($subject)
     {
-        if (! is_object($subject)) {
+        if (! \is_object($subject)) {
             return null;
         }
 
@@ -81,7 +81,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
     {
         $ret           = '';
         $classNameIdx  = 0;
-        $patternLength = strlen($pattern);
+        $patternLength = \strlen($pattern);
 
         for ($i = 0; $i < $patternLength; $i++) {
 
@@ -89,7 +89,7 @@ class PublicReferenceGeneratorImpl implements PublicReferenceGenerator
 
             switch ($char) {
                 case '_':
-                    $ret .= self::$REDUCED_UPPER_CHARS[random_int(0, count(static::$REDUCED_UPPER_CHARS) - 1)];
+                    $ret .= self::$REDUCED_UPPER_CHARS[random_int(0, \count(static::$REDUCED_UPPER_CHARS) - 1)];
                     break;
 
                 case '#':

@@ -13,7 +13,7 @@ use Psr\Container\ContainerInterface;
  */
 class PostDeleteEvent implements Event
 {
-    const NAME = 'POST_DELETE';
+    public const NAME = 'POST_DELETE';
 
     /** @var ContainerInterface */
     private $provider;
