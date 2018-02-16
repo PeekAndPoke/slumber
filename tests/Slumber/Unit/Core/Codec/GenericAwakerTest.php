@@ -13,7 +13,7 @@ use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfig;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfigReader;
 use PeekAndPoke\Component\Slumber\StaticServiceProvider;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberMainClass;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberPolyChildA;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberPolyChildB;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberPolyChildC;
@@ -87,8 +87,8 @@ class GenericAwakerTest extends TestCase
      */
     public function testAwakeObjectPopulation($data, callable $assert)
     {
-        /** @var UnitTestMainClass $result */
-        $result = $this->subject->awake($data, new \ReflectionClass(UnitTestMainClass::class));
+        /** @var UnitTestSlumberMainClass $result */
+        $result = $this->subject->awake($data, new \ReflectionClass(UnitTestSlumberMainClass::class));
 
         $assert($result);
     }
@@ -98,7 +98,7 @@ class GenericAwakerTest extends TestCase
         return [
             [
                 ['aBool' => true, 'aString' => 'str', 'anInteger' => 10, 'aDecimal' => 10.1],
-                function (UnitTestMainClass $result) {
+                function (UnitTestSlumberMainClass $result) {
                     $this->assertTrue($result->getABool(), 'Awaking must work');
                     $this->assertSame('str', $result->getAString(), 'Awaking must work');
                     $this->assertSame(10, $result->getAnInteger(), 'Awaking must work');
@@ -107,7 +107,7 @@ class GenericAwakerTest extends TestCase
             ],
             [
                 ['aBool' => false, 'aString' => 'str2', 'anInteger' => 11.9, 'aDecimal' => 11.9],
-                function (UnitTestMainClass $result) {
+                function (UnitTestSlumberMainClass $result) {
                     $this->assertFalse($result->getABool(), 'Awaking must work');
                     $this->assertSame('str2', $result->getAString(), 'Awaking must work');
                     $this->assertSame(11, $result->getAnInteger(), 'Awaking must work');

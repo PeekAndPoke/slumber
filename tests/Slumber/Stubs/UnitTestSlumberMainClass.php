@@ -12,7 +12,7 @@ use PeekAndPoke\Types\LocalDate;
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class UnitTestMainClass
+class UnitTestSlumberMainClass
 {
     /**
      * @var UnitTestSlumberAggregatedClass

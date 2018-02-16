@@ -11,7 +11,7 @@ use PeekAndPoke\Component\Slumber\Core\Codec\GenericSlumberer;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfigReader;
 use PeekAndPoke\Component\Slumber\StaticServiceProvider;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberMainClass;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -75,7 +75,7 @@ class GenericSlumbererTest extends TestCase
                 },
             ],
             [
-                (new UnitTestMainClass())
+                (new UnitTestSlumberMainClass())
                     ->setABool(true)
                     ->setAString('str'),
                 function ($data) {
@@ -84,7 +84,7 @@ class GenericSlumbererTest extends TestCase
                 },
             ],
             [
-                (new UnitTestMainClass())
+                (new UnitTestSlumberMainClass())
                     ->setABool(false)
                     ->setAString('str2'),
                 function ($data) {
