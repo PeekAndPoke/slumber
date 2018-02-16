@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodec;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
-use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\StaticServiceProvider;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildA;
 use PHPUnit\Framework\TestCase;
 
@@ -25,10 +25,7 @@ class ArrayCodecTest extends TestCase
 
     public function setUp()
     {
-        // setup the annotation reader for autoload
-//        AnnotationRegistry::registerLoader('class_exists');
-
-        $di               = new UnitTestServiceProvider();
+        $di               = new StaticServiceProvider();
         $annotationReader = new AnnotationReader();
         $reader           = new AnnotatedEntityConfigReader($di, $annotationReader, new ArrayCodecPropertyMarker2Mapper());
 

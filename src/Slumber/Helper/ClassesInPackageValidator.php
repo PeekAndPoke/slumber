@@ -20,21 +20,21 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class ClassesInPackageValidator
 {
+    /** @var ContainerInterface */
+    private $provider;
     /** @var LoggerInterface */
     private $logger;
-    /** @var null|ContainerInterface */
-    private $provider;
 
     /**
      * ClassesInPackageValidator constructor.
      *
-     * @param LoggerInterface|null    $logger
-     * @param ContainerInterface|null $provider
+     * @param ContainerInterface   $provider
+     * @param LoggerInterface|null $logger
      */
-    public function __construct(LoggerInterface $logger = null, ContainerInterface $provider = null)
+    public function __construct(ContainerInterface $provider, LoggerInterface $logger = null)
     {
-        $this->logger   = $logger ?: new NullLogger();
         $this->provider = $provider;
+        $this->logger   = $logger ?: new NullLogger();
 
 //        AnnotationRegistry::registerLoader('class_exists');
     }
@@ -49,7 +49,7 @@ class ClassesInPackageValidator
     {
         $fqcns  = $this->getAllFqcnsInDir($directories, $excludeDirs);
         $lookUp = new AnnotatedEntityConfigReader(
-            $this->provider ?: new UnitTestServiceProvider(),
+            $this->provider,
             new AnnotationReader(),
             new ArrayCodecPropertyMarker2Mapper()
         );

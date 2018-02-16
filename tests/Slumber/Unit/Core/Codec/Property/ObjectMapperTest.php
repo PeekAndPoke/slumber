@@ -15,7 +15,7 @@ use PeekAndPoke\Component\Slumber\Core\Codec\GenericSlumberer;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\ObjectMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
-use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\StaticServiceProvider;
 use PeekAndPoke\Types\ValueHolder;
 use PHPUnit\Framework\TestCase;
 
@@ -32,7 +32,7 @@ class ObjectMapperTest extends TestCase
     public function setUp()
     {
         $lookUp = new AnnotatedEntityConfigReader(
-            new UnitTestServiceProvider(),
+            new StaticServiceProvider(),
             new AnnotationReader(),
             new ArrayCodecPropertyMarker2Mapper()
         );

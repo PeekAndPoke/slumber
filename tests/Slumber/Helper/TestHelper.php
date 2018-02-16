@@ -11,6 +11,7 @@ use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodec;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Core\LookUp\CachedEntityConfigLookUp;
+use PeekAndPoke\Component\Slumber\StaticServiceProvider;
 
 /**
  *
@@ -32,7 +33,7 @@ class TestHelper
     {
         static $i;
 
-        return $i ?: $i = new UnitTestServiceProvider();
+        return $i ?: $i = new StaticServiceProvider();
     }
 
     public function getArrayCodec()
@@ -43,16 +44,9 @@ class TestHelper
             return $i;
         }
 
-        // setup the annotation reader for autoload
-//        AnnotationRegistry::registerLoader('class_exists');
-
         $i = new ArrayCodec(
             new CachedEntityConfigLookUp(
-                new AnnotatedEntityConfigReader(
-                    $this->getDi(),
-                    new AnnotationReader(),
-                    new ArrayCodecPropertyMarker2Mapper()
-                ),
+                new AnnotatedEntityConfigReader($this->getDi(), new AnnotationReader(), new ArrayCodecPropertyMarker2Mapper()),
                 new ArrayCache(),
                 '[Slumber-Test]@',
                 true
@@ -61,5 +55,4 @@ class TestHelper
 
         return $i;
     }
-
 }

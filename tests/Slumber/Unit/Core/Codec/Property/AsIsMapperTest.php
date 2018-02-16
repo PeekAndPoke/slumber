@@ -14,7 +14,7 @@ use PeekAndPoke\Component\Slumber\Core\Codec\GenericSlumberer;
 use PeekAndPoke\Component\Slumber\Core\Codec\Property\AsIsMapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
-use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\StaticServiceProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -30,7 +30,7 @@ class AsIsMapperTest extends TestCase
     public function setUp()
     {
         $lookUp = new AnnotatedEntityConfigReader(
-            new UnitTestServiceProvider(),
+            new StaticServiceProvider(),
             new AnnotationReader(),
             new ArrayCodecPropertyMarker2Mapper()
         );

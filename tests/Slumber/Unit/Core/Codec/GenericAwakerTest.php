@@ -12,8 +12,7 @@ use PeekAndPoke\Component\Slumber\Core\Codec\GenericAwaker;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfig;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfigReader;
-use PeekAndPoke\Component\Slumber\Functional\MongoDb\SimplePersistenceFeatureTest;
-use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\StaticServiceProvider;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildA;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildB;
@@ -33,10 +32,7 @@ class GenericAwakerTest extends TestCase
 
     public function setUp()
     {
-        // setup the annotation reader for autoload
-//        AnnotationRegistry::registerLoader('class_exists');
-
-        $di               = new UnitTestServiceProvider();
+        $di               = new StaticServiceProvider();
         $annotationReader = new AnnotationReader();
 
         $reader = new AnnotatedEntityConfigReader($di, $annotationReader, new ArrayCodecPropertyMarker2Mapper());

@@ -10,7 +10,7 @@ use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\GenericSlumberer;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfigReader;
-use PeekAndPoke\Component\Slumber\Helper\UnitTestServiceProvider;
+use PeekAndPoke\Component\Slumber\StaticServiceProvider;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
 use PHPUnit\Framework\TestCase;
 
@@ -21,18 +21,14 @@ use PHPUnit\Framework\TestCase;
  */
 class GenericSlumbererTest extends TestCase
 {
-    /** @var GenericSlumberer*/
+    /** @var GenericSlumberer */
     private $subject;
 
     public function setUp()
     {
-        // setup the annotation reader for autoload
-//        AnnotationRegistry::registerLoader('class_exists');
-
-        $di               = new UnitTestServiceProvider();
+        $di               = new StaticServiceProvider();
         $annotationReader = new AnnotationReader();
-
-        $reader = new AnnotatedEntityConfigReader($di, $annotationReader, new ArrayCodecPropertyMarker2Mapper());
+        $reader           = new AnnotatedEntityConfigReader($di, $annotationReader, new ArrayCodecPropertyMarker2Mapper());
 
         $this->subject = new GenericSlumberer($reader);
     }
@@ -42,7 +38,7 @@ class GenericSlumbererTest extends TestCase
      *
      * This one tests all kinds of types
      *
-     * @see SimplePersistenceFeatureTest
+     * @see          SimplePersistenceFeatureTest
      *
      * @param          $data
      * @param callable $assert
@@ -64,19 +60,19 @@ class GenericSlumbererTest extends TestCase
                 null,
                 function ($data) {
                     $this->assertNull($data, 'slumber() must work');
-                }
+                },
             ],
             [
                 'null',
                 function ($data) {
                     $this->assertNull($data, 'slumber() must work');
-                }
+                },
             ],
             [
                 ['a', 'b'],
                 function ($data) {
                     $this->assertNull($data, 'slumber() must work');
-                }
+                },
             ],
             [
                 (new UnitTestMainClass())
@@ -85,7 +81,7 @@ class GenericSlumbererTest extends TestCase
                 function ($data) {
                     $this->assertTrue($data['aBool'], 'slumber() must work');
                     $this->assertSame('str', $data['aString'], 'slumber() must work');
-                }
+                },
             ],
             [
                 (new UnitTestMainClass())
@@ -94,7 +90,7 @@ class GenericSlumbererTest extends TestCase
                 function ($data) {
                     $this->assertFalse($data['aBool'], 'slumber() must work');
                     $this->assertSame('str2', $data['aString'], 'slumber() must work');
-                }
+                },
             ],
         ];
     }
