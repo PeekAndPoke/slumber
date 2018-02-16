@@ -35,8 +35,6 @@ class ClassesInPackageValidator
     {
         $this->provider = $provider;
         $this->logger   = $logger ?: new NullLogger();
-
-//        AnnotationRegistry::registerLoader('class_exists');
     }
 
     /**
