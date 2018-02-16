@@ -10,16 +10,16 @@ use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 /**
  * @Slumber\Polymorphic(
  *     {
- *          "a": UnitTestPolyChildA::class,
- *          "b": UnitTestPolyChildB::class
+ *          "a": UnitTestSlumberPolyChildA::class,
+ *          "b": UnitTestSlumberPolyChildB::class
  *     },
  *     tellBy = "type",
- *     default = UnitTestPolyChildC::class
+ *     default = UnitTestSlumberPolyChildC::class
  * )
  *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-abstract class UnitTestPolyParent
+abstract class UnitTestSlumberPolyParent
 {
     /**
      * @var string

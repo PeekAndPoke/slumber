@@ -14,10 +14,10 @@ use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfig;
 use PeekAndPoke\Component\Slumber\Core\LookUp\EntityConfigReader;
 use PeekAndPoke\Component\Slumber\StaticServiceProvider;
 use PeekAndPoke\Component\Slumber\Stubs\UnitTestMainClass;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildA;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildB;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildC;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyParent;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberPolyChildA;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberPolyChildB;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberPolyChildC;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberPolyParent;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -63,13 +63,13 @@ class GenericAwakerTest extends TestCase
     {
         return [
             // not type at all ... must fall back to default
-            [[], UnitTestPolyParent::class, UnitTestPolyChildC::class],
+            [[], UnitTestSlumberPolyParent::class, UnitTestSlumberPolyChildC::class],
             // unknown type given ... must fall back to default
-            [['type' => 'UNKNOWN'], UnitTestPolyParent::class, UnitTestPolyChildC::class],
+            [['type' => 'UNKNOWN'], UnitTestSlumberPolyParent::class, UnitTestSlumberPolyChildC::class],
             // valid type A ... must select correct poly
-            [['type' => 'a'], UnitTestPolyParent::class, UnitTestPolyChildA::class],
+            [['type' => 'a'], UnitTestSlumberPolyParent::class, UnitTestSlumberPolyChildA::class],
             // valid type B ... must select correct poly
-            [['type' => 'b'], UnitTestPolyParent::class, UnitTestPolyChildB::class],
+            [['type' => 'b'], UnitTestSlumberPolyParent::class, UnitTestSlumberPolyChildB::class],
         ];
     }
 

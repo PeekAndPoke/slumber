@@ -10,21 +10,21 @@ use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class UnitTestPolyChildC extends UnitTestPolyParent
+class UnitTestSlumberPolyChildA extends UnitTestSlumberPolyParent
 {
     /**
      * @var string
      *
      * @Slumber\AsString()
      */
-    private $type = '';
+    private $type = 'a';
 
     /**
      * @var string
      *
      * @Slumber\AsString()
      */
-    private $propOnC;
+    private $propOnA;
 
     /**
      * @return string
@@ -37,19 +37,19 @@ class UnitTestPolyChildC extends UnitTestPolyParent
     /**
      * @return string
      */
-    public function getPropOnC()
+    public function getPropOnA()
     {
-        return $this->propOnC;
+        return $this->propOnA;
     }
 
     /**
-     * @param string $propOnC
+     * @param string $propOnA
      *
      * @return $this
      */
-    public function setPropOnC($propOnC)
+    public function setPropOnA($propOnA)
     {
-        $this->propOnC = $propOnC;
+        $this->propOnA = $propOnA;
 
         return $this;
     }

@@ -10,7 +10,7 @@ use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodec;
 use PeekAndPoke\Component\Slumber\Core\Codec\ArrayCodecPropertyMarker2Mapper;
 use PeekAndPoke\Component\Slumber\Core\LookUp\AnnotatedEntityConfigReader;
 use PeekAndPoke\Component\Slumber\StaticServiceProvider;
-use PeekAndPoke\Component\Slumber\Stubs\UnitTestPolyChildA;
+use PeekAndPoke\Component\Slumber\Stubs\UnitTestSlumberPolyChildA;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -51,7 +51,7 @@ class ArrayCodecTest extends TestCase
 
     public function provideTestSlumber()
     {
-        $obj = (new UnitTestPolyChildA())->setCommon('common')->setPropOnA('prop');
+        $obj = (new UnitTestSlumberPolyChildA())->setCommon('common')->setPropOnA('prop');
         $objResult = [
             'type'    => 'a',
             'common'  => 'common',
@@ -90,10 +90,10 @@ class ArrayCodecTest extends TestCase
             'propOnA' => 'prop',
         ];
 
-        /** @var UnitTestPolyChildA $result */
-        $result = $this->subject->awake($data, new \ReflectionClass(UnitTestPolyChildA::class));
+        /** @var UnitTestSlumberPolyChildA $result */
+        $result = $this->subject->awake($data, new \ReflectionClass(UnitTestSlumberPolyChildA::class));
 
-        $this->assertInstanceOf(UnitTestPolyChildA::class, $result, 'awake() must create correct result');
+        $this->assertInstanceOf(UnitTestSlumberPolyChildA::class, $result, 'awake() must create correct result');
         $this->assertSame('a', $result->getType(), 'awake() must populate result correctly');
         $this->assertSame('common', $result->getCommon(), 'awake() must populate result correctly');
         $this->assertSame('prop', $result->getPropOnA(), 'awake() must populate result correctly');
@@ -107,10 +107,10 @@ class ArrayCodecTest extends TestCase
             'propOnA' => 'prop',
         ];
 
-        /** @var UnitTestPolyChildA $result */
-        $result = $this->subject->awake($data, UnitTestPolyChildA::class);
+        /** @var UnitTestSlumberPolyChildA $result */
+        $result = $this->subject->awake($data, UnitTestSlumberPolyChildA::class);
 
-        $this->assertInstanceOf(UnitTestPolyChildA::class, $result, 'awake() must create correct result');
+        $this->assertInstanceOf(UnitTestSlumberPolyChildA::class, $result, 'awake() must create correct result');
         $this->assertSame('a', $result->getType(), 'awake() must populate result correctly');
         $this->assertSame('common', $result->getCommon(), 'awake() must populate result correctly');
         $this->assertSame('prop', $result->getPropOnA(), 'awake() must populate result correctly');
@@ -123,7 +123,7 @@ class ArrayCodecTest extends TestCase
      */
     public function testAwakeWithInvalidDataReturnsNull($input)
     {
-        $this->assertNull($this->subject->awake($input, UnitTestPolyChildA::class), 'awake() must return null on invalid data');
+        $this->assertNull($this->subject->awake($input, UnitTestSlumberPolyChildA::class), 'awake() must return null on invalid data');
     }
 
     public function provideTestAwakeWithInvalidDataReturnsNull()
@@ -144,19 +144,19 @@ class ArrayCodecTest extends TestCase
             'propOnA' => 'prop',
         ];
 
-        /** @var UnitTestPolyChildA[] $result */
-        $result = $this->subject->awakeList([$data, $data], UnitTestPolyChildA::class);
+        /** @var UnitTestSlumberPolyChildA[] $result */
+        $result = $this->subject->awakeList([$data, $data], UnitTestSlumberPolyChildA::class);
 
         $this->assertCount(2, $result, 'awakeList() must return array of correct size');
 
         $result1 = $result[0];
-        $this->assertInstanceOf(UnitTestPolyChildA::class, $result1, 'awakeList() must create correct result');
+        $this->assertInstanceOf(UnitTestSlumberPolyChildA::class, $result1, 'awakeList() must create correct result');
         $this->assertSame('a', $result1->getType(), 'awakeList() must populate result correctly');
         $this->assertSame('common', $result1->getCommon(), 'awakeList() must populate result correctly');
         $this->assertSame('prop', $result1->getPropOnA(), 'awakeList() must populate result correctly');
 
         $result2 = $result[1];
-        $this->assertInstanceOf(UnitTestPolyChildA::class, $result2, 'awakeList() must create correct result');
+        $this->assertInstanceOf(UnitTestSlumberPolyChildA::class, $result2, 'awakeList() must create correct result');
         $this->assertSame('a', $result2->getType(), 'awakeList() must populate result correctly');
         $this->assertSame('common', $result2->getCommon(), 'awakeList() must populate result correctly');
         $this->assertSame('prop', $result2->getPropOnA(), 'awakeList() must populate result correctly');
@@ -170,13 +170,13 @@ class ArrayCodecTest extends TestCase
             'propOnA' => 'prop',
         ];
 
-        /** @var UnitTestPolyChildA[] $result */
-        $result = $this->subject->awakeList([$data, null], UnitTestPolyChildA::class);
+        /** @var UnitTestSlumberPolyChildA[] $result */
+        $result = $this->subject->awakeList([$data, null], UnitTestSlumberPolyChildA::class);
 
         $this->assertCount(2, $result, 'awakeList() must return array of correct size');
 
         $result1 = $result[0];
-        $this->assertInstanceOf(UnitTestPolyChildA::class, $result1, 'awakeList() must create correct result');
+        $this->assertInstanceOf(UnitTestSlumberPolyChildA::class, $result1, 'awakeList() must create correct result');
         $this->assertSame('a', $result1->getType(), 'awakeList() must populate result correctly');
         $this->assertSame('common', $result1->getCommon(), 'awakeList() must populate result correctly');
         $this->assertSame('prop', $result1->getPropOnA(), 'awakeList() must populate result correctly');
@@ -194,7 +194,7 @@ class ArrayCodecTest extends TestCase
     {
         $this->assertSame(
             [],
-            $this->subject->awakeList($input, UnitTestPolyChildA::class),
+            $this->subject->awakeList($input, UnitTestSlumberPolyChildA::class),
             'awakeList() must return null on invalid data'
         );
     }

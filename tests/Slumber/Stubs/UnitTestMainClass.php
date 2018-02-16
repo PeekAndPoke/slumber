@@ -15,17 +15,17 @@ use PeekAndPoke\Types\LocalDate;
 class UnitTestMainClass
 {
     /**
-     * @var UnitTestAggregatedClass
+     * @var UnitTestSlumberAggregatedClass
      *
-     * @Slumber\AsObject(UnitTestAggregatedClass::class)
+     * @Slumber\AsObject(UnitTestSlumberAggregatedClass::class)
      */
     private $anObject;
 
     /**
-     * @var UnitTestPolyParent[]
+     * @var UnitTestSlumberPolyParent[]
      *
      * @Slumber\AsList(
-     *     @Slumber\AsObject(UnitTestPolyParent::class)
+     *     @Slumber\AsObject(UnitTestSlumberPolyParent::class)
      * )
      */
     private $aListOfPolymorphics;
@@ -52,18 +52,18 @@ class UnitTestMainClass
     private $aMapOfMixed = [];
 
     /**
-     * @var UnitTestAggregatedClass[]
+     * @var UnitTestSlumberAggregatedClass[]
      *
      * @Slumber\AsMap(
-     *     @Slumber\AsObject(UnitTestAggregatedClass::class)
+     *     @Slumber\AsObject(UnitTestSlumberAggregatedClass::class)
      * )
      */
     private $aMapOfObjects = [];
 
     /**
-     * @var UnitTestCollection
+     * @var UnitTestSlumberCollection
      *
-     * @see UnitTestCollection
+     * @see UnitTestSlumberCollection
      *
      * @Slumber\AsList(
      *     @Slumber\AsString(),
@@ -128,11 +128,11 @@ class UnitTestMainClass
     private $aListOfListsOfMixed = [];
 
     /**
-     * @var UnitTestAggregatedClass[][]
+     * @var UnitTestSlumberAggregatedClass[][]
      *
      * @Slumber\AsList(
      *     @Slumber\AsList(
-     *         @Slumber\AsObject(UnitTestAggregatedClass::class)
+     *         @Slumber\AsObject(UnitTestSlumberAggregatedClass::class)
      *     )
      * )
      */
@@ -220,11 +220,11 @@ class UnitTestMainClass
      */
     public function __construct()
     {
-        $this->aListOfStringWrappedInACollClass = new UnitTestCollection();
+        $this->aListOfStringWrappedInACollClass = new UnitTestSlumberCollection();
     }
 
     /**
-     * @return UnitTestAggregatedClass
+     * @return UnitTestSlumberAggregatedClass
      */
     public function getAnObject()
     {
@@ -232,7 +232,7 @@ class UnitTestMainClass
     }
 
     /**
-     * @param UnitTestAggregatedClass $anObject
+     * @param UnitTestSlumberAggregatedClass $anObject
      *
      * @return $this
      */
@@ -244,7 +244,7 @@ class UnitTestMainClass
     }
 
     /**
-     * @return UnitTestPolyParent[]
+     * @return UnitTestSlumberPolyParent[]
      */
     public function getAListOfPolymorphics()
     {
@@ -252,7 +252,7 @@ class UnitTestMainClass
     }
 
     /**
-     * @param UnitTestPolyParent[] $aListOfPolymorphics
+     * @param UnitTestSlumberPolyParent[] $aListOfPolymorphics
      *
      * @return $this
      */
@@ -325,7 +325,7 @@ class UnitTestMainClass
     }
 
     /**
-     * @return UnitTestAggregatedClass[]
+     * @return UnitTestSlumberAggregatedClass[]
      */
     public function getAMapOfObjects()
     {
@@ -345,7 +345,7 @@ class UnitTestMainClass
     }
 
     /**
-     * @return UnitTestCollection
+     * @return UnitTestSlumberCollection
      */
     public function getAListOfStringWrappedInACollClass()
     {
@@ -353,11 +353,11 @@ class UnitTestMainClass
     }
 
     /**
-     * @param UnitTestCollection $aListOfStringWrappedInACollClass
+     * @param UnitTestSlumberCollection $aListOfStringWrappedInACollClass
      *
      * @return $this
      */
-    public function setAListOfStringWrappedInACollClass(UnitTestCollection $aListOfStringWrappedInACollClass)
+    public function setAListOfStringWrappedInACollClass(UnitTestSlumberCollection $aListOfStringWrappedInACollClass)
     {
         $this->aListOfStringWrappedInACollClass = $aListOfStringWrappedInACollClass;
 
@@ -465,7 +465,7 @@ class UnitTestMainClass
     }
 
     /**
-     * @return UnitTestAggregatedClass[][]
+     * @return UnitTestSlumberAggregatedClass[][]
      */
     public function getAListOfListsOfObjects()
     {
@@ -473,7 +473,7 @@ class UnitTestMainClass
     }
 
     /**
-     * @param UnitTestAggregatedClass[][] $aListOfListsOfObjects
+     * @param UnitTestSlumberAggregatedClass[][] $aListOfListsOfObjects
      *
      * @return $this
      */

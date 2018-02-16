@@ -10,7 +10,7 @@ use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class UnitTestPolyChildB extends UnitTestPolyParent
+class UnitTestSlumberPolyChildB extends UnitTestSlumberPolyParent
 {
     /**
      * @var string

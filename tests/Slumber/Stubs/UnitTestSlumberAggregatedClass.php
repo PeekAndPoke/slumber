@@ -10,7 +10,7 @@ use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class UnitTestAggregatedClass
+class UnitTestSlumberAggregatedClass
 {
     /**
      * @Slumber\AsString()

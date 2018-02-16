@@ -11,6 +11,6 @@ use PeekAndPoke\Component\Collections\ArrayCollection;
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class UnitTestCollection extends ArrayCollection
+class UnitTestSlumberCollection extends ArrayCollection
 {
 }
