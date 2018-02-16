@@ -149,4 +149,53 @@ class ArrayUtilTest extends TestCase
             [new UnitTestTraversableClass(['a' => 1, 'b' => [2]]), ['a' => 1, 'b' => [2]]],
         ];
     }
+
+    /**
+     * @param $input
+     * @param $expected
+     *
+     * @dataProvider provideTestClean
+     */
+    public function testClean($input, $expected)
+    {
+        $result = ArrayUtil::clean($input);
+
+        $this->assertEquals($expected, $result, 'ArrayUtil::clean must work');
+    }
+
+    public function provideTestClean()
+    {
+        $in = new \stdClass();
+        $in->a = 0;
+        $in->b = null;
+        $in->c = 1;
+
+        $out = new \stdClass();
+        $out->a = 0;
+        $out->c = 1;
+
+        return [
+            [
+                null, null
+            ],
+            [
+                [], []
+            ],
+            [
+                $r = new \stdClass(), $r
+            ],
+            [
+                [0, null, 1], [0 => 0, 2 => 1]
+            ],
+            [
+                ['a' => 0, 'b' => null, 'c' => 1], ['a' => 0, 'c' => 1]
+            ],
+            [
+                ['a' => 0, 'b' => [], 'c' => 1], ['a' => 0, 'b' => [], 'c' => 1]
+            ],
+            [
+                $in, $out
+            ],
+        ];
+    }
 }

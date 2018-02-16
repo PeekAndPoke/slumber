@@ -2,6 +2,8 @@
 
 namespace PeekAndPoke\Component\Toolbox;
 
+use PeekAndPoke\Component\Toolbox\Unit\ArrayUtilTest;
+
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
@@ -100,7 +102,11 @@ class ArrayUtil
     }
 
     /**
-     * Removes all empty values recursively
+     * Removes all null values recursively
+     *
+     * Empty arrays will be kept.
+     *
+     * @see ArrayUtilTest::testClean()
      *
      * @param mixed $input
      *
@@ -109,39 +115,30 @@ class ArrayUtil
     public static function clean($input)
     {
         if (\is_array($input)) {
-
-            $output = [];
-
-            /** @var array $input */
-            foreach ($input as $k => $v) {
-
-                $cleaned = self::clean($v);
-
-                if ($cleaned !== null || (\is_array($cleaned) && \count($cleaned) === 0)) {
-                    $output[$k] = $cleaned;
-                }
-            }
-
-            return $output;
+            return self::cleanRecurse($input);
         }
 
         if (\is_object($input)) {
-
-            $output = new \stdClass();
-
-            /** @var array $input */
-            foreach ((array) $input as $k => $v) {
-
-                $cleaned = self::clean($v);
-
-                if ($cleaned !== null || (\is_array($cleaned) && \count($cleaned) === 0)) {
-                    $output->{$k} = $cleaned;
-                }
-            }
-
-            return $output;
+            return (object) self::cleanRecurse((array) $input);
         }
 
         return $input;
+    }
+
+    private static function cleanRecurse(array $in)
+    {
+        $out = [];
+
+        /** @var array $input */
+        foreach ($in as $k => $v) {
+
+            $cleaned = self::clean($v);
+
+            if ($cleaned !== null) {
+                $out[$k] = $cleaned;
+            }
+        }
+
+        return $out;
     }
 }
