@@ -140,27 +140,32 @@ class AnnotatedEntityConfigReader implements EntityConfigReader
         // by other properties on derived classes.
         while ($subjectClass instanceof \ReflectionClass && $subjectClass->isUserDefined()) {
 
-            $properties = $subjectClass->getProperties();
-
-            foreach ($properties as $property) {
-
-                $propertyName = $property->getName();
-
-                if (! isset($result[$propertyName])) {
-
-                    $context = $this->getPropertyValidationContext($subjectClass, $property);
-                    $marker  = $this->getPropertyAnnotationsOfType($context);
-
-                    if ($marker) {
-                        $result[$propertyName] = $this->enrich($marker);
-                    }
-                }
-            }
+            $this->getPropertyMarkersForClass($subjectClass, $result);
 
             $subjectClass = $subjectClass->getParentClass();
         }
 
         return array_values($result);
+    }
+
+    private function getPropertyMarkersForClass(\ReflectionClass $class, array &$result): void
+    {
+        $properties = $class->getProperties();
+
+        foreach ($properties as $property) {
+
+            $propertyName = $property->getName();
+
+            if (! isset($result[$propertyName])) {
+
+                $context = $this->getPropertyValidationContext($class, $property);
+                $marker  = $this->getPropertyAnnotationsOfType($context);
+
+                if ($marker) {
+                    $result[$propertyName] = $this->enrich($marker);
+                }
+            }
+        }
     }
 
     /**

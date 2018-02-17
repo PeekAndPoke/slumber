@@ -34,6 +34,16 @@ abstract class AbstractCollectionMapper extends AbstractPropertyMapper implement
     }
 
     /**
+     * @param $subject
+     *
+     * @return bool
+     */
+    protected function isIterable($subject)
+    {
+        return \is_array($subject) || $subject instanceof \Traversable;
+    }
+
+    /**
      * @param mixed $result
      *
      * @return mixed

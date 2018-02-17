@@ -25,7 +25,7 @@ class KeyValuePairsMapper extends AbstractCollectionMapper
      */
     public function slumber(Slumberer $slumberer, $value)
     {
-        if (! \is_array($value) && ! $value instanceof \Traversable) {
+        if (false === $this->isIterable($value)) {
             return null;
         }
 
@@ -57,10 +57,12 @@ class KeyValuePairsMapper extends AbstractCollectionMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        if (! \is_array($value) && ! $value instanceof \Traversable) {
+        if (false === $this->isIterable($value)) {
             return $this->createAwakeResult([]);
         }
 
+        $keyToUse  = null;
+        $valToUse  = null;
         $result    = [];
         $nested    = $this->nested;
         $keepNulls = $nested->getOptions()->keepNullValuesInCollections();
@@ -88,6 +90,6 @@ class KeyValuePairsMapper extends AbstractCollectionMapper
         }
 
         // bit of compatibility
-        return [$k, $v];
+        return [(string) $k, $v];
     }
 }
