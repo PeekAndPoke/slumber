@@ -1,3 +1,8 @@
+[![Code Coverage](https://scrutinizer-ci.com/g/PeekAndPoke/slumber/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/PeekAndPoke/slumber/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/PeekAndPoke/slumber/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/PeekAndPoke/slumber/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/PeekAndPoke/slumber/badges/build.png?b=master)](https://scrutinizer-ci.com/g/PeekAndPoke/slumber/build-status/master)
+
+
 # Slumber
 
 PHP5.6 compatibility until v0.4.x
