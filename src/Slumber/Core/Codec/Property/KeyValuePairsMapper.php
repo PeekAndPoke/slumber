@@ -67,24 +67,27 @@ class KeyValuePairsMapper extends AbstractCollectionMapper
 
         foreach ($value as $k => $v) {
 
-            if (isset($v['k'], $v['v'])) {
-                $keyToUse = (string) $v['k'];
-                $valToUse = $v['v'];
-            } // bit of compatibility
-            else {
-                $keyToUse = $k;
-                $valToUse = $v;
-            }
+            [$keyToUse, $valToUse] = self::extractKv($k, $v);
 
             $awoken = $nested->awake($awaker, $valToUse);
 
             // check if we should keep nulls
-            if ($awoken !== null || $keepNulls) {
+            if ($keepNulls || $awoken !== null) {
                 $result[$keyToUse] = $awoken;
             }
         }
 
         // do we need to instantiate a collection class ?
         return $this->createAwakeResult($result);
+    }
+
+    private static function extractKv($k, $v)
+    {
+        if (isset($v['k'], $v['v'])) {
+            return [(string) $v['k'], $v['v']];
+        }
+
+        // bit of compatibility
+        return [$k, $v];
     }
 }

@@ -88,6 +88,34 @@ class ArrayCollectionTest extends TestCase
         ];
     }
 
+    /**
+     * @param $input
+     * @param $expected
+     *
+     * @dataProvider provideTestIsEmpty
+     */
+    public function testIsEmpty($input, $expected)
+    {
+        $result = (new ArrayCollection($input))->isEmpty();
+
+        $this->assertSame($expected, $result, 'isEmpty() must work');
+    }
+
+    public function provideTestIsEmpty()
+    {
+        return [
+            [
+                [], true
+            ],
+            [
+                [null], false
+            ],
+            [
+                [1, 2], false
+            ],
+        ];
+    }
+
     public function testFilter()
     {
         $subject = new ArrayCollection([1, 2, 3]);
