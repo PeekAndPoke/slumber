@@ -165,37 +165,73 @@ class ArrayUtilTest extends TestCase
 
     public function provideTestClean()
     {
-        $in = new \stdClass();
+        $in    = new \stdClass();
         $in->a = 0;
         $in->b = null;
         $in->c = 1;
 
-        $out = new \stdClass();
+        $out    = new \stdClass();
         $out->a = 0;
         $out->c = 1;
 
         return [
             [
-                null, null
+                null,
+                null,
             ],
             [
-                [], []
+                [],
+                [],
             ],
             [
-                $r = new \stdClass(), $r
+                $r = new \stdClass(),
+                $r,
             ],
             [
-                [0, null, 1], [0 => 0, 2 => 1]
+                [0, null, 1],
+                [0 => 0, 2 => 1],
             ],
             [
-                ['a' => 0, 'b' => null, 'c' => 1], ['a' => 0, 'c' => 1]
+                ['a' => 0, 'b' => null, 'c' => 1],
+                ['a' => 0, 'c' => 1],
             ],
             [
-                ['a' => 0, 'b' => [], 'c' => 1], ['a' => 0, 'b' => [], 'c' => 1]
+                ['a' => 0, 'b' => [], 'c' => 1],
+                ['a' => 0, 'b' => [], 'c' => 1],
             ],
             [
-                $in, $out
+                $in,
+                $out,
             ],
+        ];
+    }
+
+    /**
+     * @param $input
+     * @param $expected
+     *
+     * @dataProvider provideTestIsAssoc
+     */
+    public function testIsAssoc($input, $expected)
+    {
+        $result = ArrayUtil::isAssoc($input);
+
+        $this->assertSame($expected, $result, 'isAssoc() must work');
+    }
+
+    public function provideTestIsAssoc()
+    {
+        return [
+            // falsy
+            [null, false,],
+            [1, false,],
+            [[1], false,],
+            [[1, 3], false,],
+            // truthy
+            [[], true,],
+            [[1 => 1], true,],
+            [['a' => 1], true,],
+            [[0 => 1, 2 => 1], true,],
         ];
     }
 }

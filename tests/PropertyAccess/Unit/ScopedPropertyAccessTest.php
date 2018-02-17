@@ -113,7 +113,6 @@ class ScopedPropertyAccessTest extends TestCase
         $initializedProp->setAccessible(true);
         $initializedProp->setValue(null, false);
 
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // unserialized an accessor for UnitTestScopedPropertyAccessMainClass::prop1 and try to use it
         /** @noinspection SpellCheckingInspection */

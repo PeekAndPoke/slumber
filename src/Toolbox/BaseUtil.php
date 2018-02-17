@@ -33,10 +33,10 @@ abstract class BaseUtil
         $result = '';
 
         while (\strlen($result) < $length) {
-            $result .= uniqid('', true);
+            $result .= str_replace('.', '', uniqid('', true));
         }
 
-        return substr($result, 0, $length);
+        return \substr($result, 0, $length);
     }
 
     /**

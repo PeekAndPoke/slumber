@@ -20,6 +20,8 @@ class UnitTestPropertyAccessBaseClass
     public $publicPropOnBase;
     /** @var mixed */
     protected $protectedPropOnBase;
+    /** @var mixed */
+    private $privatePropOnBase;
 
     /**
      * @return string
@@ -97,6 +99,26 @@ class UnitTestPropertyAccessBaseClass
     public function setProtectedPropOnBase($protectedPropOnBase)
     {
         $this->protectedPropOnBase = $protectedPropOnBase;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrivatePropOnBase()
+    {
+        return $this->privatePropOnBase;
+    }
+
+    /**
+     * @param mixed $privatePropOnBase
+     *
+     * @return $this
+     */
+    public function setPrivatePropOnBase($privatePropOnBase)
+    {
+        $this->privatePropOnBase = $privatePropOnBase;
 
         return $this;
     }

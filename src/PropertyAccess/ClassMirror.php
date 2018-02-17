@@ -29,7 +29,7 @@ class ClassMirror
      */
     public function getAccessors($subject)
     {
-        $class = $subject instanceof \ReflectionClass ? $subject : new \ReflectionClass($subject);
+        $class = self::ensureReflection($subject);
 
         $result  = [];
         $current = $class;
@@ -44,9 +44,15 @@ class ClassMirror
                     $result[$propertyName] = $this->factory->create($class, $property);
                 }
             }
+
             $current = $current->getParentClass();
         }
 
         return $result;
+    }
+
+    private static function ensureReflection($subject) : \ReflectionClass
+    {
+        return $subject instanceof \ReflectionClass ? $subject : new \ReflectionClass($subject);
     }
 }
