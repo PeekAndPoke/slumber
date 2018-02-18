@@ -74,40 +74,13 @@ class ServiceInjectingSlumberAnnotation extends SlumberAnnotation
      */
     public function validate(ValidationContext $context)
     {
-        $service = $this->getServiceDefinition();
-        $ofClass = $this->getServiceClassDefinition();
+        $this->validateParamAreSet($context);
 
-        if (empty($service) || empty($ofClass)) {
-            throw $this->createValidationException(
-                $context,
-                "you must set the 'service' and the 'ofClass'"
-            );
-        }
+        $this->validateServiceClassExists($context);
 
-        if (! $context->getProvider()->has($service)) {
-            throw $this->createValidationException(
-                $context,
-                "you requested the non-existing service '$service'"
-            );
-        }
+        $this->validateServiceIsPresentInContainer($context);
 
-        if (! class_exists($ofClass) && ! interface_exists($ofClass)) {
-            throw $this->createValidationException(
-                $context,
-                "you requested a service instance of the non-existing class or interface '$ofClass'"
-            );
-        }
-
-        $instance = $this->getService($context->getProvider());
-        $check    = new IsInstanceOf($ofClass);
-
-        if (! $check->__invoke($instance)) {
-            throw $this->createValidationException(
-                $context,
-                "the service '$service' is not of instance '$ofClass' but is '" .
-                (\is_object($instance) ? \get_class($instance) : \gettype($instance)) . "'"
-            );
-        }
+        $this->validateServiceHasCorrectType($context);
     }
 
     /**
@@ -120,5 +93,59 @@ class ServiceInjectingSlumberAnnotation extends SlumberAnnotation
         return $provider->get(
             $this->getServiceDefinition()
         );
+    }
+
+    private function validateParamAreSet(ValidationContext $context)
+    {
+        $service = $this->getServiceDefinition();
+        $ofClass = $this->getServiceClassDefinition();
+
+        if (empty($service) || empty($ofClass)) {
+            throw $this->createValidationException(
+                $context,
+                "you must set the 'service' and the 'ofClass'"
+            );
+        }
+    }
+
+    private function validateServiceIsPresentInContainer(ValidationContext $context)
+    {
+        $service = $this->getServiceDefinition();
+
+        if (! $context->getProvider()->has($service)) {
+            throw $this->createValidationException(
+                $context,
+                "you requested the non-existing service '$service'"
+            );
+        }
+    }
+
+    private function validateServiceClassExists(ValidationContext $context)
+    {
+        $ofClass = $this->getServiceClassDefinition();
+
+        if (! class_exists($ofClass) && ! interface_exists($ofClass)) {
+            throw $this->createValidationException(
+                $context,
+                "you requested a service instance of the non-existing class or interface '$ofClass'"
+            );
+        }
+    }
+
+    private function validateServiceHasCorrectType(ValidationContext $context)
+    {
+        $service = $this->getServiceDefinition();
+        $ofClass = $this->getServiceClassDefinition();
+
+        $instance = $this->getService($context->getProvider());
+        $check    = new IsInstanceOf($ofClass);
+
+        if (! $check->__invoke($instance)) {
+            throw $this->createValidationException(
+                $context,
+                "The service '$service' is not an instance of '$ofClass' but is '" .
+                (\is_object($instance) ? \get_class($instance) : \gettype($instance)) . "'"
+            );
+        }
     }
 }
