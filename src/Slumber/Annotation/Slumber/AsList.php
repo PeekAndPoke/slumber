@@ -6,9 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Annotation\Slumber;
 
 use Doctrine\Common\Annotations\Annotation;
-use PeekAndPoke\Component\Slumber\Annotation\PropertyMappingMarker;
-use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
-use PeekAndPoke\Component\Slumber\Core\Validation\PropertyAnnotationValidationContext;
 
 /**
  * AsList treats the nested elements as a list.
@@ -34,24 +31,4 @@ use PeekAndPoke\Component\Slumber\Core\Validation\PropertyAnnotationValidationCo
  */
 class AsList extends AsCollection
 {
-    /**
-     * @param PropertyAnnotationValidationContext $context
-     *
-     * @throws SlumberException
-     */
-    public function validate($context)
-    {
-        if ($this->value instanceof PropertyMappingMarker) {
-
-            $this->value->validate($context);
-
-        } else {
-            throw $this->createValidationException(
-                $context,
-                'you must provide an ISlumberPropertyMarker as value. ' .
-                'Example: @Slumber\AsList( @Slumber\AsObject( SomeClass::class ) ) or ' .
-                '@Slumber\AsList( @Slumber\AsString() )'
-            );
-        }
-    }
 }

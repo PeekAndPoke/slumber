@@ -61,20 +61,11 @@ class EmitterImpl implements Emitter
             return $this;
         }
 
-        $eventName = $event->getEventName();
+        /** @var callable[] $listeners */
+        $listeners = $this->bindings[$event->getEventName()] ?? [];
 
-        if (false === array_key_exists($eventName, $this->bindings)) {
-            return $this;
-        }
-
-        $listeners = $this->bindings[$eventName];
-
-        /** @var callable $listener */
         foreach ($listeners as $listener) {
-
             $listener($event);
-
-            // TODO: check if event has been canceled
         }
 
         return $this;

@@ -18,7 +18,7 @@ interface SlumberMarker
      *
      * @param ValidationContext $context
      *
-     * @throws SlumberException
+     * @throws SlumberException When the validation fails
      */
-    public function validate($context); // TODO: add type hint to method signature
+    public function validate(ValidationContext $context);
 }

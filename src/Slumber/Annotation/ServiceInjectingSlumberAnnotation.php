@@ -72,7 +72,7 @@ class ServiceInjectingSlumberAnnotation extends SlumberAnnotation
      *
      * @throws SlumberException
      */
-    public function validate($context)
+    public function validate(ValidationContext $context)
     {
         $service = $this->getServiceDefinition();
         $ofClass = $this->getServiceClassDefinition();

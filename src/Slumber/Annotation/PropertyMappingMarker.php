@@ -6,7 +6,7 @@
 namespace PeekAndPoke\Component\Slumber\Annotation;
 
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
-use PeekAndPoke\Component\Slumber\Core\Validation\PropertyAnnotationValidationContext;
+use PeekAndPoke\Component\Slumber\Core\Validation\ValidationContext;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -34,9 +34,9 @@ interface PropertyMappingMarker extends PropertyMarker
     public function keepNullValuesInCollections();
 
     /**
-     * @param PropertyAnnotationValidationContext $context
+     * @param ValidationContext $context
      *
      * @throws SlumberException
      */
-    public function validate($context);
+    public function validate(ValidationContext $context);
 }

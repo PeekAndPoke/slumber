@@ -52,7 +52,7 @@ class Polymorphic extends SlumberAnnotation implements ClassCreatorMarker
      *
      * @throws SlumberException
      */
-    public function validate($context)
+    public function validate(ValidationContext $context)
     {
         $mapping = $this->getMapping();
 

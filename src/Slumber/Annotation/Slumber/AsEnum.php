@@ -7,7 +7,7 @@ namespace PeekAndPoke\Component\Slumber\Annotation\Slumber;
 
 use Doctrine\Common\Annotations\Annotation;
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
-use PeekAndPoke\Component\Slumber\Core\Validation\PropertyAnnotationValidationContext;
+use PeekAndPoke\Component\Slumber\Core\Validation\ValidationContext;
 use PeekAndPoke\Types\Enumerated;
 
 /**
@@ -19,11 +19,11 @@ use PeekAndPoke\Types\Enumerated;
 class AsEnum extends PropertyMappingMarkerBase
 {
     /**
-     * @param PropertyAnnotationValidationContext $context
+     * @param ValidationContext  $context
      *
      * @throws SlumberException
      */
-    public function validate($context)
+    public function validate(ValidationContext $context)
     {
         if (empty($this->value)) {
             throw $this->createValidationException(

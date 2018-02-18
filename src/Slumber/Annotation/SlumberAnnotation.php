@@ -6,7 +6,6 @@
 namespace PeekAndPoke\Component\Slumber\Annotation;
 
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
-use PeekAndPoke\Component\Slumber\Core\Validation\PropertyAnnotationValidationContext;
 use PeekAndPoke\Component\Slumber\Core\Validation\ValidationContext;
 
 /**
@@ -65,7 +64,7 @@ abstract class SlumberAnnotation implements SlumberMarker
     /**
      * Error handler for unknown property mutator in Annotation class.
      *
-     * @param string $name  Unknown property name.
+     * @param string $name Unknown property name.
      *
      * @throws \BadMethodCallException
      */
@@ -79,9 +78,9 @@ abstract class SlumberAnnotation implements SlumberMarker
     /**
      * Initialize the annotation and validate the given parameters
      *
-     * @param PropertyAnnotationValidationContext $context
+     * @param ValidationContext $context
      */
-    public function validate($context)
+    public function validate(ValidationContext $context)
     {
         // noop
     }

@@ -63,11 +63,9 @@ class UnitTestSlumberMainClass
     /**
      * @var UnitTestSlumberCollection
      *
-     * @see UnitTestSlumberCollection
-     *
      * @Slumber\AsList(
      *     @Slumber\AsString(),
-     *     collection = UnitTestCollection::class
+     *     collection = UnitTestSlumberCollection::class
      * )
      */
     private $aListOfStringWrappedInACollClass;

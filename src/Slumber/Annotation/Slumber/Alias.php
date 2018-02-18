@@ -7,6 +7,7 @@ namespace PeekAndPoke\Component\Slumber\Annotation\Slumber;
 
 use Doctrine\Common\Annotations\Annotation;
 use PeekAndPoke\Component\Slumber\Annotation\SlumberAnnotation;
+use PeekAndPoke\Component\Slumber\Core\Validation\ValidationContext;
 
 
 /**
@@ -31,7 +32,7 @@ class Alias extends SlumberAnnotation
         return (string) $this->value;
     }
 
-    public function validate($context)
+    public function validate(ValidationContext $context)
     {
         if (empty($this->value)) {
             throw $this->createValidationException(

@@ -8,7 +8,7 @@ namespace PeekAndPoke\Component\Slumber\Annotation\Slumber;
 use PeekAndPoke\Component\Collections\Collection;
 use PeekAndPoke\Component\Slumber\Annotation\PropertyMappingMarker;
 use PeekAndPoke\Component\Slumber\Core\Exception\SlumberException;
-use PeekAndPoke\Component\Slumber\Core\Validation\PropertyAnnotationValidationContext;
+use PeekAndPoke\Component\Slumber\Core\Validation\ValidationContext;
 
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
@@ -41,11 +41,18 @@ abstract class AsCollection extends PropertyMappingMarkerBase
     }
 
     /**
-     * @param PropertyAnnotationValidationContext $context
+     * @param ValidationContext $context
      *
      * @throws SlumberException
      */
-    public function validate($context)
+    public function validate(ValidationContext $context)
+    {
+        $this->validateNestedMapperParam($context);
+
+        $this->validateCollectionParam($context);
+    }
+
+    public function validateNestedMapperParam(ValidationContext $context)
     {
         if ($this->value instanceof PropertyMappingMarker) {
 
@@ -54,12 +61,15 @@ abstract class AsCollection extends PropertyMappingMarkerBase
         } else {
             throw $this->createValidationException(
                 $context,
-                'you must provide an ISlumberPropertyMarker as value. ' .
+                'You must provide a PropertyMappingMarker as value. ' .
                 'Example: @Slumber\AsList( @Slumber\AsObject( SomeClass::class ) ) or ' .
                 '@Slumber\AsList( @Slumber\AsString() )'
             );
         }
+    }
 
+    public function validateCollectionParam(ValidationContext $context)
+    {
         if (! empty ($this->collection)) {
 
             if (! class_exists($this->collection)) {
