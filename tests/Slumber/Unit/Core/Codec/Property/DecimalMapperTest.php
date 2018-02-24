@@ -92,7 +92,7 @@ class DecimalMapperTest extends TestCase
         $options = new AsDecimal([]);
         $subject = new DecimalMapper($options);
 
-        self::assertSame($expected, $subject->awake($this->awaker, $input), 'slumber() must work');
+        self::assertSame($expected, $subject->awake($this->awaker, $input), 'awake() must work');
     }
 
     public function provideTestAwake()

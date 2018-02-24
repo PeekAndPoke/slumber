@@ -114,6 +114,13 @@ class GenericAwakerTest extends TestCase
                     $this->assertSame(11.9, $result->getADecimal(), 'Awaking must work');
                 }
             ],
+            // test the a private property on a base class is populated correctly
+            [
+                ['privateOnBase' => '123abc'],
+                function (UnitTestSlumberMainClass $result) {
+                    $this->assertSame('123abc', $result->getPrivateOnBase(), 'Awaking must work for private properties of base classes');
+                }
+            ],
         ];
     }
 

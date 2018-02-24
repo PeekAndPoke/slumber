@@ -147,7 +147,7 @@ class ArrayCodecTest extends TestCase
         /** @var UnitTestSlumberPolyChildA[] $result */
         $result = $this->subject->awakeList([$data, $data], UnitTestSlumberPolyChildA::class);
 
-        $this->assertCount(2, $result, 'awakeList() must return array of correct size');
+        $this->assertSame(2, \count($result), 'awakeList() must return array of correct size');
 
         $result1 = $result[0];
         $this->assertInstanceOf(UnitTestSlumberPolyChildA::class, $result1, 'awakeList() must create correct result');
@@ -173,7 +173,7 @@ class ArrayCodecTest extends TestCase
         /** @var UnitTestSlumberPolyChildA[] $result */
         $result = $this->subject->awakeList([$data, null], UnitTestSlumberPolyChildA::class);
 
-        $this->assertCount(2, $result, 'awakeList() must return array of correct size');
+        $this->assertSame(2, \count($result), 'awakeList() must return array of correct size');
 
         $result1 = $result[0];
         $this->assertInstanceOf(UnitTestSlumberPolyChildA::class, $result1, 'awakeList() must create correct result');

@@ -31,7 +31,7 @@ class ClassMirrorTest extends TestCase
 
         $result = $subject->getAccessors(new UnitTestPropertyAccessMainClass());
 
-        $this->assertCount(7, $result, 'getAccessors() must return the correct number of accessors');
+        $this->assertSame(7, \count($result), 'getAccessors() must return the correct number of accessors');
 
         $this->assertInstanceOf($accessorClass, $result[$propertyName]);
     }

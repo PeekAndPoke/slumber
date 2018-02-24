@@ -102,6 +102,19 @@ class ArrayUtil
     }
 
     /**
+     * Checks if the given subject can be used as an array, like $subject['someKey'] or $subject[123]
+     *
+     * @param mixed $subject
+     *
+     * @return bool
+     */
+    public static function isAccessible($subject)
+    {
+        return $subject !== null &&
+               ($subject instanceof \ArrayAccess || \is_array($subject));
+    }
+
+    /**
      * Removes all null values recursively
      *
      * Empty arrays will be kept.

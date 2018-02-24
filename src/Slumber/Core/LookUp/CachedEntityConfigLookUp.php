@@ -10,8 +10,10 @@ use Doctrine\Common\Cache\Cache;
 /**
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
-class CachedEntityConfigLookUp extends DelegatingEntityConfigReader
+class CachedEntityConfigLookUp implements EntityConfigReader
 {
+    /** @var EntityConfigReader */
+    private $delegate;
     /** @var Cache */
     private $cache;
     /** @var string */
@@ -34,11 +36,10 @@ class CachedEntityConfigLookUp extends DelegatingEntityConfigReader
      */
     public function __construct(EntityConfigReader $delegate, Cache $cache, $prefix = '[Slumber]@', $debug = false)
     {
-        parent::__construct($delegate);
-
-        $this->cache  = $cache;
-        $this->prefix = $prefix;
-        $this->debug  = $debug;
+        $this->delegate = $delegate;
+        $this->cache    = $cache;
+        $this->prefix   = $prefix;
+        $this->debug    = $debug;
     }
 
     /**
@@ -78,6 +79,7 @@ class CachedEntityConfigLookUp extends DelegatingEntityConfigReader
 
         /** @var EntityConfig $cacheData */
         $cacheData = $fetcher();
+
         if (false === $cacheData) {
             $cacheData = $creator();
             $this->saveToCache($cacheKey, $cacheData, $class);
@@ -137,14 +139,14 @@ class CachedEntityConfigLookUp extends DelegatingEntityConfigReader
      */
     private function isCacheFresh($cacheKey, \ReflectionClass $class)
     {
+        // built in classes have no filename
         if (false === $filename = $class->getFileName()) {
             return true;
         }
 
 //        echo $cacheKey . " " . $this->cache->fetch('[C]'.$cacheKey) . " " . filemtime($filename) . " " . ($this->cache->fetch('[C]'.$cacheKey) >= filemtime($filename)) . "\n";
 
-        // When we have the creation time (debug mode) and it is less than the current file time, the cache is also not
-        // fresh
+        // When we have the creation time (debug mode) and it is less than the current file time, the cache is also not fresh
         return $this->cache->fetch('[C]' . $cacheKey) >= filemtime($filename);
     }
 }

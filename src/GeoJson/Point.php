@@ -10,21 +10,33 @@ namespace PeekAndPoke\Component\GeoJson;
  */
 class Point
 {
+    public const TYPE = 'Point';
+
     /** @var float */
     private $lat;
     /** @var float */
     private $lng;
 
     /**
-     * Point constructor.
-     *
-     * @param float $lat
      * @param float $lng
+     * @param float $lat
+     *
+     * @return Point
      */
-    public function __construct($lat, $lng)
+    public static function fromLngLat($lng, $lat)
     {
-        $this->lat = (float) $lat;
-        $this->lng = (float) $lng;
+        $ret = new self;
+
+        $ret->lng = $lng;
+        $ret->lat = $lat;
+
+        return $ret;
+    }
+
+    /**
+     */
+    protected function __construct()
+    {
     }
 
     /**

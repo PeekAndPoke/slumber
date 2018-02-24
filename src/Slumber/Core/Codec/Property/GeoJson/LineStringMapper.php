@@ -58,13 +58,9 @@ class LineStringMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        if (($value instanceof \ArrayAccess || \is_array($value))
-            && $value['type'] === 'Point'
-            && isset($value['type'], $value['coordinates'])
-        ) {
-            $coords = $value['coordinates'];
-
-            return new LineString($coords);
+        /** @noinspection NotOptimalIfConditionsInspection */
+        if (isset($value['type'], $value['coordinates']) && $value['type'] === 'LineString') {
+            return LineString::fromLngLats($value['coordinates']);
         }
 
         return null;

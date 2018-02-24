@@ -92,6 +92,14 @@ class GenericSlumbererTest extends TestCase
                     $this->assertSame('str2', $data['aString'], 'slumber() must work');
                 },
             ],
+            // test the a private property on a base class is populated correctly
+            [
+                (new UnitTestSlumberMainClass())
+                    ->setPrivateOnBase('123abc'),
+                function ($data) {
+                    $this->assertSame('123abc', $data['privateOnBase'], 'slumber() must work');
+                },
+            ],
         ];
     }
 

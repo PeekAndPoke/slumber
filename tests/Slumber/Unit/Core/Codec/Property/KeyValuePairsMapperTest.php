@@ -133,7 +133,7 @@ class KeyValuePairsMapperTest extends TestCase
         $options = new AsKeyValuePairs(['value' => new AsString([])]);
         $subject = new KeyValuePairsMapper($options, new StringMapper(new AsString([])));
 
-        self::assertSame($expected, $subject->awake($this->awaker, $input), 'slumber() must work');
+        self::assertSame($expected, $subject->awake($this->awaker, $input), 'awake() must work');
     }
 
     /**

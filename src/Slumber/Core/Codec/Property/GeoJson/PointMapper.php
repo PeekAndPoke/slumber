@@ -48,7 +48,7 @@ class PointMapper extends AbstractPropertyMapper
         }
 
         return [
-            'type'        => 'Point',
+            'type'        => Point::TYPE,
             'coordinates' => [
                 $value->getLng(),
                 $value->getLat(),
@@ -64,14 +64,14 @@ class PointMapper extends AbstractPropertyMapper
      */
     public function awake(Awaker $awaker, $value)
     {
-        if (($value instanceof \ArrayAccess || \is_array($value))
-            && $value['type'] === 'Point'
-            && isset($value['type'], $value['coordinates'])
-            && \count($value['coordinates']) === 2
-        ) {
+        /** @noinspection NotOptimalIfConditionsInspection */
+        if (isset($value['type'], $value['coordinates']) && $value['type'] === 'Point') {
+
             $coords = $value['coordinates'];
 
-            return new Point($coords[1], $coords[0]);
+            if (\count($coords) === 2) {
+                return Point::fromLngLat($coords[0], $coords[1]);
+            }
         }
 
         return null;

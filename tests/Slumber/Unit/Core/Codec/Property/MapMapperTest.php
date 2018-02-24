@@ -107,7 +107,7 @@ class MapMapperTest extends TestCase
         $options = new AsMap(['value' => new AsString([])]);
         $subject = new MapMapper($options, new StringMapper(new AsString([])));
 
-        self::assertSame($expected, $subject->awake($this->awaker, $input), 'slumber() must work');
+        self::assertSame($expected, $subject->awake($this->awaker, $input), 'awake() must work');
     }
 
     /**

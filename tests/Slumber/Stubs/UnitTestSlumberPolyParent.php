@@ -26,7 +26,7 @@ abstract class UnitTestSlumberPolyParent
      *
      * @Slumber\AsString()
      */
-    protected $common;
+    private $common;
 
     /**
      * @return string

@@ -234,4 +234,36 @@ class ArrayUtilTest extends TestCase
             [[0 => 1, 2 => 1], true,],
         ];
     }
+
+    /**
+     * @param mixed $input
+     * @param bool  $expected
+     *
+     * @dataProvider provideTestIsAccessible
+     */
+    public function testIsAccessible($input, bool $expected)
+    {
+        $result = ArrayUtil::isAccessible($input);
+
+        $this->assertSame($expected, $result, 'isAccessible() must work');
+    }
+
+    public function provideTestIsAccessible()
+    {
+        return [
+            // falsy
+            [null, false,],
+            [1, false,],
+            ['a', false,],
+            [new \stdClass(), false,],
+            [new \DateTime(), false,],
+            // truthy
+            [[], true,],
+            [[1 => 1], true,],
+            [['a' => 1], true,],
+            [[[]], true,],
+            [[[], []], true,],
+            [new \ArrayObject(), true,],
+        ];
+    }
 }

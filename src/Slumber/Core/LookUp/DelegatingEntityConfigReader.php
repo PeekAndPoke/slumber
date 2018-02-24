@@ -6,6 +6,8 @@
 namespace PeekAndPoke\Component\Slumber\Core\LookUp;
 
 /**
+ * @deprecated Will be removed in future version
+ *
  * @author Karsten J. Gerber <kontakt@karsten-gerber.de>
  */
 class DelegatingEntityConfigReader implements EntityConfigReader

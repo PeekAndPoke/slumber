@@ -69,6 +69,14 @@ class EntityConfig
     }
 
     /**
+     * @return int
+     */
+    public function getNumMarkedProperties()
+    {
+        return \count($this->markedProperties);
+    }
+
+    /**
      * @param string $name
      *
      * @return null|PropertyMarkedForSlumber

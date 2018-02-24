@@ -21,11 +21,9 @@ abstract class SlumberAnnotation implements SlumberMarker
     public $value;
 
     /**
-     * Constructor.
-     *
      * @param array $data Key-value for properties to be defined in this class.
      */
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         foreach ($data as $key => $value) {
             $this->$key = $value;

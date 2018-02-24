@@ -50,8 +50,7 @@ class ReflectionPropertyAccess implements PropertyAccess
         $ret->className    = $class->name;
         $ret->propertyName = $propertyName;
 
-        $ret->_prop = $class->getProperty($propertyName);
-        $ret->_prop->setAccessible(true);
+        $ret->__wakeup();
 
         return $ret;
     }
@@ -74,6 +73,7 @@ class ReflectionPropertyAccess implements PropertyAccess
      */
     public function __wakeup()
     {
+        // little bit of caching
         $class = new \ReflectionClass($this->className);
 
         $this->_prop = $class->getProperty($this->propertyName);

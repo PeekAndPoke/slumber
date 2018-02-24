@@ -93,7 +93,7 @@ class EnumMapperTest extends TestCase
         $options = new AsEnum(['value' => xxxEnumMapperTestEnumXxx::class]);
         $subject = new EnumMapper($options);
 
-        self::assertSame($expected, $subject->awake($this->awaker, $input), 'slumber() must work');
+        self::assertSame($expected, $subject->awake($this->awaker, $input), 'awake() must work');
     }
 
     public function provideTestAwake()

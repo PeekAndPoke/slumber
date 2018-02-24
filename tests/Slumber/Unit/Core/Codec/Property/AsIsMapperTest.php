@@ -86,7 +86,7 @@ class AsIsMapperTest extends TestCase
         $options = new AsIs([]);
         $subject = new AsIsMapper($options);
 
-        self::assertSame($expected, $subject->awake($this->awaker, $input), 'slumber() must work');
+        self::assertSame($expected, $subject->awake($this->awaker, $input), 'awake() must work');
     }
 
     public function provideTestAwake()

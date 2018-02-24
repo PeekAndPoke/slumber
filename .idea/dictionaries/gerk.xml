@@ -2,6 +2,7 @@
   <dictionary name="gerk">
     <words>
       <w>dups</w>
+      <w>falsy</w>
       <w>unserialze</w>
       <w>upsert</w>
       <w>upserted</w>
