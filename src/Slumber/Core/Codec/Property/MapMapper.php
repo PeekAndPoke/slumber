@@ -8,6 +8,7 @@ namespace PeekAndPoke\Component\Slumber\Core\Codec\Property;
 use PeekAndPoke\Component\Collections\Collection;
 use PeekAndPoke\Component\Slumber\Annotation\Slumber\AsMap;
 use PeekAndPoke\Component\Slumber\Core\Codec\Awaker;
+use PeekAndPoke\Component\Slumber\Core\Codec\Mapper;
 use PeekAndPoke\Component\Slumber\Core\Codec\Slumberer;
 
 /**
@@ -29,21 +30,13 @@ class MapMapper extends AbstractCollectionMapper
             return null;
         }
 
-        $result    = new \stdClass();
-        $nested    = $this->nested;
-        $keepNulls = $nested->getOptions()->keepNullValuesInCollections();
+        $nested = $this->nested;
 
-        foreach ($value as $k => $v) {
-
-            $slumbering = $nested->slumber($slumberer, $v);
-
-            // check if we should keep nulls
-            if ($slumbering !== null || $keepNulls) {
-                $result->$k = $slumbering;
-            }
+        if ($nested->getOptions()->keepNullValuesInCollections()) {
+            return $this->slumberKeepNulls($slumberer, $value, $nested);
         }
 
-        return $result;
+        return $this->slumberFilterNulls($slumberer, $value, $nested);
     }
 
     /**
@@ -58,21 +51,97 @@ class MapMapper extends AbstractCollectionMapper
             return $this->createAwakeResult([]);
         }
 
-        $result    = [];
-        $nested    = $this->nested;
-        $keepNulls = $nested->getOptions()->keepNullValuesInCollections();
+        $nested = $this->nested;
+
+        if ($nested->getOptions()->keepNullValuesInCollections()) {
+            return $this->awakeKeepNulls($awaker, $value, $nested);
+        }
+
+        return $this->awakeFilterNulls($awaker, $value, $nested);
+    }
+
+    /**
+     * @param Slumberer $slumberer
+     * @param array     $value
+     * @param Mapper    $nested
+     *
+     * @return \stdClass
+     */
+    private function slumberKeepNulls(Slumberer $slumberer, $value, Mapper $nested)
+    {
+        $result = new \stdClass();
+
+        foreach ($value as $k => $v) {
+            $result->$k = $nested->slumber($slumberer, $v);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Slumberer $slumberer
+     * @param array     $value
+     * @param Mapper    $nested
+     *
+     * @return \stdClass
+     */
+    private function slumberFilterNulls(Slumberer $slumberer, $value, Mapper $nested)
+    {
+        $result = new \stdClass();
+
+        foreach ($value as $k => $v) {
+
+            $slumbering = $nested->slumber($slumberer, $v);
+
+            // check if we should keep nulls
+            if ($slumbering !== null) {
+                $result->$k = $slumbering;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Awaker $awaker
+     * @param array  $value
+     * @param Mapper $nested
+     *
+     * @return array
+     */
+    private function awakeKeepNulls(Awaker $awaker, $value, Mapper $nested)
+    {
+        $result = [];
+
+        foreach ($value as $k => $v) {
+            $result[$k] = $nested->awake($awaker, $v);
+        }
+
+        return $result;
+
+    }
+
+    /**
+     * @param Awaker $awaker
+     * @param array  $value
+     * @param Mapper $nested
+     *
+     * @return array
+     */
+    private function awakeFilterNulls(Awaker $awaker, $value, Mapper $nested)
+    {
+        $result = [];
 
         foreach ($value as $k => $v) {
 
             $awoken = $nested->awake($awaker, $v);
 
             // check if we should keep nulls
-            if ($awoken !== null || $keepNulls) {
+            if ($awoken !== null) {
                 $result[$k] = $awoken;
             }
         }
 
-        // do we need to instantiate a collection class ?
-        return $this->createAwakeResult($result);
+        return $result;
     }
 }
