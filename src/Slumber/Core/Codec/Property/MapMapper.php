@@ -53,11 +53,13 @@ class MapMapper extends AbstractCollectionMapper
 
         $nested = $this->nested;
 
-        if ($nested->getOptions()->keepNullValuesInCollections()) {
-            return $this->awakeKeepNulls($awaker, $value, $nested);
-        }
-
-        return $this->awakeFilterNulls($awaker, $value, $nested);
+        // TODO: we need a test that checks that an awaken map is a collection when a collection is specified
+        // TODO: packing things into a collection should be a wrapper around this mapper and all other collection mappers
+        return $this->createAwakeResult(
+            $nested->getOptions()->keepNullValuesInCollections()
+                ? $this->awakeKeepNulls($awaker, $value, $nested)
+                : $this->awakeFilterNulls($awaker, $value, $nested)
+        );
     }
 
     /**
