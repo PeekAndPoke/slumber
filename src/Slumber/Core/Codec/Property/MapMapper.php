@@ -63,9 +63,9 @@ class MapMapper extends AbstractCollectionMapper
     }
 
     /**
-     * @param Slumberer $slumberer
-     * @param array     $value
-     * @param Mapper    $nested
+     * @param Slumberer          $slumberer
+     * @param array|\Traversable $value
+     * @param Mapper             $nested
      *
      * @return \stdClass
      */
@@ -81,9 +81,9 @@ class MapMapper extends AbstractCollectionMapper
     }
 
     /**
-     * @param Slumberer $slumberer
-     * @param array     $value
-     * @param Mapper    $nested
+     * @param Slumberer          $slumberer
+     * @param array|\Traversable $value
+     * @param Mapper             $nested
      *
      * @return \stdClass
      */
@@ -105,9 +105,9 @@ class MapMapper extends AbstractCollectionMapper
     }
 
     /**
-     * @param Awaker $awaker
-     * @param array  $value
-     * @param Mapper $nested
+     * @param Awaker             $awaker
+     * @param array|\Traversable $value
+     * @param Mapper             $nested
      *
      * @return array
      */
@@ -124,9 +124,9 @@ class MapMapper extends AbstractCollectionMapper
     }
 
     /**
-     * @param Awaker $awaker
-     * @param array  $value
-     * @param Mapper $nested
+     * @param Awaker             $awaker
+     * @param array|\Traversable $value
+     * @param Mapper             $nested
      *
      * @return array
      */
