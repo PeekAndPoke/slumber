@@ -1,7 +1,15 @@
+build:
+  nodes:
+    analysis:
+      project_setup:
+        override: true
+      tests:
+        override: [php-scrutinizer-run]
+
 tools:
-  php_sim: true
-  php_pdepend: true
-  php_analyzer: true
+#  php_sim: true
+#  php_pdepend: true
+#  php_analyzer: true
   external_code_coverage:
     timeout: 600  # timeout in seconds : 10 minutes
 
@@ -16,3 +24,4 @@ checks:
   php:
     code_rating: true
     duplication: true
+
