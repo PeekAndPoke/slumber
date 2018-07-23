@@ -49,7 +49,7 @@ class MyClass {
 }
 ```
 
-## Mapping annotations
+## Mapping annotations for scalars
 
 You will find the implementation of all mappers [here](./src/Slumber/Annotation/Slumber)
 
@@ -129,14 +129,16 @@ The same behaviour applys for the opposite direction.
 For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/DecimalMapper.php)
 
 
+
 ### Slumber\AsEnum()
 
 Maps values from and to enum values.
 
-For this to work we need an Enum class:
+For this to work we need an Enum class. 
+For details on the Enums have a look at [here](https://github.com/PeekAndPoke/php-types/blob/master/src/Enumerated.php).
 
 ```php
-class Enum extends Enumeratd {
+class Enum extends Enumerated {
 
     /** @var Enum */
     public static $ONE;
@@ -147,7 +149,7 @@ class Enum extends Enumeratd {
 Enum::init();
 ```
 
-```php```
+```php
 class C {
   /**
    * @Slumber\AsEnum(Enum::class)
@@ -203,7 +205,7 @@ maps to
 ```php
 class C {
   /**
-   * @Slumber\AsDecimal()
+   * @Slumber\AsInteger()
    */
   private $val = "abc";
 }
@@ -217,6 +219,84 @@ maps to
 
 The same behaviour applys for the opposite direction.
 For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/IntegerMapper.php)
+
+
+### Slumber\AsIs()
+
+Maps values from and to as they are.
+
+```php
+class C {
+  /**
+   * @Slumber\AsAs()
+   */
+  private $val = 1.23;
+}
+```
+maps to
+```json
+{
+  "val": 1.23
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsIs()
+   */
+  private $val = "abc";
+}
+```
+maps to
+```json
+{
+  "val": "abc"
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/AsIsMapper.php)
+
+
+### Slumber\AsString()
+
+Maps values from and to floating point values.
+
+```php
+class C {
+  /**
+   * @Slumber\AsString()
+   */
+  private $val = 1.23;
+}
+```
+maps to
+```json
+{
+  "val": "1.23"
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsString()
+   */
+  private $val = "abc";
+}
+```
+maps to
+```json
+{
+  "val": "abc"
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/StringMapper.php)
+
+
 
 
 ## Polymorphism example
