@@ -5,7 +5,145 @@
 
 # Slumber
 
-PHP5.6 compatibility until v0.4.x
+What is Slumber? It is a tool for mapping data from objects to array and vice versa. 
+E.g. it gives you the possibility to easily map your domain model to JSON. Or map from JSON to your
+Domain Model classes. 
+
+Slumber uses Doctine Annotations. The annotations are used to mark which properties of classes ar to 
+be mapped and in which way.
+
+(PHP5.6 compatibility until v0.4.x)
+
+
+# Mapping 
+
+## Basic example
+
+The "trademark" of the slumber annotated classes are these annotations: 
+
+```php
+
+use PeekAndPoke\Component\Slumber\Annotation\Slumber;
+
+class MyClass {
+
+    /**
+     * @Slumber\AsString()
+     */
+    private $name;
+
+    /**
+     * @Slumber\AsInteger()
+     */
+    private $age;
+
+    /**
+     * @Slumber\AsDecimal()
+     */
+    private $height;
+
+    /**
+     * @Slumber\AsObject(Address::class)
+     */
+    private $address;
+}
+```
+
+## Mapping annotations
+
+You will find the implementation of all mappers [here](./src/Slumber/Annotation/Slumber)
+
+### Slumber\AsBool()
+
+Maps value from and to booleans.
+
+```php
+class C {
+  /**
+   * @Slumber\AsBool()
+   */
+  private $aBool = true;
+}
+```
+maps to
+```json
+{
+  "aBool": true,
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsBool()
+   */
+  private $aBool = 0;
+}
+```
+maps to
+```json
+{
+  "aBool": false,
+}
+```
+
+
+## Polymorphism example
+
+When serializing the polymorphism information is not needed. Since we know exactly which class
+we have in our hand to serialize.
+
+But while de-serialization Polymorphism needs to be annotated explicitly. Only by doing this
+we can know which class to instantiate. We also need a field on the data, which acts as the 
+discriminator.
+
+
+```php
+
+use PeekAndPoke\Component\Slumber\Annotation\Slumber;
+
+/*
+ * @Slumber\Polymorphic(
+ *     {
+ *         "adyen"  : Adyen::class,
+ *         "paypal" : Paypal::class,
+ *        "stripe" : Stripe::class,
+ *     },
+ *     tellBy  = "provider",
+ *     default = PaymentMean::class
+ * )
+ */
+class PaymentMean {
+
+  /**
+   * The discriminator field
+   *
+   * @Slumber\AsString()
+   */
+  private $provider;
+
+  /* ... */
+}
+
+class Adyen extends PaymentMean {
+
+  /* ... */
+}
+
+class Paypal extends PaymentMean {
+
+  /* ... */
+}
+
+class Stripe extends PaymentMean {
+
+  /* ... */
+}
+
+```
+
+
+
 
 
 
