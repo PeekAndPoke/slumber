@@ -14,10 +14,7 @@ be mapped and in which way.
 
 (PHP5.6 compatibility until v0.4.x)
 
-
-# Mapping 
-
-## Basic example
+# Basic example
 
 The "trademark" of the slumber annotated classes are these annotations: 
 
@@ -47,9 +44,31 @@ class MyClass {
      */
     private $address;
 }
+
+
+echo json_encode($codec->slumber(new MyClass()); 
 ```
 
-## Mapping annotations for scalars
+might output the following:
+
+```json
+{
+  "name": "Bart",
+  "age": "10",
+  "height": "1.10",
+  "address": {
+    "city": "Springfield",
+    "country": "USA"
+  }
+}
+```
+
+
+# Mapping 
+
+In order to fully control serialization and de-serialization there is a set of annotations that can be used.
+
+## Mapping scalars
 
 You will find the implementation of all mappers [here](./src/Slumber/Annotation/Slumber)
 
@@ -127,60 +146,6 @@ maps to
 
 The same behaviour applys for the opposite direction.
 For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/DecimalMapper.php)
-
-
-
-### Slumber\AsEnum()
-
-Maps values from and to enum values.
-
-For this to work we need an Enum class. 
-For details on the Enums have a look at [here](https://github.com/PeekAndPoke/php-types/blob/master/src/Enumerated.php).
-
-```php
-class Enum extends Enumerated {
-
-    /** @var Enum */
-    public static $ONE;
-    /** @var Enum */
-    public static $TWO;
-}
-
-Enum::init();
-```
-
-```php
-class C {
-  /**
-   * @Slumber\AsEnum(Enum::class)
-   */
-  private $val = Enum::$ONE;
-}
-```
-maps to
-```json
-{
-  "val": "ONE"
-}
-```
-
-```php
-class C {
-  /**
-   * @Slumber\AsEnum(Enum::class)
-   */
-  private $val = "abc";
-}
-```
-maps to
-```json
-{
-  "val": null
-}
-```
-
-The same behaviour applys for the opposite direction.
-For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/EnumMapper.php)
 
 
 ### Slumber\AsInteger()
@@ -296,8 +261,246 @@ maps to
 The same behaviour applys for the opposite direction.
 For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/StringMapper.php)
 
+## Mapping Nested Objects
+
+### Slumber\AsObject()
+
+Maps from and to nested objects.
+
+```php
+
+class B {
+  /**
+   * @Slumber\AsString()
+   */
+  private $name;
+}
+
+class C {
+  /**
+   * @Slumber\AsObject(B::class)
+   */
+  private $val = new B();   // syntax error ... new B() only for demonstration purposes
+}
+```
+maps to
+```json
+{
+  "val": {
+    "name": "..."
+  }
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsString()
+   */
+  private $val = "abc";
+}
+```
+maps to
+```json
+{
+  "val": null
+}
+```
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/ObjectMapper.php)
 
 
+### Slumber\AsEnum()
+
+Maps values from and to enum values.
+
+For this to work we need an Enum class. 
+For details on the Enums have a look at [here](https://github.com/PeekAndPoke/php-types/blob/master/src/Enumerated.php).
+
+```php
+class Enum extends Enumerated {
+
+    /** @var Enum */
+    public static $ONE;
+    /** @var Enum */
+    public static $TWO;
+}
+
+Enum::init();
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsEnum(Enum::class)
+   */
+  private $val = Enum::$ONE;
+}
+```
+maps to
+```json
+{
+  "val": "ONE"
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsEnum(Enum::class)
+   */
+  private $val = "abc";
+}
+```
+maps to
+```json
+{
+  "val": null
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/EnumMapper.php)
+
+
+
+## Mapping Collections, Lists, KeyValue-Pairs
+
+### Slumber\AsList()
+
+Maps values from and to lists (arrays without indexes).
+The annotations expects a nested annotation that control the shape of the elements within the collection.
+
+```php
+class C {
+  /**
+   * @Slumber\AsList(
+   *   @Slumber\AsDecimal()
+   * )
+   */
+  private $val = [1.1, 2.2, 3.3];
+}
+```
+maps to
+```json
+{
+  "val": [1.1, 2.2, 3.3]
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsList(
+   *   @Slumber\AsDecimal()
+   * )
+   */
+  private $val = ["a": 1.1, "b": 2.2, "c": 3.3];
+}
+```
+maps to
+```json
+{
+  "val": [1.1, 2.2, 3.3]
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/ListMapper.php)
+
+
+### Slumber\AsMap()
+
+Maps values from and to KeyValue-Pairs (arrays with indexes).
+The annotations expects a nested annotation that control the shape of the elements within the collection.
+
+```php
+class C {
+  /**
+   * @Slumber\AsMap(
+   *   @Slumber\AsDecimal()
+   * )
+   */
+  private $val = [1.1, 2.2, 3.3];
+}
+```
+maps to
+```json
+{
+  "val": { "0": 1.1, "1": 2.2, "2": 3.3 }
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsList(
+   *   @Slumber\AsDecimal()
+   * )
+   */
+  private $val = ["a": 1.1, "b": 2.2, "c": 3.3];
+}
+```
+maps to
+```json
+{
+  "val": { "a": 1.1, "b": 2.2, "c": 3.3}
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/MapMapper.php)
+
+
+### Slumber\AsKeyValuePairs()
+
+Maps values from and to special shaped KeyValue-Pairs. This can be useful in terms of database indexing.
+The annotations expects a nested annotation that control the shape of the elements within the collection.
+
+```php
+class C {
+  /**
+   * @Slumber\AsMap(
+   *   @Slumber\AsDecimal()
+   * )
+   */
+  private $val = [1.1, 2.2, 3.3];
+}
+```
+maps to
+```json
+{
+  "val": [
+    { "k": "0", "v": 1.1 }, 
+    { "k": "1", "v": 2.2 }, 
+    { "k": "2", "v": 3.3 }
+  ]
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsList(
+   *   @Slumber\AsDecimal()
+   * )
+   */
+  private $val = ["a": 1.1, "b": 2.2, "c": 3.3];
+}
+```
+maps to
+```json
+{
+  "val": [
+    { "k": "a", "v": 1.1 }, 
+    { "k": "b", "v": 2.2 }, 
+    { "k": "c", "v": 3.3 }
+  ]
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/KeyValuePairsMapper.php)
 
 ## Polymorphism example
 
