@@ -129,6 +129,96 @@ The same behaviour applys for the opposite direction.
 For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/DecimalMapper.php)
 
 
+### Slumber\AsEnum()
+
+Maps values from and to enum values.
+
+For this to work we need an Enum class:
+
+```php
+class Enum extends Enumeratd {
+
+    /** @var Enum */
+    public static $ONE;
+    /** @var Enum */
+    public static $TWO;
+}
+
+Enum::init();
+```
+
+```php```
+class C {
+  /**
+   * @Slumber\AsEnum(Enum::class)
+   */
+  private $val = Enum::$ONE;
+}
+```
+maps to
+```json
+{
+  "val": "ONE"
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsEnum(Enum::class)
+   */
+  private $val = "abc";
+}
+```
+maps to
+```json
+{
+  "val": null
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/EnumMapper.php)
+
+
+### Slumber\AsInteger()
+
+Maps values from and to floating point values.
+
+```php
+class C {
+  /**
+   * @Slumber\AsInteger()
+   */
+  private $val = 1.23;
+}
+```
+maps to
+```json
+{
+  "val": 1
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsDecimal()
+   */
+  private $val = "abc";
+}
+```
+maps to
+```json
+{
+  "val": 0
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/IntegerMapper.php)
+
+
 ## Polymorphism example
 
 When serializing the polymorphism information is not needed. Since we know exactly which class
@@ -148,7 +238,7 @@ use PeekAndPoke\Component\Slumber\Annotation\Slumber;
  *     {
  *         "adyen"  : Adyen::class,
  *         "paypal" : Paypal::class,
- *        "stripe" : Stripe::class,
+ *         "stripe" : Stripe::class,
  *     },
  *     tellBy  = "provider",
  *     default = PaymentMean::class
