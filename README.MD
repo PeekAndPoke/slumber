@@ -63,6 +63,32 @@ might output the following:
 }
 ```
 
+# Getting started
+
+## Array codec example
+
+In order to get the ArrayCodec into our hands we have to set it up:
+
+```php
+// we need an instance of the PSR-11 container interface (whould be provided by the application)
+$di = ...;
+
+// we need a doctrine annotation reader
+$annotationReader = new AnnotationReader();
+
+// SLUMBER: we need a configuration reader
+$reader = new AnnotatedEntityConfigReader($di, $annotationReader, new ArrayCodecPropertyMarker2Mapper());
+
+// SLUMBER: finally we get the codec
+#codec = new ArrayCodec($reader);
+
+// then use it for serialization
+$data = $codec->slumber(new Person());
+
+// or use if for de-serialization
+$person = $codec->awake($data, Person::class);
+
+```
 
 # Mapping 
 
@@ -408,6 +434,22 @@ maps to
 The same behaviour applys for the opposite direction.
 For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/ListMapper.php)
 
+Similarly one would map to a list of objects:
+
+```php
+
+class B { }
+
+class C {
+
+  /** 
+   * @Slumber\AsList(
+   *   @Slumber\AsObject(B::Class)
+   * )
+   */
+  private $val = [];
+}
+```
 
 ### Slumber\AsMap()
 
@@ -451,6 +493,23 @@ maps to
 The same behaviour applys for the opposite direction.
 For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/MapMapper.php)
 
+
+Similarly one would map to a list of objects:
+
+```php
+
+class B { }
+
+class C {
+
+  /** 
+   * @Slumber\AsMap(
+   *   @Slumber\AsObject(B::Class)
+   * )
+   */
+  private $val = [];
+}
+```
 
 ### Slumber\AsKeyValuePairs()
 
@@ -501,6 +560,24 @@ maps to
 
 The same behaviour applys for the opposite direction.
 For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/KeyValuePairsMapper.php)
+
+
+Similarly one would map to a list of objects:
+
+```php
+
+class B { }
+
+class C {
+
+  /** 
+   * @Slumber\AsKeyValuePairs(
+   *   @Slumber\AsObject(B::Class)
+   * )
+   */
+  private $val = [];
+}
+```
 
 ## Polymorphism example
 
