@@ -55,20 +55,20 @@ You will find the implementation of all mappers [here](./src/Slumber/Annotation/
 
 ### Slumber\AsBool()
 
-Maps value from and to booleans.
+Maps values from and to booleans.
 
 ```php
 class C {
   /**
    * @Slumber\AsBool()
    */
-  private $aBool = true;
+  private $val = true;
 }
 ```
 maps to
 ```json
 {
-  "aBool": true,
+  "val": true
 }
 ```
 
@@ -77,15 +77,56 @@ class C {
   /**
    * @Slumber\AsBool()
    */
-  private $aBool = 0;
+  private $val = 0;
 }
 ```
 maps to
 ```json
 {
-  "aBool": false,
+  "val": false
 }
 ```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/BoolMapper.php)
+
+
+### Slumber\AsDecimal()
+
+Maps values from and to floating point values.
+
+```php
+class C {
+  /**
+   * @Slumber\AsDecimal()
+   */
+  private $val = 1.23;
+}
+```
+maps to
+```json
+{
+  "val": 1.23
+}
+```
+
+```php
+class C {
+  /**
+   * @Slumber\AsDecimal()
+   */
+  private $val = "abc";
+}
+```
+maps to
+```json
+{
+  "val": 0
+}
+```
+
+The same behaviour applys for the opposite direction.
+For more details on how the mapper works have a look [here](./src/Slumber/Core/Codec/Property/DecimalMapper.php)
 
 
 ## Polymorphism example
