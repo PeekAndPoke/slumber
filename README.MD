@@ -5,18 +5,19 @@
 
 # Slumber
 
-What is Slumber? It is a tool for mapping data from objects to array and vice versa. 
-E.g. it gives you the possibility to easily map your domain model to JSON. Or map from JSON to your
-Domain Model classes. 
+What is Slumber? It is a tool for mapping data from objects to arrays and vice versa.
+ 
+It gives you the possibility to easily map your domain model to JSON. Or to map from JSON to your
+domain model classes. 
 
-Slumber uses Doctine Annotations. The annotations are used to mark which properties of classes ar to 
-be mapped and in which way.
+Slumber uses Doctrine Annotations. The annotations are used to mark which properties of your classes 
+are to be mapped and in which way.
 
 (PHP5.6 compatibility until v0.4.x)
 
 # Basic example
 
-The "trademark" of the slumber annotated classes are these annotations: 
+The "trademark" of the slumber annotated classes are annotations like these: 
 
 ```php
 
@@ -24,7 +25,7 @@ use PeekAndPoke\Component\Slumber\Annotation\Slumber;
 
 class MyClass {
 
-    /**
+    /**        
      * @Slumber\AsString()
      */
     private $name;
@@ -70,29 +71,29 @@ might output the following:
 In order to get the ArrayCodec into our hands we have to set it up:
 
 ```php
-// we need an instance of the PSR-11 container interface (whould be provided by the application)
+// we need an instance of a PSR-11 container (should be provided by the application)
 $di = ...;
 
-// we need a doctrine annotation reader
+// we need a doctrine annotation reader (you should use caching, ideally APCU as cache)
 $annotationReader = new AnnotationReader();
 
 // SLUMBER: we need a configuration reader
 $reader = new AnnotatedEntityConfigReader($di, $annotationReader, new ArrayCodecPropertyMarker2Mapper());
 
 // SLUMBER: finally we get the codec
-#codec = new ArrayCodec($reader);
+$codec = new ArrayCodec($reader);
 
-// then use it for serialization
+// then use it for serializating objects into array data
 $data = $codec->slumber(new Person());
 
-// or use if for de-serialization
+// or use if for de-serializating array data back into objects
 $person = $codec->awake($data, Person::class);
-
 ```
 
 # Mapping 
 
-In order to fully control serialization and de-serialization there is a set of annotations that can be used.
+In order to fully control serialization and de-serialization there is a set of annotations 
+that can be used.
 
 ## Mapping scalars
 
@@ -395,7 +396,8 @@ For more details on how the mapper works have a look [here](./src/Slumber/Core/C
 ### Slumber\AsList()
 
 Maps values from and to lists (arrays without indexes).
-The annotations expects a nested annotation that control the shape of the elements within the collection.
+
+The annotations expects a nested annotation that controls the shape of the elements within the collection.
 
 ```php
 class C {
@@ -454,7 +456,8 @@ class C {
 ### Slumber\AsMap()
 
 Maps values from and to KeyValue-Pairs (arrays with indexes).
-The annotations expects a nested annotation that control the shape of the elements within the collection.
+
+The annotations expects a nested annotation that controls the shape of the elements within the collection.
 
 ```php
 class C {
@@ -514,7 +517,8 @@ class C {
 ### Slumber\AsKeyValuePairs()
 
 Maps values from and to special shaped KeyValue-Pairs. This can be useful in terms of database indexing.
-The annotations expects a nested annotation that control the shape of the elements within the collection.
+
+The annotations expects a nested annotation that controls the shape of the elements within the collection.
 
 ```php
 class C {
@@ -584,8 +588,8 @@ class C {
 When serializing the polymorphism information is not needed. Since we know exactly which class
 we have in our hand to serialize.
 
-But while de-serialization Polymorphism needs to be annotated explicitly. Only by doing this
-we can know which class to instantiate. We also need a field on the data, which acts as the 
+But while de-serialization polymorphism needs to be annotated explicitly. Only by doing this
+we can know which classes to instantiate. We also need a field in the data, which acts as the 
 discriminator.
 
 
