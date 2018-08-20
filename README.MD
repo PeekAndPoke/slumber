@@ -55,8 +55,8 @@ might output the following:
 ```json
 {
   "name": "Bart",
-  "age": "10",
-  "height": "1.10",
+  "age": 10,
+  "height": 1.10,
   "address": {
     "city": "Springfield",
     "country": "USA"
@@ -77,7 +77,7 @@ $di = ...;
 // we need a doctrine annotation reader (you should use caching, ideally APCU as cache)
 $annotationReader = new AnnotationReader();
 
-// SLUMBER: we need a configuration reader
+// SLUMBER: we need a configuration reader (you should wrap the reader with CachedEntityConfigLookUp for good performance)
 $reader = new AnnotatedEntityConfigReader($di, $annotationReader, new ArrayCodecPropertyMarker2Mapper());
 
 // SLUMBER: finally we get the codec
